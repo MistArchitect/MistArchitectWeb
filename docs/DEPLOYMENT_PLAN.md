@@ -23,6 +23,7 @@ Recommended preview target:
 Required deployment variables:
 
 ```text
+NEXT_PUBLIC_SITE_URL=
 NEXT_PUBLIC_SANITY_PROJECT_ID=
 NEXT_PUBLIC_SANITY_DATASET=production
 NEXT_PUBLIC_SANITY_API_VERSION=2026-04-13

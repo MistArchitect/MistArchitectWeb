@@ -1,9 +1,8 @@
 import { Hero } from "@/components/hero";
-import { JournalList } from "@/components/journal-list";
 import { MotionReveal } from "@/components/motion-reveal";
 import { ProjectCard } from "@/components/project-card";
 import { SectionRibbon } from "@/components/section-ribbon";
-import { getHomeContent, getJournalEntries, getProjects } from "@/lib/content";
+import { getHomeContent, getProjects } from "@/lib/content";
 import { isLocale, type Locale, withLocale } from "@/lib/i18n";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -25,19 +24,17 @@ export default async function HomePage({ params }: HomePageProps) {
 
   const locale = rawLocale as Locale;
   const home = getHomeContent();
-  const [projects, journalEntries] = await Promise.all([
-    getProjects(),
-    getJournalEntries()
-  ]);
+  const projects = await getProjects();
+  const recommendedProjects = projects.slice(0, 5);
 
   return (
     <main>
-      <Hero locale={locale} />
+      <Hero />
 
       <SectionRibbon>{home.indexLabel[locale]}</SectionRibbon>
       <MotionReveal className="section-shell">
-        <div className="project-grid featured-grid">
-          {projects.map((project, index) => (
+        <div className="project-grid featured-grid recommended-grid">
+          {recommendedProjects.map((project, index) => (
             <ProjectCard
               key={project.slug}
               locale={locale}
@@ -52,34 +49,6 @@ export default async function HomePage({ params }: HomePageProps) {
           </Link>
         </div>
       </MotionReveal>
-
-      <SectionRibbon id="practice">{home.practice.label[locale]}</SectionRibbon>
-      <MotionReveal className="practice-panel">
-        <p className="kicker">METHOD / MATERIAL / MEMORY</p>
-        <h2>{home.practice.title[locale]}</h2>
-        <p>{home.practice.copy[locale]}</p>
-      </MotionReveal>
-
-      <SectionRibbon>{home.journalLabel[locale]}</SectionRibbon>
-      <MotionReveal className="section-shell">
-        <JournalList entries={journalEntries} locale={locale} />
-      </MotionReveal>
-
-      <section className="two-column-band" id="films">
-        <MotionReveal>
-          <p className="kicker">{home.films.label[locale]}</p>
-          <h2>{home.films.title[locale]}</h2>
-        </MotionReveal>
-        <MotionReveal delay={0.08}>
-          <p>{home.films.copy[locale]}</p>
-        </MotionReveal>
-      </section>
-
-      <section className="contact-band" id="contact">
-        <p className="kicker">{home.contact.label[locale]}</p>
-        <h2>{home.contact.title[locale]}</h2>
-        <a href={`mailto:${home.contact.email}`}>{home.contact.email}</a>
-      </section>
     </main>
   );
 }

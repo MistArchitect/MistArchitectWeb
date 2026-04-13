@@ -8,6 +8,7 @@ import { isLocale, locales, type Locale } from "@/lib/i18n";
 import "../globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
   title: {
     default: "Mist Architect",
     template: "%s | Mist Architect"

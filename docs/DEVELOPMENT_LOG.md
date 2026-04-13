@@ -191,3 +191,50 @@ Environment limitation:
 
 - Local verification should continue to use `npm run typecheck`, `npm run lint`, and `npm run build`.
 - After pushing this commit, GitHub Actions should run the same checks on `main`.
+
+## 2026-04-13 / Prototype Visual System Realignment
+
+### Goals
+
+- Continue from the newer prototype direction and retire the remaining WIRED/brutalist visual language.
+- Align the shared CSS with the revised `DESIGN.md` principles: silence, light, materiality, and void.
+- Keep the local homepage image carousel performant enough for preview work.
+
+### Files Added or Changed
+
+- `DESIGN.md`: cleaned the revised "Void & Structure" guidance and corrected small typography/color typos.
+- `src/app/globals.css`: replaced heavy borders, black ribbons, serif-heavy headings, and aggressive buttons with neutral spacing, light typography, and subtle hairlines.
+- `src/components/hero.tsx`: simplified the full-screen image carousel, removed the gradient overlay, and respected reduced-motion preferences.
+- `src/components/mobile-menu.tsx`: refined the inline menu interaction and accessibility labels.
+- `.gitignore`: ignores macOS `.DS_Store` metadata files.
+- `public/images/home/*`: optimized local homepage images from roughly 39 MB to roughly 10 MB.
+
+### Verification
+
+- `git diff --check`: passed.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `npm run build`: passed.
+- HTTP smoke checks returned 200 for `/zh`, `/zh/projects/cloud-court-house`, and `/studio`.
+
+## 2026-04-13 / Homepage Featured Projects Prototype
+
+### Goals
+
+- Keep only the featured projects section below the full-screen homepage carousel.
+- Show five featured project images, each representing one project and linking to its detail route.
+- Ensure all five featured projects have enough narrative content for detail-page review.
+
+### Files Added or Changed
+
+- `src/app/[locale]/page.tsx`: removes practice, journal, films, and contact sections from the homepage and renders only the first five projects after the hero.
+- `src/content/site.ts`: expands local seed content from three to five projects, maps each featured project to a local homepage image, and adds longer detail-page narratives.
+- `src/app/[locale]/layout.tsx`, `.env.example`, and `docs/DEPLOYMENT_PLAN.md`: add `NEXT_PUBLIC_SITE_URL` so local project images resolve cleanly for metadata.
+
+### Verification
+
+- `git diff --check`: passed.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `npm run build`: passed and generated 18 static pages.
+- HTTP smoke checks found five homepage project links and returned 200 for `/zh/projects/pine-shadow-library` and `/zh/projects/salt-field-guesthouse`.

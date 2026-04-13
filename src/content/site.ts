@@ -75,14 +75,22 @@ export const home = {
       zh: "阅读日志",
       en: "Read Journal"
     },
-    poster:
-      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=2400&q=85",
-    video:
-      "https://cdn.pixabay.com/video/2022/02/02/106340-673544770_large.mp4"
+    images: [
+      "/images/home/home-01.jpeg",
+      "/images/home/home-02.jpeg",
+      "/images/home/home-03.jpg",
+      "/images/home/home-04.jpeg",
+      "/images/home/home-05.jpeg",
+      "/images/home/home-06.jpeg",
+      "/images/home/home-07.jpeg",
+      "/images/home/home-08.jpeg",
+      "/images/home/home-09.jpeg",
+      "/images/home/home-10.jpeg"
+    ]
   },
   indexLabel: {
-    zh: "项目索引",
-    en: "Project Index"
+    zh: "推荐项目",
+    en: "Featured Projects"
   },
   journalLabel: {
     zh: "近期更新",
@@ -157,38 +165,38 @@ export const projects: Project[] = [
     body: {
       zh: [
         "项目以连续的院落组织生活动线，让光线、风和雨水成为日常空间的一部分。",
-        "外墙保持低调的矿物质感，室内使用深色木作和白色墙面形成清晰对比。"
+        "外墙保持低调的矿物质感，室内使用深色木作和白色墙面形成清晰对比。",
+        "主要房间围绕不同尺度的庭院展开，形成可被季节、湿度和植物缓慢改变的居住界面。"
       ],
       en: [
         "The project uses connected courtyards to make light, air, and rainwater part of daily circulation.",
-        "A quiet mineral exterior is paired with dark timber interiors and white planes for a measured contrast."
+        "A quiet mineral exterior is paired with dark timber interiors and white planes for a measured contrast.",
+        "Primary rooms unfold around courtyards of different scales, creating a domestic edge slowly altered by season, humidity, and planting."
       ]
     },
-    image:
-      "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1400&q=85",
-    heroImage:
-      "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=2400&q=85",
+    image: "/images/home/home-01.jpeg",
+    heroImage: "/images/home/home-01.jpeg",
     imageAlt: {
       zh: "被树木环绕的现代住宅",
       en: "Modern residence surrounded by trees"
     },
-    credit: "Unsplash",
+    credit: "Mist Architect Archive",
     gallery: [
       {
-        src: "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1600&q=85",
+        src: "/images/home/home-06.jpeg",
         alt: {
           zh: "带有木质家具的住宅室内",
           en: "Residential interior with timber furniture"
         },
-        credit: "Unsplash"
+        credit: "Mist Architect Archive"
       },
       {
-        src: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1600&q=85",
+        src: "/images/home/home-07.jpeg",
         alt: {
           zh: "现代住宅中的楼梯与自然光",
           en: "Stair and daylight inside a modern residence"
         },
-        credit: "Unsplash"
+        credit: "Mist Architect Archive"
       }
     ],
     videoUrl: "https://cdn.pixabay.com/video/2022/02/02/106340-673544770_large.mp4"
@@ -220,38 +228,38 @@ export const projects: Project[] = [
     body: {
       zh: [
         "既有结构被保留为公共记忆的框架，新插入的轻质盒体承担展览、阅读和社区活动。",
-        "立面通过可开启金属格栅调节日照，也让建筑在白天和夜晚呈现不同厚度。"
+        "立面通过可开启金属格栅调节日照，也让建筑在白天和夜晚呈现不同厚度。",
+        "河岸一侧被处理成连续的公共界面，让档案馆不再是封闭库房，而成为城市日常可经过、可停留的场所。"
       ],
       en: [
         "The existing structure remains as a framework of civic memory, while inserted lightweight volumes hold exhibitions, reading rooms, and community programs.",
-        "Operable metal screens temper sunlight and give the facade different densities between day and night."
+        "Operable metal screens temper sunlight and give the facade different densities between day and night.",
+        "The riverside edge becomes a continuous public interface, turning the archive from a sealed repository into a place for passing, pausing, and gathering."
       ]
     },
-    image:
-      "https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=1400&q=85",
-    heroImage:
-      "https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=2400&q=85",
+    image: "/images/home/home-02.jpeg",
+    heroImage: "/images/home/home-02.jpeg",
     imageAlt: {
       zh: "几何立面和蓝天",
       en: "Geometric facade against blue sky"
     },
-    credit: "Unsplash",
+    credit: "Mist Architect Archive",
     gallery: [
       {
-        src: "https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=1600&q=85",
+        src: "/images/home/home-08.jpeg",
         alt: {
           zh: "城市中的建筑立面",
           en: "Architectural facade in the city"
         },
-        credit: "Unsplash"
+        credit: "Mist Architect Archive"
       },
       {
-        src: "https://images.unsplash.com/photo-1496307653780-42ee777d4833?auto=format&fit=crop&w=1600&q=85",
+        src: "/images/home/home-09.jpeg",
         alt: {
           zh: "高层建筑的结构细部",
           en: "Structural details of a high-rise facade"
         },
-        credit: "Unsplash"
+        credit: "Mist Architect Archive"
       }
     ]
   },
@@ -282,38 +290,162 @@ export const projects: Project[] = [
     body: {
       zh: [
         "连续天窗提供稳定北向光，工作台、档案柜和展示墙被整合为一套线性基础设施。",
-        "项目尽量保留原有混凝土和钢构痕迹，让工作过程成为空间的主要表情。"
+        "项目尽量保留原有混凝土和钢构痕迹，让工作过程成为空间的主要表情。",
+        "模型制作、材料陈列和日常会议被放在同一条长轴上，工作室在不同时间呈现开放、安静和展示三种状态。"
       ],
       en: [
         "Continuous skylights provide stable northern light while worktables, archives, and display walls become one linear infrastructure.",
-        "Existing concrete and steel traces are kept visible so the act of working becomes the room's primary expression."
+        "Existing concrete and steel traces are kept visible so the act of working becomes the room's primary expression.",
+        "Model making, material display, and daily meetings are aligned along one long axis, allowing the studio to shift between open work, quiet focus, and presentation."
       ]
     },
-    image:
-      "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1400&q=85",
-    heroImage:
-      "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=2400&q=85",
+    image: "/images/home/home-03.jpg",
+    heroImage: "/images/home/home-03.jpg",
     imageAlt: {
       zh: "明亮的现代办公室室内",
       en: "Bright modern office interior"
     },
-    credit: "Unsplash",
+    credit: "Mist Architect Archive",
     gallery: [
       {
-        src: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1600&q=85",
+        src: "/images/home/home-10.jpeg",
         alt: {
           zh: "带长桌的共享工作室",
           en: "Shared studio with long worktables"
         },
-        credit: "Unsplash"
+        credit: "Mist Architect Archive"
       },
       {
-        src: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1600&q=85",
+        src: "/images/home/home-01.jpeg",
         alt: {
           zh: "带自然光的室内空间",
           en: "Interior space with natural light"
         },
-        credit: "Unsplash"
+        credit: "Mist Architect Archive"
+      }
+    ]
+  },
+  {
+    slug: "pine-shadow-library",
+    code: "MST-016",
+    year: "2024",
+    location: {
+      zh: "成都，中国",
+      en: "Chengdu, China"
+    },
+    status: {
+      zh: "方案设计",
+      en: "Concept Design"
+    },
+    typology: {
+      zh: "文化 / 图书馆",
+      en: "Cultural / Library"
+    },
+    title: {
+      zh: "松影图书馆",
+      en: "Pine Shadow Library"
+    },
+    dek: {
+      zh: "一座以屋檐、树影和低照度阅读空间组织的社区图书馆。",
+      en: "A community library shaped by deep eaves, pine shadows, and low-lit reading rooms."
+    },
+    body: {
+      zh: [
+        "图书馆被放置在旧街区与新公园之间，建筑以连续檐下空间连接阅读、等候和日常穿行。",
+        "室内空间尽量降低视觉噪音，书架、长凳和窗洞被组织成缓慢展开的路径。",
+        "项目关注光线进入建筑后的衰减过程，让安静成为公共建筑真正的使用功能。"
+      ],
+      en: [
+        "The library sits between an old neighborhood and a new park, using continuous eaves to connect reading, waiting, and daily movement.",
+        "Interior spaces reduce visual noise, arranging shelves, benches, and window openings as a slow sequence.",
+        "The project studies how daylight softens inside the building, treating silence as an active civic program."
+      ]
+    },
+    image: "/images/home/home-04.jpeg",
+    heroImage: "/images/home/home-04.jpeg",
+    imageAlt: {
+      zh: "低矮建筑与树影",
+      en: "Low building with tree shadows"
+    },
+    credit: "Mist Architect Archive",
+    gallery: [
+      {
+        src: "/images/home/home-02.jpeg",
+        alt: {
+          zh: "社区图书馆的外部界面",
+          en: "Exterior edge of a community library"
+        },
+        credit: "Mist Architect Archive"
+      },
+      {
+        src: "/images/home/home-05.jpeg",
+        alt: {
+          zh: "阅读空间与自然光",
+          en: "Reading space with natural light"
+        },
+        credit: "Mist Architect Archive"
+      }
+    ]
+  },
+  {
+    slug: "salt-field-guesthouse",
+    code: "MST-014",
+    year: "2023",
+    location: {
+      zh: "厦门，中国",
+      en: "Xiamen, China"
+    },
+    status: {
+      zh: "建成",
+      en: "Completed"
+    },
+    typology: {
+      zh: "旅宿 / 更新",
+      en: "Hospitality / Renewal"
+    },
+    title: {
+      zh: "盐田客舍",
+      en: "Salt Field Guesthouse"
+    },
+    dek: {
+      zh: "由旧民居改造而来的小型客舍，以院墙、潮湿空气和浅色材料建立慢节奏体验。",
+      en: "A small guesthouse converted from an old dwelling, shaped by courtyard walls, humid air, and pale materials."
+    },
+    body: {
+      zh: [
+        "项目保留原有院墙和屋顶轮廓，在内部重新组织客房、公共厨房和半室外休息平台。",
+        "浅色抹灰、木作和局部石材共同建立克制的材料层次，让光线在一天中呈现细微变化。",
+        "客舍不追求强烈的地标性，而是把海风、湿度和邻里声音纳入居住经验。"
+      ],
+      en: [
+        "The project keeps the original courtyard walls and roof outline while reorganizing rooms, a shared kitchen, and semi-outdoor terraces.",
+        "Pale plaster, timber, and selected stone create a restrained material register, allowing light to shift quietly through the day.",
+        "Rather than seeking landmark presence, the guesthouse folds sea wind, humidity, and neighborhood sound into the stay."
+      ]
+    },
+    image: "/images/home/home-05.jpeg",
+    heroImage: "/images/home/home-05.jpeg",
+    imageAlt: {
+      zh: "浅色材料构成的庭院空间",
+      en: "Courtyard space formed by pale materials"
+    },
+    credit: "Mist Architect Archive",
+    gallery: [
+      {
+        src: "/images/home/home-03.jpg",
+        alt: {
+          zh: "改造客舍的院落视角",
+          en: "Courtyard view of the renewed guesthouse"
+        },
+        credit: "Mist Architect Archive"
+      },
+      {
+        src: "/images/home/home-06.jpeg",
+        alt: {
+          zh: "客房与半室外平台",
+          en: "Guest room and semi-outdoor terrace"
+        },
+        credit: "Mist Architect Archive"
       }
     ]
   }
