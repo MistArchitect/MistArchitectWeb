@@ -171,3 +171,23 @@ Environment limitation:
 - `npm run build`: passed.
 - HTTP smoke checks returned 200 for `/zh/projects/cloud-court-house` and `/studio`.
 - The project detail HTML includes the new `项目影像` and `项目图集` sections.
+
+## 2026-04-13 / Repository CI and Deployment Planning
+
+### Goals
+
+- Add automated GitHub checks before the project starts receiving more changes.
+- Keep the Next.js app portable for both Vercel preview and later self-hosting.
+- Document a deployment path that considers mainland-China browsing and editor access.
+
+### Files Added or Changed
+
+- `.github/workflows/ci.yml`: runs install, typecheck, lint, and production build on pushes and pull requests to `main`.
+- `next.config.ts`: enables Next.js standalone output for self-hosted Node or container deployment.
+- `docs/DEPLOYMENT_PLAN.md`: records preview, production, ICP, media, CMS, and operations notes.
+- `README.md`: links to the deployment plan.
+
+### Verification
+
+- Local verification should continue to use `npm run typecheck`, `npm run lint`, and `npm run build`.
+- After pushing this commit, GitHub Actions should run the same checks on `main`.

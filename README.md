@@ -35,6 +35,7 @@ http://localhost:3000/studio
 
 - `DESIGN.md` contains the imported WIRED-inspired design reference.
 - `docs/DEVELOPMENT_LOG.md` tracks implementation decisions, commands, and handoff notes.
+- `docs/DEPLOYMENT_PLAN.md` outlines the preview and mainland-China-ready production path.
 - The app is structured around locale-prefixed routes so extra languages can be added later.
 - Copy `.env.example` to `.env.local` and fill the Sanity project variables to open the real Studio.
 
