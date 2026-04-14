@@ -463,4 +463,4 @@ Environment limitation:
 - `git diff --check`: passed.
 - `npm run lint`: passed after loading the local NVM Node 24.14.1 environment.
 - `npm run build`: passed and generated 20 static pages.
-- Vercel preview deployment: pending after push.
+- Vercel preview deployment: ready after pushing commit `d442ca1`.
