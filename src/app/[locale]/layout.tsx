@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
+import { IntroSplash } from "@/components/intro-splash";
 import { SiteHeader } from "@/components/site-header";
 import { isLocale, locales, type Locale } from "@/lib/i18n";
 
@@ -40,6 +41,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   return (
     <html data-scroll-behavior="smooth" lang={locale}>
       <body>
+        <IntroSplash />
         <SiteHeader locale={locale} />
         {children}
       </body>

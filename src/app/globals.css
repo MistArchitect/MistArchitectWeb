@@ -59,6 +59,23 @@ button {
   cursor: pointer;
 }
 
+.intro-splash {
+  align-items: center;
+  background: var(--paper);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  pointer-events: none;
+  position: fixed;
+  z-index: 1000;
+}
+
+.intro-splash-logo {
+  height: auto;
+  max-width: min(62vw, 420px);
+  width: 100%;
+}
+
 .site-header {
   background: transparent;
   color: var(--paper);
@@ -814,6 +831,10 @@ button {
   .menu-toggle,
   .inline-nav-item {
     font-size: 12px;
+  }
+
+  .intro-splash-logo {
+    max-width: min(72vw, 300px);
   }
 
   .practice-panel h2,

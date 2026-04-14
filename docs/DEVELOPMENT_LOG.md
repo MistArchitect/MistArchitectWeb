@@ -284,3 +284,26 @@ Environment limitation:
 - `npm run lint`: passed.
 - `npm run build`: passed and generated 20 static pages.
 - HTTP smoke checks returned 200 for `/zh/about`; the HTML includes the office image, founders image, secondary nav anchors, `事务所简介`, `主要报道`, and founder credentials.
+
+## 2026-04-14 / Intro Logo Splash
+
+### Goals
+
+- Add a full-screen logo moment before the site content appears.
+- Keep the transition quiet and smooth so the homepage feels like it fades in naturally.
+- Avoid replaying the intro during normal navigation in the same browser session.
+
+### Files Added or Changed
+
+- `src/components/intro-splash.tsx`: adds a session-aware client splash overlay with reduced-motion support.
+- `src/app/[locale]/layout.tsx`: mounts the splash once at the locale layout level so it works from any entry route.
+- `src/app/globals.css`: styles the fixed full-screen overlay and responsive logo sizing.
+- `public/images/brand/mist-logo.svg`: adds a temporary image-based logo asset for the prototype.
+
+### Verification
+
+- `git diff --check`: passed.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `npm run build`: passed and generated 20 static pages.
+- HTTP smoke checks confirmed `/zh` includes the splash markup and `/images/brand/mist-logo.svg` returns 200.
