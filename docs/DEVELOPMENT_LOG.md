@@ -307,3 +307,24 @@ Environment limitation:
 - `npm run lint`: passed.
 - `npm run build`: passed and generated 20 static pages.
 - HTTP smoke checks confirmed `/zh` includes the splash markup and `/images/brand/mist-logo.svg` returns 200.
+
+## 2026-04-14 / Automatic Light and Dark Theme
+
+### Goals
+
+- Make the full site respond automatically to the visitor's system light or dark preference.
+- Keep the intro logo splash aligned with the active theme: white background in light mode and soft black background in dark mode.
+- Prepare the intro logo handling for a transparent PNG asset by keeping the logo image background-free and using CSS filtering for dark mode.
+
+### Files Added or Changed
+
+- `src/app/globals.css`: adds color-scheme-aware theme tokens, dark-mode values, smoother color transitions, dark splash background, logo filtering, and image-overlay-safe text tokens.
+- `public/images/brand/mist-logo.svg`: removes the temporary white logo background so the current placeholder behaves like a transparent logo.
+
+### Verification
+
+- `git diff --check`: passed.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `npm run build`: passed and generated 20 static pages.
+- HTTP smoke checks confirmed `/zh` still includes the splash markup and logo asset path.

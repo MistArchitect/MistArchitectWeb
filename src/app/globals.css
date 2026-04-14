@@ -1,15 +1,35 @@
 :root {
+  color-scheme: light;
   --ink: #111111;
   --page-ink: #222222;
   --paper: #ffffff;
   --muted: #777777;
   --hairline: #e5e5e5;
+  --solid-bg: #111111;
+  --on-image: #ffffff;
+  --splash-bg: #ffffff;
+  --splash-logo-filter: none;
   --max: 1480px;
   --gutter: 40px;
   --section-y: 128px;
   --sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue",
     Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
   --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --ink: #f4f2ec;
+    --page-ink: #e9e7df;
+    --paper: #080808;
+    --muted: #a5a39d;
+    --hairline: #2c2b28;
+    --solid-bg: #050505;
+    --on-image: #ffffff;
+    --splash-bg: #151515;
+    --splash-logo-filter: invert(1) brightness(1.08);
+  }
 }
 
 * {
@@ -30,6 +50,17 @@ body {
   margin: 0;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
+}
+
+html,
+body,
+.intro-splash,
+.about-page,
+.project-detail,
+.project-title-block,
+.studio-setup,
+.button {
+  transition: background-color 450ms ease, border-color 450ms ease, color 450ms ease;
 }
 
 a {
@@ -61,7 +92,7 @@ button {
 
 .intro-splash {
   align-items: center;
-  background: var(--paper);
+  background: var(--splash-bg);
   display: flex;
   inset: 0;
   justify-content: center;
@@ -71,14 +102,16 @@ button {
 }
 
 .intro-splash-logo {
+  filter: var(--splash-logo-filter);
   height: auto;
   max-width: min(62vw, 420px);
+  transition: filter 450ms ease, opacity 450ms ease;
   width: 100%;
 }
 
 .site-header {
   background: transparent;
-  color: var(--paper);
+  color: var(--on-image);
   left: 0;
   position: absolute;
   top: 0;
@@ -164,7 +197,7 @@ button {
 }
 
 .hero-shell {
-  background: var(--ink);
+  background: var(--solid-bg);
   height: 100svh;
   overflow: hidden;
   position: relative;
@@ -277,11 +310,11 @@ button {
 
 .button-inverted,
 .text-link-on-dark {
-  color: var(--paper);
+  color: var(--on-image);
 }
 
 .button-inverted {
-  border-color: var(--paper);
+  border-color: var(--on-image);
 }
 
 .practice-panel,
@@ -481,7 +514,7 @@ button {
 
 .project-film video {
   aspect-ratio: 16 / 9;
-  background: var(--ink);
+  background: var(--solid-bg);
   object-fit: cover;
   width: 100%;
 }
@@ -520,8 +553,8 @@ button {
 }
 
 .about-hero {
-  background: var(--ink);
-  color: var(--paper);
+  background: var(--solid-bg);
+  color: var(--on-image);
   min-height: 88svh;
   overflow: hidden;
   position: relative;
