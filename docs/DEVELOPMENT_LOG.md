@@ -262,3 +262,25 @@ Environment limitation:
 - `npm run lint`: passed.
 - `npm run build`: passed and generated 20 static pages, including `/zh/about` and `/en/about`.
 - HTTP smoke checks returned 200 for `/zh/about` and `/en/about`; the `/zh/about` HTML includes the office image, founders image, and requested section labels.
+
+## 2026-04-14 / About Page Office Reference Pass
+
+### Goals
+
+- Rework the `岚` page closer to the Vector Architects office-page rhythm: quiet office image, internal index, long profile text, founder record, media archive, and contact record.
+- Keep the requested office image as the page's visual anchor while making the reading area feel more like an architectural office archive than a landing page.
+- Preserve the four requested secondary navigation items and the founders image-left/text-right composition.
+
+### Files Added or Changed
+
+- `src/app/[locale]/about/page.tsx`: restructures the page into a sticky office index plus right-side office content sections.
+- `src/app/globals.css`: updates the about layout to use an archive-style two-column composition, sticky index, calmer typography, bordered archive rows, and responsive horizontal subnav.
+- `src/content/site.ts`: extends the office profile text and reshapes the media section into a simple dated archive list.
+
+### Verification
+
+- `git diff --check`: passed.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `npm run build`: passed and generated 20 static pages.
+- HTTP smoke checks returned 200 for `/zh/about`; the HTML includes the office image, founders image, secondary nav anchors, `事务所简介`, `主要报道`, and founder credentials.

@@ -42,9 +42,11 @@ export default async function AboutPage({ params }: AboutPageProps) {
   }
 
   const locale = rawLocale as Locale;
+  const introHeading = locale === "zh" ? "事务所简介" : "Office Profile";
+  const foundersHeading = locale === "zh" ? "创始人" : "Founders";
 
   return (
-    <main className="about-page">
+    <main className="about-page about-office-page">
       <section className="about-hero" aria-labelledby="about-title">
         <Image
           src={about.heroImage}
@@ -60,79 +62,97 @@ export default async function AboutPage({ params }: AboutPageProps) {
         </div>
       </section>
 
-      <nav className="about-subnav" aria-label={locale === "zh" ? "岚页面导航" : "About page navigation"}>
-        {about.nav.map((item) => (
-          <a key={item.id} href={`#${item.id}`}>
-            {item.label[locale]}
+      <div className="about-office-shell">
+        <aside className="about-office-index">
+          <a className="about-office-name" href="#intro">
+            Mist Architect
           </a>
-        ))}
-      </nav>
-
-      <section className="about-scroll-story" id="intro">
-        <div className="about-story-index">
-          <span>{about.intro.label[locale]}</span>
-        </div>
-        <MotionReveal className="about-story-copy">
-          <p className="kicker">MIST / 01</p>
-          <h2>{about.intro.title[locale]}</h2>
-          {about.intro.body[locale].map((paragraph) => (
-            <p key={paragraph}>{paragraph}</p>
-          ))}
-        </MotionReveal>
-      </section>
-
-      <section className="about-founders" id="founders">
-        <MotionReveal className="about-founders-image">
-          <Image
-            src={about.foundersImage}
-            alt={locale === "zh" ? "Mist Architect 创始人" : "Mist Architect founders"}
-            width={1400}
-            height={1800}
-            sizes="(min-width: 980px) 45vw, 100vw"
-          />
-        </MotionReveal>
-        <MotionReveal className="about-founders-copy" delay={0.12}>
-          <p className="kicker">MIST / 02 / {locale === "zh" ? "创始人" : "Founders"}</p>
-          <div className="founder-list">
-            {about.founders.map((founder, index) => (
-              <article className="founder-entry" key={`${founder.name[locale]}-${index}`}>
-                <h2>{founder.name[locale]}</h2>
-                <ul>
-                  {founder.credentials[locale].map((credential) => (
-                    <li key={credential}>{credential}</li>
-                  ))}
-                </ul>
-              </article>
+          <nav
+            className="about-subnav"
+            aria-label={locale === "zh" ? "岚页面导航" : "About page navigation"}
+          >
+            {about.nav.map((item) => (
+              <a key={item.id} href={`#${item.id}`}>
+                {item.label[locale]}
+              </a>
             ))}
-          </div>
-        </MotionReveal>
-      </section>
+          </nav>
+        </aside>
 
-      <section className="about-scroll-story" id="media">
-        <div className="about-story-index">
-          <span>{about.media.label[locale]}</span>
-        </div>
-        <MotionReveal className="about-story-copy">
-          <p className="kicker">MIST / 03</p>
-          <h2>{about.media.title[locale]}</h2>
-          {about.media.body[locale].map((paragraph) => (
-            <p key={paragraph}>{paragraph}</p>
-          ))}
-        </MotionReveal>
-      </section>
+        <div className="about-office-content">
+          <MotionReveal className="about-office-section about-intro-section" delay={0.05}>
+            <section id="intro">
+              <p className="kicker">Mist Architect</p>
+              <h2>{introHeading}</h2>
+              <div className="about-long-copy">
+                <p className="about-lead">{about.intro.title[locale]}</p>
+                {about.intro.body[locale].map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
+              </div>
+            </section>
+          </MotionReveal>
 
-      <section className="about-scroll-story about-contact-story" id="contact">
-        <div className="about-story-index">
-          <span>{about.contact.label[locale]}</span>
+          <section className="about-office-section about-founders" id="founders">
+            <MotionReveal className="about-founders-image">
+              <Image
+                src={about.foundersImage}
+                alt={locale === "zh" ? "Mist Architect 创始人" : "Mist Architect founders"}
+                width={1400}
+                height={1800}
+                sizes="(min-width: 1180px) 38vw, (min-width: 760px) 44vw, 100vw"
+              />
+            </MotionReveal>
+            <MotionReveal className="about-founders-copy" delay={0.12}>
+              <p className="kicker">Mist Architect</p>
+              <h2>{foundersHeading}</h2>
+              <div className="founder-list">
+                {about.founders.map((founder, index) => (
+                  <article className="founder-entry" key={`${founder.name[locale]}-${index}`}>
+                    <h3>{founder.name[locale]}</h3>
+                    <ul>
+                      {founder.credentials[locale].map((credential) => (
+                        <li key={credential}>{credential}</li>
+                      ))}
+                    </ul>
+                  </article>
+                ))}
+              </div>
+            </MotionReveal>
+          </section>
+
+          <MotionReveal className="about-office-section about-archive-section" delay={0.05}>
+            <section id="media">
+              <p className="kicker">Mist Architect</p>
+              <h2>{about.media.label[locale]}</h2>
+              <div className="about-archive-list">
+                {about.media.body[locale].map((paragraph, index) => (
+                  <p key={paragraph}>
+                    <span>{String(index + 1).padStart(2, "0")}</span>
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+            </section>
+          </MotionReveal>
+
+          <MotionReveal
+            className="about-office-section about-contact-section"
+            delay={0.05}
+          >
+            <section id="contact">
+              <p className="kicker">Mist Architect</p>
+              <h2>{about.contact.label[locale]}</h2>
+              <p className="about-lead">{about.contact.title[locale]}</p>
+              <div className="about-contact-lines">
+                {about.contact.body[locale].map((line) => (
+                  <p key={line}>{line}</p>
+                ))}
+              </div>
+            </section>
+          </MotionReveal>
         </div>
-        <MotionReveal className="about-story-copy">
-          <p className="kicker">MIST / 04</p>
-          <h2>{about.contact.title[locale]}</h2>
-          {about.contact.body[locale].map((line) => (
-            <p key={line}>{line}</p>
-          ))}
-        </MotionReveal>
-      </section>
+      </div>
     </main>
   );
 }

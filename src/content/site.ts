@@ -208,12 +208,16 @@ export const about = {
       zh: [
         "Mist Architect 关注建筑、室内、城市更新与研究型实践，以克制的材料、精确的比例和可被时间改变的光线组织空间。",
         "事务所把项目看作长期档案：从场地观察、模型推敲、材料实验到建成后的日常使用，所有过程都会反过来塑造下一次设计判断。",
-        "“岚”既指雾气和山间的空气，也指建筑与环境之间不完全固定的边界。"
+        "我们相信建筑首先要回应现实条件：场地的边界、城市的节奏、材料的限制、施工的误差，以及人在其中停留、行走和工作的方式。",
+        "在解决这些问题之后，空间还需要回到更本初的感知层面。墙体如何接住光，屋檐如何改变雨声，窗洞如何让一段风进入室内，这些细节共同形成建筑的气质。",
+        "“岚”既指雾气和山间的空气，也指建筑与环境之间不完全固定的边界。它提醒我们，建筑不是孤立的物体，而是把身体、气候和日常生活重新连接起来的媒介。"
       ],
       en: [
         "Mist Architect works across architecture, interiors, adaptive reuse, and research-led practice, shaping space through restrained materials, measured proportion, and light that changes with time.",
         "The studio treats every project as a living archive: site observation, model testing, material experiments, and daily occupation all become part of the next design decision.",
-        "Lan refers to mist and mountain air, and to the unsettled boundary between architecture and its surroundings."
+        "We believe architecture begins by responding to real conditions: site edges, urban rhythm, material limits, construction tolerance, and the way people pause, move, and work within a place.",
+        "After those demands are resolved, space still needs to return to perception. How a wall receives light, how an eave changes the sound of rain, and how a window lets air enter the room together shape the character of architecture.",
+        "Lan refers to mist and mountain air, and to the unsettled boundary between architecture and its surroundings. It reminds us that architecture is not an isolated object, but a medium that reconnects the body, climate, and daily life."
       ]
     }
   },
@@ -228,12 +232,18 @@ export const about = {
     },
     body: {
       zh: [
-        "媒体页面将用于整理报道、访谈、讲座与展览信息。",
-        "当前原型保留内容结构，后续可由 CMS 持续更新。"
+        "主要报道 / 主要展览 / 主要讲座 / 主要出版物",
+        "2026 Mist Architect，事务所项目档案上线",
+        "2025 建筑工房，城市更新与材料研究公开课",
+        "2024 松影图书馆，社区文化建筑研究",
+        "2024 北光工作室，工作空间改造观察"
       ],
       en: [
-        "The media section will collect press coverage, interviews, lectures, and exhibition notes.",
-        "This prototype keeps the content structure ready for ongoing CMS updates."
+        "Selected press / exhibitions / lectures / publications",
+        "2026 Mist Architect office archive launched",
+        "2025 Architecture Workshop, open course on adaptive reuse and material research",
+        "2024 Pine Shadow Library, study on community cultural architecture",
+        "2024 North Light Studio, notes on workplace renewal"
       ]
     }
   },
