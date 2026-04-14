@@ -44,6 +44,16 @@ export default async function AboutPage({ params }: AboutPageProps) {
   const locale = rawLocale as Locale;
   const introHeading = locale === "zh" ? "事务所简介" : "Office Profile";
   const foundersHeading = locale === "zh" ? "创始人" : "Founders";
+  const mediaGroups = [
+    {
+      label: locale === "zh" ? "行业及获奖经历" : "Awards and Recognition",
+      items: about.media.body[locale]
+    },
+    {
+      label: about.publications.label[locale],
+      items: about.publications.body[locale]
+    }
+  ];
 
   return (
     <main className="about-page about-office-page">
@@ -97,7 +107,11 @@ export default async function AboutPage({ params }: AboutPageProps) {
             <MotionReveal className="about-founders-image">
               <Image
                 src={about.foundersImage}
-                alt={locale === "zh" ? "Mist Architect 创始人" : "Mist Architect founders"}
+                alt={
+                  locale === "zh"
+                    ? "Mist Architect 创始人合影，左侧为李博，右侧为程博"
+                    : "Mist Architect founders, Li Bo on the left and Cheng Bo on the right"
+                }
                 width={1400}
                 height={1800}
                 sizes="(min-width: 1180px) 38vw, (min-width: 760px) 44vw, 100vw"
@@ -109,6 +123,7 @@ export default async function AboutPage({ params }: AboutPageProps) {
               <div className="founder-list">
                 {about.founders.map((founder, index) => (
                   <article className="founder-entry" key={`${founder.name[locale]}-${index}`}>
+                    <p className="founder-position">{founder.position[locale]}</p>
                     <h3>{founder.name[locale]}</h3>
                     <ul>
                       {founder.credentials[locale].map((credential) => (
@@ -125,12 +140,20 @@ export default async function AboutPage({ params }: AboutPageProps) {
             <section id="media">
               <p className="kicker">Mist Architect</p>
               <h2>{about.media.label[locale]}</h2>
-              <div className="about-archive-list">
-                {about.media.body[locale].map((paragraph, index) => (
-                  <p key={paragraph}>
-                    <span>{String(index + 1).padStart(2, "0")}</span>
-                    {paragraph}
-                  </p>
+              <p className="about-lead">{about.media.title[locale]}</p>
+              <div className="about-media-groups">
+                {mediaGroups.map((group) => (
+                  <article className="about-media-group" key={group.label}>
+                    <h3>{group.label}</h3>
+                    <div className="about-archive-list">
+                      {group.items.map((paragraph, index) => (
+                        <p key={paragraph}>
+                          <span>{String(index + 1).padStart(2, "0")}</span>
+                          {paragraph}
+                        </p>
+                      ))}
+                    </div>
+                  </article>
                 ))}
               </div>
             </section>

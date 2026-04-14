@@ -32,6 +32,7 @@ export type JournalEntry = {
 
 export type Founder = {
   name: Localized;
+  position: Localized;
   credentials: Localized<string[]>;
 };
 
@@ -201,23 +202,13 @@ export const about = {
       en: "Intro"
     },
     title: {
-      zh: "以清晰的空间秩序回应复杂现场。",
-      en: "A clear spatial order for complex sites."
+      zh: "程博和李博自瑞士归国后创立「岚」并专注于创造富有情感的壮阔体验、有力场的广义建筑。我们的工作重视建筑的品质、令人沉浸的空间氛围，以及与良好生活的连接。",
+      en: "Cheng Bo and Li Bo founded Mist after returning from Switzerland."
     },
     body: {
-      zh: [
-        "Mist Architect 关注建筑、室内、城市更新与研究型实践，以克制的材料、精确的比例和可被时间改变的光线组织空间。",
-        "事务所把项目看作长期档案：从场地观察、模型推敲、材料实验到建成后的日常使用，所有过程都会反过来塑造下一次设计判断。",
-        "我们相信建筑首先要回应现实条件：场地的边界、城市的节奏、材料的限制、施工的误差，以及人在其中停留、行走和工作的方式。",
-        "在解决这些问题之后，空间还需要回到更本初的感知层面。墙体如何接住光，屋檐如何改变雨声，窗洞如何让一段风进入室内，这些细节共同形成建筑的气质。",
-        "“岚”既指雾气和山间的空气，也指建筑与环境之间不完全固定的边界。它提醒我们，建筑不是孤立的物体，而是把身体、气候和日常生活重新连接起来的媒介。"
-      ],
+      zh: [],
       en: [
-        "Mist Architect works across architecture, interiors, adaptive reuse, and research-led practice, shaping space through restrained materials, measured proportion, and light that changes with time.",
-        "The studio treats every project as a living archive: site observation, model testing, material experiments, and daily occupation all become part of the next design decision.",
-        "We believe architecture begins by responding to real conditions: site edges, urban rhythm, material limits, construction tolerance, and the way people pause, move, and work within a place.",
-        "After those demands are resolved, space still needs to return to perception. How a wall receives light, how an eave changes the sound of rain, and how a window lets air enter the room together shape the character of architecture.",
-        "Lan refers to mist and mountain air, and to the unsettled boundary between architecture and its surroundings. It reminds us that architecture is not an isolated object, but a medium that reconnects the body, climate, and daily life."
+        "The studio focuses on broadly defined architecture with emotional, expansive experiences and a strong field of presence. Its work values architectural quality, immersive spatial atmosphere, and a close connection to good living."
       ]
     }
   },
@@ -227,23 +218,57 @@ export const about = {
       en: "Media"
     },
     title: {
-      zh: "项目、研究和公开讨论。",
-      en: "Projects, research, and public conversations."
+      zh: "行业及获奖经历 / 出版与展览",
+      en: "Awards / Publications and Exhibitions"
     },
     body: {
       zh: [
-        "主要报道 / 主要展览 / 主要讲座 / 主要出版物",
-        "2026 Mist Architect，事务所项目档案上线",
-        "2025 建筑工房，城市更新与材料研究公开课",
-        "2024 松影图书馆，社区文化建筑研究",
-        "2024 北光工作室，工作空间改造观察"
+        "2025 最佳探索   卷宗Wallpaper＊特别单元·最佳新建规探索",
+        "2023 年度新星   卷宗Wallpaper＊设计大奖2023 唯一入选建筑师",
+        "2022 总建筑师   深圳光影艺术季，第二届",
+        "2021 Gold Prize  第十一届园冶杯国际建筑奖",
+        "2019 2nd Prize 全球智能芯片创新中心（合作：第伍建筑）",
+        "2019 年度休闲空间大奖   第十七届国际设计传媒奖",
+        "2019 最佳商业空间  台湾TID室内设计大奖",
+        "2017  1st Prize  万科绿建研发展示中心",
+        "2012  1st Prize  International Velux Award，西扎评选，中国选手首获金奖",
+        "2012  1st Prize  TeamZero Design Award"
       ],
       en: [
-        "Selected press / exhibitions / lectures / publications",
-        "2026 Mist Architect office archive launched",
-        "2025 Architecture Workshop, open course on adaptive reuse and material research",
-        "2024 Pine Shadow Library, study on community cultural architecture",
-        "2024 North Light Studio, notes on workplace renewal"
+        "2025 Best Exploration, Wallpaper＊ special unit",
+        "2023 Rising Star, Wallpaper＊ Design Awards 2023, selected architect",
+        "2022 Chief Architect, the 2nd Shenzhen Light and Shadow Art Season",
+        "2021 Gold Prize, 11th Yuanye International Architecture Award",
+        "2019 2nd Prize, Global Intelligent Chip Innovation Center, with Atelier V",
+        "2019 Leisure Space of the Year, 17th International Design Media Award",
+        "2019 Best Commercial Space, Taiwan TID Award",
+        "2017 1st Prize, Vanke Green Building R&D Exhibition Center",
+        "2012 1st Prize, International Velux Award, selected by Álvaro Siza",
+        "2012 1st Prize, TeamZero Design Award"
+      ]
+    }
+  },
+  publications: {
+    label: {
+      zh: "出版/展览",
+      en: "Publications / Exhibitions"
+    },
+    body: {
+      zh: [
+        "<Analoge Altneue Architektur>, Miroslav Šik 编著, 瑞士 Quart Verlag 出版社",
+        "<ETH Jahrbuch>  苏黎世瑞士联邦理工大学 ETH Zürich 建筑学院出版",
+        "<The Light of Tomorrow> 瑞士苏黎世联邦理工学院 ETH Zürich 建筑学院个人作品展",
+        "增量美术馆，参展 PSA 上海当代艺术博物馆展览 《影之道》2023",
+        "增量美术馆，参展新北市美术馆展览《建築的恐懼與療癒》2026",
+        "无路城，参展深圳坪山美术馆开馆大展《未知城市》2019"
+      ],
+      en: [
+        "Analoge Altneue Architektur, edited by Miroslav Šik, Quart Verlag, Switzerland",
+        "ETH Jahrbuch, published by the Department of Architecture, ETH Zürich",
+        "The Light of Tomorrow, solo work exhibition, Department of Architecture, ETH Zürich",
+        "Zengliang Art Museum, The Shape of Shadow, PSA Shanghai, 2023",
+        "Zengliang Art Museum, Fear and Healing in Architecture, New Taipei City Art Museum, 2026",
+        "City Without Road, Unknown City, Pingshan Art Museum opening exhibition, Shenzhen, 2019"
       ]
     }
   },
@@ -257,8 +282,8 @@ export const about = {
       en: "New sites, adaptive reuse plans, and research collaborations."
     },
     body: {
-      zh: ["studio@mistarchitect.com", "上海 / 深圳"],
-      en: ["studio@mistarchitect.com", "Shanghai / Shenzhen"]
+      zh: ["info@mist-arch.com", "上海 / 深圳"],
+      en: ["info@mist-arch.com", "Shanghai / Shenzhen"]
     }
   },
   founders: [
@@ -267,12 +292,17 @@ export const about = {
         zh: "李博",
         en: "Li Bo"
       },
+      position: {
+        zh: "左侧",
+        en: "Left"
+      },
       credentials: {
         zh: [
           "瑞士 SIA 注册建筑师",
           "苏黎世联邦理工大学",
           "ETH Zürich 学士及硕士",
           "「建筑工房」发起人",
+          "华南理工大学讲席副教授",
           "哈工大（深圳）设计导师"
         ],
         en: [
@@ -280,6 +310,7 @@ export const about = {
           "ETH Zürich",
           "Bachelor and Master of Science",
           "Initiator of Architecture Workshop",
+          "Chair Professor, South China University of Technology",
           "Design Tutor, Harbin Institute of Technology (Shenzhen)"
         ]
       }
@@ -289,40 +320,22 @@ export const about = {
         zh: "程博",
         en: "Cheng Bo"
       },
+      position: {
+        zh: "右侧",
+        en: "Right"
+      },
       credentials: {
         zh: [
           "瑞士 SIA 注册建筑师",
-          "苏黎世联邦理工大学",
+          "同济大学 规划学士",
           "ETH Zürich 硕士",
           "「建筑工房」发起人",
           "哈工大（深圳）设计导师"
         ],
         en: [
           "Swiss SIA Registered Architect",
-          "ETH Zürich",
-          "Master of Science",
-          "Initiator of Architecture Workshop",
-          "Design Tutor, Harbin Institute of Technology (Shenzhen)"
-        ]
-      }
-    },
-    {
-      name: {
-        zh: "程博",
-        en: "Cheng Bo"
-      },
-      credentials: {
-        zh: [
-          "瑞士 SIA 注册建筑师",
-          "同济大学",
-          "ETH Zürich 学士及硕士",
-          "「建筑工房」发起人",
-          "哈工大（深圳）设计导师"
-        ],
-        en: [
-          "Swiss SIA Registered Architect",
-          "Tongji University",
-          "ETH Zürich Bachelor and Master of Science",
+          "Bachelor of Planning, Tongji University",
+          "Master of Science, ETH Zürich",
           "Initiator of Architecture Workshop",
           "Design Tutor, Harbin Institute of Technology (Shenzhen)"
         ]

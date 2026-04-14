@@ -328,3 +328,27 @@ Environment limitation:
 - `npm run lint`: passed.
 - `npm run build`: passed and generated 20 static pages.
 - HTTP smoke checks confirmed `/zh` still includes the splash markup and logo asset path.
+
+## 2026-04-14 / About Page Content Refresh
+
+### Goals
+
+- Use the updated `docs/About.md` bullet-point content as the source for the about page.
+- Replace the temporary founder records with the new two-founder structure and the updated high-resolution founders photo.
+- Make the founder image-to-text relationship explicit: the image shows 李博 on the left and 程博 on the right, and the copy now carries matching left/right position labels.
+- Expand the media section into awards plus publications/exhibitions while keeping the existing four-item secondary navigation.
+
+### Files Added or Changed
+
+- `docs/About.md`: stores the current about-page copy source for developers and coding agents.
+- `src/content/site.ts`: updates the bilingual about-page data, founder records, awards, publications/exhibitions, and contact email.
+- `src/app/[locale]/about/page.tsx`: renders grouped media archives and founder position labels.
+- `src/app/globals.css`: tunes the founder image crop and adds understated founder/media archive styling.
+
+### Verification
+
+- `git diff --check`: passed.
+- `npm run typecheck`: passed after loading the local NVM Node 24.14.1 environment.
+- `npm run lint`: passed after loading the local NVM Node 24.14.1 environment.
+- `npm run build`: passed and generated 20 static pages.
+- Local smoke checks returned 200 for `/zh/about` and `/images/about/founders.jpeg`; the `/zh/about` HTML includes `左侧`, `右侧`, `华南理工大学讲席副教授`, `出版/展览`, and `info@mist-arch.com`.
