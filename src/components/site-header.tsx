@@ -11,7 +11,8 @@ export function SiteHeader({ locale }: SiteHeaderProps) {
     <header className="site-header" aria-label="Mist Architect">
       <div className="main-nav">
         <Link className="brand-mark" href={withLocale(locale, "/")}>
-          Mist Architect/岚
+          <span>岚·建筑设计</span>
+          <span>Mist Architect</span>
         </Link>
         <MobileMenu locale={locale} />
       </div>

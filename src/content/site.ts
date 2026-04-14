@@ -33,6 +33,7 @@ export type JournalEntry = {
 export type Founder = {
   name: Localized;
   position: Localized;
+  positionLabel: Localized;
   credentials: Localized<string[]>;
 };
 
@@ -50,18 +51,10 @@ export type ProjectMedia = {
 
 export const navigation: Record<Locale, { label: string; href: string }[]> = {
   zh: [
-    { label: "项目", href: "/projects" },
-    { label: "岚", href: "/about" },
-    { label: "日志", href: "/journal" },
-    { label: "影像", href: "/#films" },
-    { label: "联系", href: "/#contact" }
+    { label: "岚", href: "/about" }
   ],
   en: [
-    { label: "Projects", href: "/projects" },
-    { label: "Mist", href: "/about" },
-    { label: "Journal", href: "/journal" },
-    { label: "Films", href: "/#films" },
-    { label: "Contact", href: "/#contact" }
+    { label: "Mist", href: "/about" }
   ]
 };
 
@@ -293,8 +286,12 @@ export const about = {
         en: "Li Bo"
       },
       position: {
-        zh: "左侧",
-        en: "Left"
+        zh: "←",
+        en: "←"
+      },
+      positionLabel: {
+        zh: "图片左侧",
+        en: "Left side of the image"
       },
       credentials: {
         zh: [
@@ -321,8 +318,12 @@ export const about = {
         en: "Cheng Bo"
       },
       position: {
-        zh: "右侧",
-        en: "Right"
+        zh: "→",
+        en: "→"
+      },
+      positionLabel: {
+        zh: "图片右侧",
+        en: "Right side of the image"
       },
       credentials: {
         zh: [

@@ -19,6 +19,25 @@ export function MobileMenu({ locale }: MobileMenuProps) {
   const closeLabel = locale === "zh" ? "关闭菜单" : "Close menu";
   const closeText = locale === "zh" ? "关闭" : "Close";
 
+  if (links.length <= 1) {
+    return (
+      <nav
+        aria-label={locale === "zh" ? "主导航" : "Primary navigation"}
+        className="inline-nav-links inline-nav-links-static"
+      >
+        {links.map((item) => (
+          <Link
+            key={item.href}
+            className="inline-nav-item"
+            href={withLocale(locale, item.href)}
+          >
+            {item.label}
+          </Link>
+        ))}
+      </nav>
+    );
+  }
+
   return (
     <div className="inline-menu-container">
       <AnimatePresence mode="wait">

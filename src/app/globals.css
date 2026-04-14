@@ -1,3 +1,59 @@
+@font-face {
+  font-display: swap;
+  font-family: "HarmonyOS Sans SC";
+  font-style: normal;
+  font-weight: 100;
+  src: url("/font/HarmonyOS_Sans_SC/HarmonyOS_Sans_SC_Thin.ttf") format("truetype");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "HarmonyOS Sans SC";
+  font-style: normal;
+  font-weight: 300;
+  src: url("/font/HarmonyOS_Sans_SC/HarmonyOS_Sans_SC_Light.ttf") format("truetype");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "HarmonyOS Sans SC";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/font/HarmonyOS_Sans_SC/HarmonyOS_Sans_SC_Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "HarmonyOS Sans SC";
+  font-style: normal;
+  font-weight: 500;
+  src: url("/font/HarmonyOS_Sans_SC/HarmonyOS_Sans_SC_Medium.ttf") format("truetype");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "HarmonyOS Sans SC";
+  font-style: normal;
+  font-weight: 700;
+  src: url("/font/HarmonyOS_Sans_SC/HarmonyOS_Sans_SC_Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "HarmonyOS Sans SC";
+  font-style: normal;
+  font-weight: 900;
+  src: url("/font/HarmonyOS_Sans_SC/HarmonyOS_Sans_SC_Black.ttf") format("truetype");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "HarmonyOS Sans Condensed";
+  font-style: normal;
+  font-weight: 400;
+  src: url("/font/HarmonyOS_Sans_Condensed/HarmonyOS_Sans_Condensed_Regular.ttf") format("truetype");
+}
+
 :root {
   color-scheme: light;
   --ink: #111111;
@@ -12,9 +68,10 @@
   --max: 1480px;
   --gutter: 40px;
   --section-y: 128px;
-  --sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue",
-    Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
-  --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  --sans: "HarmonyOS Sans SC", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --mono: "HarmonyOS Sans Condensed", "HarmonyOS Sans SC", -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -101,12 +158,21 @@ button {
   z-index: 1000;
 }
 
+.intro-splash-logo-frame {
+  aspect-ratio: 5 / 2;
+  display: block;
+  max-width: min(68vw, 460px);
+  overflow: hidden;
+  width: 100%;
+}
+
 .intro-splash-logo {
   filter: var(--splash-logo-filter);
   height: auto;
-  max-width: min(62vw, 420px);
+  max-width: none;
+  transform: translate(-34.4%, -70%);
   transition: filter 450ms ease, opacity 450ms ease;
-  width: 100%;
+  width: 320%;
 }
 
 .site-header {
@@ -149,9 +215,19 @@ button {
 }
 
 .brand-mark {
-  font-size: 36px;
+  display: grid;
+  font-size: 13px;
   font-weight: 400;
-  line-height: 1;
+  gap: 5px;
+  line-height: 1.12;
+}
+
+.brand-mark span:first-child {
+  font-size: 20px;
+}
+
+.brand-mark span:last-child {
+  font-size: 13px;
 }
 
 .inline-menu-container {
@@ -182,6 +258,10 @@ button {
   align-items: center;
   display: flex;
   gap: 24px;
+}
+
+.inline-nav-links-static {
+  mix-blend-mode: difference;
 }
 
 .sr-only {
@@ -806,10 +886,6 @@ button {
     min-height: 72px;
   }
 
-  .brand-mark {
-    font-size: 30px;
-  }
-
   .inline-nav-links {
     gap: 16px;
   }
@@ -875,8 +951,15 @@ button {
   }
 
   .brand-mark {
-    font-size: 25px;
-    max-width: 160px;
+    max-width: 180px;
+  }
+
+  .brand-mark span:first-child {
+    font-size: 18px;
+  }
+
+  .brand-mark span:last-child {
+    font-size: 12px;
   }
 
   .inline-nav-links {
@@ -890,8 +973,8 @@ button {
     font-size: 12px;
   }
 
-  .intro-splash-logo {
-    max-width: min(72vw, 300px);
+  .intro-splash-logo-frame {
+    max-width: min(74vw, 320px);
   }
 
   .practice-panel h2,

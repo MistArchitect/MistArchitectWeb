@@ -21,7 +21,7 @@ function shouldPlaySplash() {
   }
 }
 
-export function IntroSplash({ logoSrc = "/images/brand/mist-logo.svg" }: IntroSplashProps) {
+export function IntroSplash({ logoSrc = "/images/LOGO/logo.png" }: IntroSplashProps) {
   const [shouldShow, setShouldShow] = useState(shouldPlaySplash);
   const [isVisible, setIsVisible] = useState(shouldPlaySplash);
   const reduceMotion = useReducedMotion();
@@ -56,10 +56,8 @@ export function IntroSplash({ logoSrc = "/images/brand/mist-logo.svg" }: IntroSp
           exit={reduceMotion ? { opacity: 0 } : { opacity: 0 }}
           transition={{ duration: reduceMotion ? 0.2 : 0.95, ease: [0.65, 0, 0.35, 1] }}
         >
-          <motion.img
-            src={logoSrc}
-            alt=""
-            className="intro-splash-logo"
+          <motion.div
+            className="intro-splash-logo-frame"
             initial={reduceMotion ? false : { opacity: 0, y: 10 }}
             animate={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
             exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -8 }}
@@ -67,7 +65,13 @@ export function IntroSplash({ logoSrc = "/images/brand/mist-logo.svg" }: IntroSp
               duration: reduceMotion ? 0.2 : 0.9,
               ease: [0.22, 1, 0.36, 1]
             }}
-          />
+          >
+            <motion.img
+              src={logoSrc}
+              alt=""
+              className="intro-splash-logo"
+            />
+          </motion.div>
         </motion.div>
       ) : null}
     </AnimatePresence>

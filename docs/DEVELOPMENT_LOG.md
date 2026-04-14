@@ -352,3 +352,32 @@ Environment limitation:
 - `npm run lint`: passed after loading the local NVM Node 24.14.1 environment.
 - `npm run build`: passed and generated 20 static pages.
 - Local smoke checks returned 200 for `/zh/about` and `/images/about/founders.jpeg`; the `/zh/about` HTML includes `左侧`, `右侧`, `华南理工大学讲席副教授`, `出版/展览`, and `info@mist-arch.com`.
+
+## 2026-04-14 / Logo, Font, and Navigation Pass
+
+### Goals
+
+- Replace the temporary intro SVG logo with the new PNG logo asset in `public/images/LOGO`.
+- Switch the global typography to the HarmonyOS Sans font family from `public/font`.
+- Temporarily simplify the primary navigation to a single `岚` entry.
+- Update the header brand lockup to two lines: `岚·建筑设计` and `Mist Architect`.
+- Change founder side labels from words to text arrows while preserving accessible left/right labels.
+
+### Files Added or Changed
+
+- `public/images/LOGO/logo.png`: provides the new intro splash logo source.
+- `public/font/*`: stores the HarmonyOS Sans font files used by the global typography system.
+- `src/components/intro-splash.tsx`: switches the splash image path to the new PNG logo and wraps it for controlled cropping.
+- `src/components/site-header.tsx`: changes the header brand text to the requested two-line lockup.
+- `src/components/mobile-menu.tsx`: renders a single static navigation link when only one nav item is active.
+- `src/content/site.ts`: hides the other primary nav items and changes founder position markers to text arrows.
+- `src/app/[locale]/about/page.tsx`: keeps accessible side labels for the visual founder arrows.
+- `src/app/globals.css`: adds local font faces, applies HarmonyOS Sans globally, styles the cropped PNG splash logo, and adjusts the header brand lockup.
+
+### Verification
+
+- `git diff --check`: passed.
+- `npm run typecheck`: passed after loading the local NVM Node 24.14.1 environment.
+- `npm run lint`: passed after loading the local NVM Node 24.14.1 environment.
+- `npm run build`: passed and generated 20 static pages.
+- Local smoke checks returned 200 for `/zh`, `/zh/about`, `/images/LOGO/logo.png`, and `/font/HarmonyOS_Sans_SC/HarmonyOS_Sans_SC_Regular.ttf`; the `/zh` HTML includes the two-line header brand, new logo path, and a single `岚` nav link, while `/zh/about` includes the founder text arrows with accessible side labels.

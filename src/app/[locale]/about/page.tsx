@@ -123,7 +123,9 @@ export default async function AboutPage({ params }: AboutPageProps) {
               <div className="founder-list">
                 {about.founders.map((founder, index) => (
                   <article className="founder-entry" key={`${founder.name[locale]}-${index}`}>
-                    <p className="founder-position">{founder.position[locale]}</p>
+                    <p className="founder-position" aria-label={founder.positionLabel[locale]}>
+                      {founder.position[locale]}
+                    </p>
                     <h3>{founder.name[locale]}</h3>
                     <ul>
                       {founder.credentials[locale].map((credential) => (
