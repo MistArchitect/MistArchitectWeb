@@ -30,6 +30,17 @@ export type JournalEntry = {
   imageAlt: Localized;
 };
 
+export type Founder = {
+  name: Localized;
+  credentials: Localized<string[]>;
+};
+
+export type AboutSection = {
+  label: Localized;
+  title: Localized;
+  body: Localized<string[]>;
+};
+
 export type ProjectMedia = {
   src: string;
   alt: Localized;
@@ -39,14 +50,14 @@ export type ProjectMedia = {
 export const navigation: Record<Locale, { label: string; href: string }[]> = {
   zh: [
     { label: "项目", href: "/projects" },
-    { label: "实践", href: "/#practice" },
+    { label: "岚", href: "/about" },
     { label: "日志", href: "/journal" },
     { label: "影像", href: "/#films" },
     { label: "联系", href: "/#contact" }
   ],
   en: [
     { label: "Projects", href: "/projects" },
-    { label: "Practice", href: "/#practice" },
+    { label: "Mist", href: "/about" },
     { label: "Journal", href: "/journal" },
     { label: "Films", href: "/#films" },
     { label: "Contact", href: "/#contact" }
@@ -135,6 +146,179 @@ export const home = {
     },
     email: "studio@mistarchitect.com"
   }
+};
+
+export const about = {
+  heroImage: "/images/about/office.jpeg",
+  foundersImage: "/images/about/founders.jpeg",
+  nav: [
+    {
+      id: "intro",
+      label: {
+        zh: "简介",
+        en: "Intro"
+      }
+    },
+    {
+      id: "founders",
+      label: {
+        zh: "创始人",
+        en: "Founders"
+      }
+    },
+    {
+      id: "media",
+      label: {
+        zh: "媒体",
+        en: "Media"
+      }
+    },
+    {
+      id: "contact",
+      label: {
+        zh: "联系方式",
+        en: "Contact"
+      }
+    }
+  ],
+  hero: {
+    kicker: {
+      zh: "Mist Architect / 岚",
+      en: "Mist Architect / Lan"
+    },
+    title: {
+      zh: "岚",
+      en: "Mist"
+    },
+    deck: {
+      zh: "建筑在雾、光、结构与日常之间成形。",
+      en: "Architecture formed between mist, light, structure, and daily life."
+    }
+  },
+  intro: {
+    label: {
+      zh: "简介",
+      en: "Intro"
+    },
+    title: {
+      zh: "以清晰的空间秩序回应复杂现场。",
+      en: "A clear spatial order for complex sites."
+    },
+    body: {
+      zh: [
+        "Mist Architect 关注建筑、室内、城市更新与研究型实践，以克制的材料、精确的比例和可被时间改变的光线组织空间。",
+        "事务所把项目看作长期档案：从场地观察、模型推敲、材料实验到建成后的日常使用，所有过程都会反过来塑造下一次设计判断。",
+        "“岚”既指雾气和山间的空气，也指建筑与环境之间不完全固定的边界。"
+      ],
+      en: [
+        "Mist Architect works across architecture, interiors, adaptive reuse, and research-led practice, shaping space through restrained materials, measured proportion, and light that changes with time.",
+        "The studio treats every project as a living archive: site observation, model testing, material experiments, and daily occupation all become part of the next design decision.",
+        "Lan refers to mist and mountain air, and to the unsettled boundary between architecture and its surroundings."
+      ]
+    }
+  },
+  media: {
+    label: {
+      zh: "媒体",
+      en: "Media"
+    },
+    title: {
+      zh: "项目、研究和公开讨论。",
+      en: "Projects, research, and public conversations."
+    },
+    body: {
+      zh: [
+        "媒体页面将用于整理报道、访谈、讲座与展览信息。",
+        "当前原型保留内容结构，后续可由 CMS 持续更新。"
+      ],
+      en: [
+        "The media section will collect press coverage, interviews, lectures, and exhibition notes.",
+        "This prototype keeps the content structure ready for ongoing CMS updates."
+      ]
+    }
+  },
+  contact: {
+    label: {
+      zh: "联系方式",
+      en: "Contact"
+    },
+    title: {
+      zh: "新的场地、改造计划或研究合作。",
+      en: "New sites, adaptive reuse plans, and research collaborations."
+    },
+    body: {
+      zh: ["studio@mistarchitect.com", "上海 / 深圳"],
+      en: ["studio@mistarchitect.com", "Shanghai / Shenzhen"]
+    }
+  },
+  founders: [
+    {
+      name: {
+        zh: "李博",
+        en: "Li Bo"
+      },
+      credentials: {
+        zh: [
+          "瑞士 SIA 注册建筑师",
+          "苏黎世联邦理工大学",
+          "ETH Zürich 学士及硕士",
+          "「建筑工房」发起人",
+          "哈工大（深圳）设计导师"
+        ],
+        en: [
+          "Swiss SIA Registered Architect",
+          "ETH Zürich",
+          "Bachelor and Master of Science",
+          "Initiator of Architecture Workshop",
+          "Design Tutor, Harbin Institute of Technology (Shenzhen)"
+        ]
+      }
+    },
+    {
+      name: {
+        zh: "程博",
+        en: "Cheng Bo"
+      },
+      credentials: {
+        zh: [
+          "瑞士 SIA 注册建筑师",
+          "苏黎世联邦理工大学",
+          "ETH Zürich 硕士",
+          "「建筑工房」发起人",
+          "哈工大（深圳）设计导师"
+        ],
+        en: [
+          "Swiss SIA Registered Architect",
+          "ETH Zürich",
+          "Master of Science",
+          "Initiator of Architecture Workshop",
+          "Design Tutor, Harbin Institute of Technology (Shenzhen)"
+        ]
+      }
+    },
+    {
+      name: {
+        zh: "程博",
+        en: "Cheng Bo"
+      },
+      credentials: {
+        zh: [
+          "瑞士 SIA 注册建筑师",
+          "同济大学",
+          "ETH Zürich 学士及硕士",
+          "「建筑工房」发起人",
+          "哈工大（深圳）设计导师"
+        ],
+        en: [
+          "Swiss SIA Registered Architect",
+          "Tongji University",
+          "ETH Zürich Bachelor and Master of Science",
+          "Initiator of Architecture Workshop",
+          "Design Tutor, Harbin Institute of Technology (Shenzhen)"
+        ]
+      }
+    }
+  ] satisfies Founder[]
 };
 
 export const projects: Project[] = [

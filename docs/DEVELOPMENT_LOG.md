@@ -238,3 +238,27 @@ Environment limitation:
 - `npm run lint`: passed.
 - `npm run build`: passed and generated 18 static pages.
 - HTTP smoke checks found five homepage project links and returned 200 for `/zh/projects/pine-shadow-library` and `/zh/projects/salt-field-guesthouse`.
+
+## 2026-04-14 / About Page and Mist Navigation
+
+### Goals
+
+- Replace the previous practice navigation item with a dedicated `岚` company page entry.
+- Build a company introduction page with the office image as a full-screen visual anchor.
+- Add a sticky second-level navigation for intro, founders, media, and contact sections.
+- Present founder information with the founders image on the left and biography text on the right.
+
+### Files Added or Changed
+
+- `src/content/site.ts`: updates primary navigation and adds localized about-page seed content.
+- `src/app/[locale]/about/page.tsx`: adds the bilingual about route with hero, second-level navigation, scrolling text sections, founders, media, and contact.
+- `src/app/globals.css`: adds the full-bleed about hero, sticky subnav, scroll-reveal layout, and responsive founder section.
+- `public/images/about/*`: stores the office and founders images under the lowercase public asset path.
+
+### Verification
+
+- `git diff --check`: passed.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `npm run build`: passed and generated 20 static pages, including `/zh/about` and `/en/about`.
+- HTTP smoke checks returned 200 for `/zh/about` and `/en/about`; the `/zh/about` HTML includes the office image, founders image, and requested section labels.

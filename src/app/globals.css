@@ -494,6 +494,180 @@ button {
   text-transform: uppercase;
 }
 
+.about-page {
+  background: var(--paper);
+}
+
+.about-hero {
+  background: var(--ink);
+  color: var(--paper);
+  min-height: 100svh;
+  overflow: hidden;
+  position: relative;
+}
+
+.about-hero::after {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.2),
+    rgba(0, 0, 0, 0.18) 46%,
+    rgba(0, 0, 0, 0.54)
+  );
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.about-hero img {
+  object-fit: cover;
+}
+
+.about-hero-copy {
+  bottom: 64px;
+  left: 0;
+  margin: 0 auto;
+  max-width: var(--max);
+  padding: 0 var(--gutter);
+  position: absolute;
+  right: 0;
+  z-index: 1;
+}
+
+.about-hero-copy h1 {
+  font-size: 96px;
+  font-weight: 400;
+  line-height: 0.95;
+  margin: 0;
+}
+
+.about-hero-copy p:not(.kicker) {
+  font-size: 16px;
+  line-height: 1.8;
+  margin: 28px 0 0;
+  max-width: 520px;
+}
+
+.about-subnav {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.92);
+  border-bottom: 1px solid var(--hairline);
+  border-top: 1px solid var(--hairline);
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+  min-height: 58px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.about-subnav a {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1;
+  padding: 20px 0;
+  text-transform: uppercase;
+  transition: color 300ms ease, opacity 300ms ease;
+}
+
+.about-subnav a:hover {
+  color: var(--ink);
+  opacity: 1;
+}
+
+.about-scroll-story,
+.about-founders {
+  margin: 0 auto;
+  max-width: var(--max);
+  padding: var(--section-y) var(--gutter);
+}
+
+.about-scroll-story {
+  display: grid;
+  gap: 80px;
+  grid-template-columns: minmax(160px, 0.36fr) minmax(0, 0.64fr);
+  min-height: 88svh;
+}
+
+.about-story-index {
+  align-self: start;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+  position: sticky;
+  text-transform: uppercase;
+  top: 104px;
+}
+
+.about-story-copy {
+  max-width: 760px;
+}
+
+.about-story-copy h2,
+.founder-entry h2 {
+  color: var(--ink);
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 1.35;
+  margin: 0;
+}
+
+.about-story-copy p:not(.kicker) {
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 2;
+  margin: 28px 0 0;
+}
+
+.about-founders {
+  border-top: 1px solid var(--hairline);
+  display: grid;
+  gap: 72px;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+}
+
+.about-founders-image {
+  align-self: start;
+  position: sticky;
+  top: 104px;
+}
+
+.about-founders-image img {
+  aspect-ratio: 4 / 5;
+  height: auto;
+  object-fit: cover;
+  width: 100%;
+}
+
+.about-founders-copy {
+  padding-top: 8px;
+}
+
+.founder-list {
+  display: grid;
+  gap: 56px;
+}
+
+.founder-entry {
+  border-top: 1px solid var(--hairline);
+  padding-top: 26px;
+}
+
+.founder-entry ul {
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 2;
+  list-style: none;
+  margin: 22px 0 0;
+  padding: 0;
+}
+
+.about-contact-story {
+  border-top: 1px solid var(--hairline);
+  min-height: 70svh;
+}
+
 @media (max-width: 980px) {
   :root {
     --gutter: 24px;
@@ -517,7 +691,9 @@ button {
   .practice-panel,
   .two-column-band,
   .project-data-grid,
-  .project-gallery {
+  .project-gallery,
+  .about-scroll-story,
+  .about-founders {
     grid-template-columns: 1fr;
   }
 
@@ -529,6 +705,16 @@ button {
   .journal-list,
   .project-gallery {
     gap: 56px;
+  }
+
+  .about-story-index,
+  .about-founders-image {
+    position: static;
+  }
+
+  .about-scroll-story,
+  .about-founders {
+    gap: 48px;
   }
 }
 
@@ -566,12 +752,44 @@ button {
   .contact-band h2,
   .archive-heading h1,
   .project-title-block h1,
-  .studio-setup h1 {
+  .studio-setup h1,
+  .about-story-copy h2,
+  .founder-entry h2 {
     font-size: 24px;
   }
 
   .project-title-block {
     padding-top: 48px;
+  }
+
+  .about-hero-copy {
+    bottom: 40px;
+  }
+
+  .about-hero-copy h1 {
+    font-size: 64px;
+  }
+
+  .about-hero-copy p:not(.kicker) {
+    font-size: 14px;
+  }
+
+  .about-subnav {
+    gap: 18px;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding: 0 var(--gutter);
+  }
+
+  .about-subnav a {
+    flex: 0 0 auto;
+    font-size: 12px;
+  }
+
+  .about-scroll-story,
+  .about-founders {
+    padding-bottom: 96px;
+    padding-top: 96px;
   }
 }
 
