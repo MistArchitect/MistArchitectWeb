@@ -70,7 +70,7 @@ export default async function AboutPage({ params }: AboutPageProps) {
               priority={index === 0}
               loading={index === 0 ? undefined : "eager"}
               sizes="100vw"
-              style={{ animationDelay: `${index * 5}s` }}
+              style={{ animationDelay: `${index * 6}s` }}
             />
           ))}
         </div>

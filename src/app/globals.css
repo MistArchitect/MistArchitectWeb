@@ -659,20 +659,24 @@ button {
 }
 
 .about-hero-slide {
-  animation: about-hero-fade 15s ease-in-out infinite;
+  animation: about-hero-fade 18s ease-in-out infinite;
   opacity: 0;
   object-fit: cover;
   transform: scale(1.03);
+  will-change: opacity;
 }
 
 @keyframes about-hero-fade {
-  0%,
-  6%,
-  34% {
+  0% {
+    opacity: 0;
+  }
+
+  5%,
+  31% {
     opacity: 1;
   }
 
-  40%,
+  38%,
   100% {
     opacity: 0;
   }

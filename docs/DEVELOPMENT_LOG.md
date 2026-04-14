@@ -446,3 +446,21 @@ Environment limitation:
 - `git diff --check`: passed.
 - `npm run typecheck`: passed after loading the local NVM Node 24.14.1 environment.
 - Local HTML smoke check confirmed `/zh/about` nav text renders as `关于`.
+
+## 2026-04-15 / About Carousel Crossfade
+
+### Goals
+
+- Make the about-page background carousel transition with a visible crossfade instead of a hard image swap.
+
+### Files Added or Changed
+
+- `src/app/[locale]/about/page.tsx`: spaces the three carousel slides six seconds apart.
+- `src/app/globals.css`: extends the carousel loop to eighteen seconds and adds fade-in, hold, and fade-out keyframes with overlapping opacity.
+
+### Verification
+
+- `git diff --check`: passed.
+- `npm run lint`: passed after loading the local NVM Node 24.14.1 environment.
+- `npm run build`: passed and generated 20 static pages.
+- Vercel preview deployment: pending after push.
