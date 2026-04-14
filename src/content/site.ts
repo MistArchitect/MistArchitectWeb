@@ -51,7 +51,7 @@ export type ProjectMedia = {
 
 export const navigation: Record<Locale, { label: string; href: string }[]> = {
   zh: [
-    { label: "岚", href: "/about" }
+    { label: "关于", href: "/about" }
   ],
   en: [
     { label: "Mist", href: "/about" }
@@ -143,7 +143,12 @@ export const home = {
 };
 
 export const about = {
-  heroImage: "/images/about/office.jpeg",
+  heroImage: "/images/about/about-1.jpeg",
+  heroImages: [
+    "/images/about/about-1.jpeg",
+    "/images/about/about-2.jpeg",
+    "/images/about/about-3.jpeg"
+  ],
   foundersImage: "/images/about/founders.jpeg",
   nav: [
     {
@@ -185,8 +190,8 @@ export const about = {
       en: "Mist"
     },
     deck: {
-      zh: "建筑在雾、光、结构与日常之间成形。",
-      en: "Architecture formed between mist, light, structure, and daily life."
+      zh: "岚·建筑设计",
+      en: "Mist Architect"
     }
   },
   intro: {
@@ -275,8 +280,8 @@ export const about = {
       en: "New sites, adaptive reuse plans, and research collaborations."
     },
     body: {
-      zh: ["info@mist-arch.com", "上海 / 深圳"],
-      en: ["info@mist-arch.com", "Shanghai / Shenzhen"]
+      zh: ["info@mist-arch.com", "深圳"],
+      en: ["info@mist-arch.com", "Shenzhen"]
     }
   },
   founders: [

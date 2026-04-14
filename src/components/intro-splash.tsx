@@ -9,25 +9,21 @@ type IntroSplashProps = {
   logoSrc?: string;
 };
 
-function shouldPlaySplash() {
-  if (typeof window === "undefined") {
-    return true;
-  }
-
-  try {
-    return sessionStorage.getItem(SPLASH_STORAGE_KEY) !== "true";
-  } catch {
-    return true;
-  }
-}
-
 export function IntroSplash({ logoSrc = "/images/LOGO/logo.png" }: IntroSplashProps) {
-  const [shouldShow, setShouldShow] = useState(shouldPlaySplash);
-  const [isVisible, setIsVisible] = useState(shouldPlaySplash);
+  const [shouldShow, setShouldShow] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const reduceMotion = useReducedMotion();
 
   useEffect(() => {
-    if (!shouldShow) {
+    let shouldPlay = true;
+
+    try {
+      shouldPlay = sessionStorage.getItem(SPLASH_STORAGE_KEY) !== "true";
+    } catch {
+      shouldPlay = true;
+    }
+
+    if (!shouldPlay) {
       return undefined;
     }
 
@@ -37,13 +33,23 @@ export function IntroSplash({ logoSrc = "/images/LOGO/logo.png" }: IntroSplashPr
       // Storage can be unavailable in private browsing; the animation still plays safely.
     }
 
-    const timer = window.setTimeout(
-      () => setIsVisible(false),
-      reduceMotion ? 450 : 1650
-    );
+    let timer: number | undefined;
+    const frame = window.requestAnimationFrame(() => {
+      setShouldShow(true);
+      setIsVisible(true);
+      timer = window.setTimeout(
+        () => setIsVisible(false),
+        reduceMotion ? 450 : 1650
+      );
+    });
 
-    return () => window.clearTimeout(timer);
-  }, [reduceMotion, shouldShow]);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      if (timer) {
+        window.clearTimeout(timer);
+      }
+    };
+  }, [reduceMotion]);
 
   return (
     <AnimatePresence onExitComplete={() => setShouldShow(false)}>

@@ -58,17 +58,21 @@ export default async function AboutPage({ params }: AboutPageProps) {
   return (
     <main className="about-page about-office-page">
       <section className="about-hero" aria-labelledby="about-title">
-        <Image
-          src={about.heroImage}
-          alt={locale === "zh" ? "Mist Architect 办公空间" : "Mist Architect office"}
-          fill
-          priority
-          sizes="100vw"
-        />
-        <div className="about-hero-copy">
-          <p className="kicker">{about.hero.kicker[locale]}</p>
-          <h1 id="about-title">{about.hero.title[locale]}</h1>
-          <p>{about.hero.deck[locale]}</p>
+        <h1 id="about-title" className="sr-only">{about.hero.title[locale]}</h1>
+        <div className="about-hero-carousel" aria-hidden="true">
+          {about.heroImages.map((image, index) => (
+            <Image
+              key={image}
+              src={image}
+              alt=""
+              className="about-hero-slide"
+              fill
+              priority={index === 0}
+              loading={index === 0 ? undefined : "eager"}
+              sizes="100vw"
+              style={{ animationDelay: `${index * 5}s` }}
+            />
+          ))}
         </div>
       </section>
 
@@ -142,17 +146,13 @@ export default async function AboutPage({ params }: AboutPageProps) {
             <section id="media">
               <p className="kicker">Mist Architect</p>
               <h2>{about.media.label[locale]}</h2>
-              <p className="about-lead">{about.media.title[locale]}</p>
               <div className="about-media-groups">
                 {mediaGroups.map((group) => (
                   <article className="about-media-group" key={group.label}>
                     <h3>{group.label}</h3>
                     <div className="about-archive-list">
                       {group.items.map((paragraph, index) => (
-                        <p key={paragraph}>
-                          <span>{String(index + 1).padStart(2, "0")}</span>
-                          {paragraph}
-                        </p>
+                        <p key={`${paragraph}-${index}`}>{paragraph}</p>
                       ))}
                     </div>
                   </article>

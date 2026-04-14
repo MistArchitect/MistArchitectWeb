@@ -381,3 +381,68 @@ Environment limitation:
 - `npm run lint`: passed after loading the local NVM Node 24.14.1 environment.
 - `npm run build`: passed and generated 20 static pages.
 - Local smoke checks returned 200 for `/zh`, `/zh/about`, `/images/LOGO/logo.png`, and `/font/HarmonyOS_Sans_SC/HarmonyOS_Sans_SC_Regular.ttf`; the `/zh` HTML includes the two-line header brand, new logo path, and a single `岚` nav link, while `/zh/about` includes the founder text arrows with accessible side labels.
+
+## 2026-04-15 / About Hero Carousel and Archive Cleanup
+
+### Goals
+
+- Replace the static about-page office image and overlaid hero copy with a full-bleed background carousel using `about-1`, `about-2`, and `about-3`.
+- Remove sequence numbers from the media, awards, publications, and exhibitions lists so each line reads as a standalone item.
+- Keep only the Shenzhen contact location.
+- Widen the English line in the header brand lockup and increase the active navigation button size.
+- Remove the media section lead line so only the two media group headings remain.
+
+### Files Added or Changed
+
+- `public/images/about/about-1.jpeg`, `public/images/about/about-2.jpeg`, and `public/images/about/about-3.jpeg`: provide the about-page carousel photography.
+- `src/content/site.ts`: points the about hero to the new image set and reduces contact location data to Shenzhen.
+- `src/app/[locale]/about/page.tsx`: renders the about hero as a three-image carousel, removes archive numbering markup, and hides the media lead line.
+- `src/app/globals.css`: adds the carousel fade animation, removes archive number columns, adjusts header brand alignment, and increases nav type size.
+
+### Verification
+
+- `git diff --check`: passed.
+- `npm run typecheck`: passed after loading the local NVM Node 24.14.1 environment.
+- `npm run lint`: passed after loading the local NVM Node 24.14.1 environment.
+- `npm run build`: passed and generated 20 static pages.
+- Local smoke checks returned 200 for `/zh/about`, `/images/about/about-1.jpeg`, `/images/about/about-2.jpeg`, and `/images/about/about-3.jpeg`; the `/zh/about` HTML includes the three new image paths and Shenzhen contact line, with the old hero sentence and archive number spans absent.
+
+## 2026-04-15 / Dark Splash Logo Visibility Fix
+
+### Goals
+
+- Fix the intro splash logo disappearing in dark mode.
+- Keep using the supplied transparent PNG logo while correcting the CSS crop position.
+- Prevent refresh black screens caused by server/client splash rendering mismatch after `sessionStorage` marks the intro as seen.
+
+### Files Added or Changed
+
+- `src/app/globals.css`: adjusts the splash logo vertical translation so the actual logo artwork sits inside the visible crop frame in both light and dark modes.
+- `src/components/intro-splash.tsx`: moves the `sessionStorage` gate fully client-side and schedules the splash state update after mount, so refreshes can show the page directly without leaving the splash overlay behind.
+
+### Verification
+
+- `git diff --check`: passed.
+- `npm run typecheck`: passed after loading the local NVM Node 24.14.1 environment.
+- `npm run lint`: passed after loading the local NVM Node 24.14.1 environment.
+- `npm run build`: passed and generated 20 static pages.
+- Playwright dark-mode screenshot for `/zh` confirmed the logo renders visibly on the dark splash background.
+- Playwright dark-mode screenshot after the splash window confirmed the homepage hero renders instead of a black screen.
+
+## 2026-04-15 / Header Label Adjustment
+
+### Goals
+
+- Widen the English `Mist Architect` line so it aligns more closely with the Chinese `岚·建筑设计` line.
+- Rename the active right navigation entry from `岚` to `关于`.
+
+### Files Added or Changed
+
+- `src/app/globals.css`: increases the brand lockup width and horizontal scale of the English line.
+- `src/content/site.ts`: updates the Chinese primary navigation label to `关于`.
+
+### Verification
+
+- `git diff --check`: passed.
+- `npm run typecheck`: passed after loading the local NVM Node 24.14.1 environment.
+- Local HTML smoke check confirmed `/zh/about` nav text renders as `关于`.
