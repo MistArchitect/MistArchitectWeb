@@ -42,7 +42,7 @@ export default async function AboutPage({ params }: AboutPageProps) {
   }
 
   const locale = rawLocale as Locale;
-  const introHeading = locale === "zh" ? "事务所简介" : "Office Profile";
+  const introHeading = locale === "zh" ? "岚" : "Mist";
   const foundersHeading = locale === "zh" ? "创始人" : "Founders";
   const mediaGroups = [
     {
@@ -78,9 +78,6 @@ export default async function AboutPage({ params }: AboutPageProps) {
 
       <div className="about-office-shell">
         <aside className="about-office-index">
-          <a className="about-office-name" href="#intro">
-            Mist Architect
-          </a>
           <nav
             className="about-subnav"
             aria-label={locale === "zh" ? "岚页面导航" : "About page navigation"}
@@ -96,7 +93,6 @@ export default async function AboutPage({ params }: AboutPageProps) {
         <div className="about-office-content">
           <MotionReveal className="about-office-section about-intro-section" delay={0.05}>
             <section id="intro">
-              <p className="kicker">Mist Architect</p>
               <h2>{introHeading}</h2>
               <div className="about-long-copy">
                 <p className="about-lead">{about.intro.title[locale]}</p>
@@ -113,8 +109,8 @@ export default async function AboutPage({ params }: AboutPageProps) {
                 src={about.foundersImage}
                 alt={
                   locale === "zh"
-                    ? "Mist Architect 创始人合影，左侧为李博，右侧为程博"
-                    : "Mist Architect founders, Li Bo on the left and Cheng Bo on the right"
+                    ? "创始人合影，左侧为李博，右侧为程博"
+                    : "Founders, Li Bo on the left and Cheng Bo on the right"
                 }
                 width={1400}
                 height={1800}
@@ -122,7 +118,6 @@ export default async function AboutPage({ params }: AboutPageProps) {
               />
             </MotionReveal>
             <MotionReveal className="about-founders-copy" delay={0.12}>
-              <p className="kicker">Mist Architect</p>
               <h2>{foundersHeading}</h2>
               <div className="founder-list">
                 {about.founders.map((founder, index) => (
@@ -144,7 +139,6 @@ export default async function AboutPage({ params }: AboutPageProps) {
 
           <MotionReveal className="about-office-section about-archive-section" delay={0.05}>
             <section id="media">
-              <p className="kicker">Mist Architect</p>
               <h2>{about.media.label[locale]}</h2>
               <div className="about-media-groups">
                 {mediaGroups.map((group) => (
@@ -166,7 +160,6 @@ export default async function AboutPage({ params }: AboutPageProps) {
             delay={0.05}
           >
             <section id="contact">
-              <p className="kicker">Mist Architect</p>
               <h2>{about.contact.label[locale]}</h2>
               <p className="about-lead">{about.contact.title[locale]}</p>
               <div className="about-contact-lines">

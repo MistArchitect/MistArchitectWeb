@@ -17,6 +17,8 @@ export type Project = {
   heroImage: string;
   credit: string;
   gallery: ProjectMedia[];
+  facts?: ProjectFact[];
+  sections?: ProjectSection[];
   videoUrl?: string;
 };
 
@@ -49,12 +51,26 @@ export type ProjectMedia = {
   credit?: string;
 };
 
+export type ProjectFact = {
+  label: Localized;
+  value: Localized;
+};
+
+export type ProjectSection = {
+  id: string;
+  navLabel: Localized;
+  heading: Localized;
+  body: Localized<string[]>;
+  media: ProjectMedia[];
+  facts?: ProjectFact[];
+};
+
 export const navigation: Record<Locale, { label: string; href: string }[]> = {
   zh: [
     { label: "关于", href: "/about" }
   ],
   en: [
-    { label: "Mist", href: "/about" }
+    { label: "About", href: "/about" }
   ]
 };
 
@@ -91,6 +107,48 @@ export const home = {
       "/images/home/home-08.jpeg",
       "/images/home/home-09.jpeg",
       "/images/home/home-10.jpeg"
+    ],
+    captions: [
+      {
+        zh: "深圳 · 梦工场剧场",
+        en: "Shenzhen · Dream Factory Theater"
+      },
+      {
+        zh: "苏州 · 原野学社",
+        en: "Suzhou · Field Academy"
+      },
+      {
+        zh: "惠州 · 五经魁废墟花园",
+        en: "Huizhou · Wujingkui Ruins Garden"
+      },
+      {
+        zh: "深圳 · 光之展亭",
+        en: "Shenzhen · Pavilion of Light"
+      },
+      {
+        zh: "深圳 · 光遇剧场",
+        en: "Shenzhen · Light Encounter Theater"
+      },
+      {
+        zh: "杭州 · 万象城 tea’stone",
+        en: "Hangzhou · MixC tea’stone"
+      },
+      {
+        zh: "深圳 · 拓竹科技首店",
+        en: "Shenzhen · Bambu Lab First Store"
+      },
+      {
+        zh: "北京 · 湿地旁的禅修馆",
+        en: "Beijing · Meditation Hall by the Wetland"
+      },
+      {
+        zh: "上海 · 若弦普拉提",
+        en: "Shanghai · Ruoxian Pilates"
+      },
+      {
+        zh: "龙游 · 石墟剧场",
+        en: "Longyou · Stone Ruins Theater"
+      }
     ]
   },
   indexLabel: {
@@ -154,8 +212,8 @@ export const about = {
     {
       id: "intro",
       label: {
-        zh: "简介",
-        en: "Intro"
+        zh: "岚",
+        en: "Mist"
       }
     },
     {
@@ -196,8 +254,8 @@ export const about = {
   },
   intro: {
     label: {
-      zh: "简介",
-      en: "Intro"
+      zh: "岚",
+      en: "Mist"
     },
     title: {
       zh: "程博和李博自瑞士归国后创立「岚」并专注于创造富有情感的壮阔体验、有力场的广义建筑。我们的工作重视建筑的品质、令人沉浸的空间氛围，以及与良好生活的连接。",
@@ -350,6 +408,41 @@ export const about = {
   ] satisfies Founder[]
 };
 
+const projectFactLabel = {
+  area: {
+    zh: "面积",
+    en: "Area"
+  },
+  client: {
+    zh: "委托",
+    en: "Client"
+  },
+  team: {
+    zh: "设计团队",
+    en: "Design Team"
+  }
+} satisfies Record<string, Localized>;
+
+function projectFacts(area: Localized, client: Localized): ProjectFact[] {
+  return [
+    {
+      label: projectFactLabel.area,
+      value: area
+    },
+    {
+      label: projectFactLabel.client,
+      value: client
+    },
+    {
+      label: projectFactLabel.team,
+      value: {
+        zh: "岚·建筑设计",
+        en: "Mist Architect"
+      }
+    }
+  ];
+}
+
 export const projects: Project[] = [
   {
     slug: "cloud-court-house",
@@ -394,6 +487,16 @@ export const projects: Project[] = [
       en: "Modern residence surrounded by trees"
     },
     credit: "Mist Architect Archive",
+    facts: projectFacts(
+      {
+        zh: "约 620 平方米",
+        en: "Approx. 620 sqm"
+      },
+      {
+        zh: "私人业主",
+        en: "Private Client"
+      }
+    ),
     gallery: [
       {
         src: "/images/home/home-06.jpeg",
@@ -457,6 +560,16 @@ export const projects: Project[] = [
       en: "Geometric facade against blue sky"
     },
     credit: "Mist Architect Archive",
+    facts: projectFacts(
+      {
+        zh: "约 4,800 平方米",
+        en: "Approx. 4,800 sqm"
+      },
+      {
+        zh: "城市文化机构",
+        en: "Civic Cultural Institution"
+      }
+    ),
     gallery: [
       {
         src: "/images/home/home-08.jpeg",
@@ -519,6 +632,16 @@ export const projects: Project[] = [
       en: "Bright modern office interior"
     },
     credit: "Mist Architect Archive",
+    facts: projectFacts(
+      {
+        zh: "约 960 平方米",
+        en: "Approx. 960 sqm"
+      },
+      {
+        zh: "创意办公团队",
+        en: "Creative Workplace Team"
+      }
+    ),
     gallery: [
       {
         src: "/images/home/home-10.jpeg",
@@ -581,6 +704,16 @@ export const projects: Project[] = [
       en: "Low building with tree shadows"
     },
     credit: "Mist Architect Archive",
+    facts: projectFacts(
+      {
+        zh: "约 2,400 平方米",
+        en: "Approx. 2,400 sqm"
+      },
+      {
+        zh: "社区公共机构",
+        en: "Community Public Institution"
+      }
+    ),
     gallery: [
       {
         src: "/images/home/home-02.jpeg",
@@ -643,6 +776,16 @@ export const projects: Project[] = [
       en: "Courtyard space formed by pale materials"
     },
     credit: "Mist Architect Archive",
+    facts: projectFacts(
+      {
+        zh: "约 780 平方米",
+        en: "Approx. 780 sqm"
+      },
+      {
+        zh: "在地旅宿品牌",
+        en: "Local Hospitality Brand"
+      }
+    ),
     gallery: [
       {
         src: "/images/home/home-03.jpg",

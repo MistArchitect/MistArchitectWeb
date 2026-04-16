@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 const SPLASH_STORAGE_KEY = "mist-intro-splash-seen";
+const SPLASH_VISIBLE_MS = 2228;
+const SPLASH_FADE_SECONDS = 1.28;
+const SPLASH_LOGO_SECONDS = 1.22;
 
 type IntroSplashProps = {
   logoSrc?: string;
@@ -39,7 +42,7 @@ export function IntroSplash({ logoSrc = "/images/LOGO/logo.png" }: IntroSplashPr
       setIsVisible(true);
       timer = window.setTimeout(
         () => setIsVisible(false),
-        reduceMotion ? 450 : 1650
+        reduceMotion ? 450 : SPLASH_VISIBLE_MS
       );
     });
 
@@ -60,7 +63,10 @@ export function IntroSplash({ logoSrc = "/images/LOGO/logo.png" }: IntroSplashPr
           initial={reduceMotion ? false : { opacity: 1 }}
           animate={{ opacity: 1 }}
           exit={reduceMotion ? { opacity: 0 } : { opacity: 0 }}
-          transition={{ duration: reduceMotion ? 0.2 : 0.95, ease: [0.65, 0, 0.35, 1] }}
+          transition={{
+            duration: reduceMotion ? 0.2 : SPLASH_FADE_SECONDS,
+            ease: [0.65, 0, 0.35, 1]
+          }}
         >
           <motion.div
             className="intro-splash-logo-frame"
@@ -68,7 +74,7 @@ export function IntroSplash({ logoSrc = "/images/LOGO/logo.png" }: IntroSplashPr
             animate={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
             exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -8 }}
             transition={{
-              duration: reduceMotion ? 0.2 : 0.9,
+              duration: reduceMotion ? 0.2 : SPLASH_LOGO_SECONDS,
               ease: [0.22, 1, 0.36, 1]
             }}
           >

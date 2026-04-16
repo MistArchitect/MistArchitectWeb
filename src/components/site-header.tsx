@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { type Locale, withLocale } from "@/lib/i18n";
+import { LanguageSwitch } from "./language-switch";
 import { MobileMenu } from "./mobile-menu";
 
 type SiteHeaderProps = {
@@ -7,14 +8,18 @@ type SiteHeaderProps = {
 };
 
 export function SiteHeader({ locale }: SiteHeaderProps) {
+  const brandLabel = locale === "zh" ? "岚·建筑设计" : "Mist Architect";
+
   return (
     <header className="site-header" aria-label="Mist Architect">
       <div className="main-nav">
         <Link className="brand-mark" href={withLocale(locale, "/")}>
-          <span>岚·建筑设计</span>
-          <span>Mist Architect</span>
+          {brandLabel}
         </Link>
-        <MobileMenu locale={locale} />
+        <div className="header-actions">
+          <LanguageSwitch locale={locale} />
+          <MobileMenu locale={locale} />
+        </div>
       </div>
     </header>
   );

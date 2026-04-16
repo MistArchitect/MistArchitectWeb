@@ -3,9 +3,8 @@ import { MotionReveal } from "@/components/motion-reveal";
 import { ProjectCard } from "@/components/project-card";
 import { SectionRibbon } from "@/components/section-ribbon";
 import { getHomeContent, getProjects } from "@/lib/content";
-import { isLocale, type Locale, withLocale } from "@/lib/i18n";
+import { isLocale, type Locale } from "@/lib/i18n";
 import { notFound } from "next/navigation";
-import Link from "next/link";
 
 export const revalidate = 60;
 
@@ -14,6 +13,15 @@ type HomePageProps = {
     locale: string;
   }>;
 };
+
+function splitFeaturedCaption(caption: string) {
+  const [location, ...titleParts] = caption.split(" · ");
+
+  return {
+    location,
+    title: titleParts.join(" · ") || caption
+  };
+}
 
 export default async function HomePage({ params }: HomePageProps) {
   const { locale: rawLocale } = await params;
@@ -29,24 +37,29 @@ export default async function HomePage({ params }: HomePageProps) {
 
   return (
     <main>
-      <Hero />
+      <Hero locale={locale} />
 
       <SectionRibbon>{home.indexLabel[locale]}</SectionRibbon>
       <MotionReveal className="section-shell">
         <div className="project-grid featured-grid recommended-grid">
-          {recommendedProjects.map((project, index) => (
-            <ProjectCard
-              key={project.slug}
-              locale={locale}
-              project={project}
-              priority={index === 0}
-            />
-          ))}
-        </div>
-        <div className="section-footer-link">
-          <Link className="button" href={withLocale(locale, "/projects")}>
-            {locale === "zh" ? "进入完整索引" : "Open Full Index"}
-          </Link>
+          {recommendedProjects.map((project, index) => {
+            const caption = home.hero.captions[index]?.[locale] || project.title[locale];
+            const { location, title } = splitFeaturedCaption(caption);
+            const eyebrow = location ? `${project.year} · ${location}` : project.year;
+
+            return (
+              <ProjectCard
+                key={project.slug}
+                locale={locale}
+                project={project}
+                priority={index === 0}
+                displayEyebrow={eyebrow}
+                displayTitle={title}
+                hideMeta
+                isDisabled
+              />
+            );
+          })}
         </div>
       </MotionReveal>
     </main>

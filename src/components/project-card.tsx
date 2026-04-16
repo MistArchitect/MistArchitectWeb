@@ -9,31 +9,61 @@ type ProjectCardProps = {
   locale: Locale;
   project: Project;
   priority?: boolean;
+  displayEyebrow?: string;
+  displayTitle?: string;
+  hideMeta?: boolean;
+  isDisabled?: boolean;
 };
 
-export function ProjectCard({ locale, project, priority = false }: ProjectCardProps) {
+export function ProjectCard({
+  locale,
+  project,
+  priority = false,
+  displayEyebrow,
+  displayTitle,
+  hideMeta = false,
+  isDisabled = false
+}: ProjectCardProps) {
+  const title = displayTitle || project.title[locale];
+  const image = (
+    <Image
+      src={project.image}
+      alt={project.imageAlt[locale]}
+      width={1200}
+      height={900}
+      priority={priority}
+      sizes="(min-width: 1100px) 33vw, (min-width: 720px) 50vw, 100vw"
+    />
+  );
+
   return (
     <article className="story-tile project-tile">
-      <Link href={withLocale(locale, `/projects/${project.slug}`)} aria-label={project.title[locale]}>
-        <Image
-          src={project.image}
-          alt={project.imageAlt[locale]}
-          width={1200}
-          height={900}
-          priority={priority}
-          sizes="(min-width: 1100px) 33vw, (min-width: 720px) 50vw, 100vw"
-        />
-      </Link>
+      {isDisabled ? (
+        <div className="project-card-media" aria-label={title}>
+          {image}
+        </div>
+      ) : (
+        <Link href={withLocale(locale, `/projects/${project.slug}`)} aria-label={title}>
+          {image}
+        </Link>
+      )}
       <div className="story-copy">
-        <p className="kicker">
-          {project.code} / {project.year} / {project.location[locale]}
-        </p>
-        <h2>
-          <Link href={withLocale(locale, `/projects/${project.slug}`)}>
-            {project.title[locale]}
-          </Link>
+        {hideMeta && displayEyebrow ? (
+          <p className="featured-project-eyebrow">{displayEyebrow}</p>
+        ) : null}
+        {hideMeta ? null : (
+          <p className="kicker">
+            {project.code} / {project.year} / {project.location[locale]}
+          </p>
+        )}
+        <h2 className={hideMeta ? "featured-project-title" : undefined}>
+          {isDisabled ? title : (
+            <Link href={withLocale(locale, `/projects/${project.slug}`)}>
+              {title}
+            </Link>
+          )}
         </h2>
-        <p>{project.dek[locale]}</p>
+        {hideMeta ? null : <p>{project.dek[locale]}</p>}
       </div>
     </article>
   );

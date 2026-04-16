@@ -464,3 +464,273 @@ Environment limitation:
 - `npm run lint`: passed after loading the local NVM Node 24.14.1 environment.
 - `npm run build`: passed and generated 20 static pages.
 - Vercel preview deployment: ready after pushing commit `d442ca1`.
+
+## 2026-04-15 / Mock Project Detail Prototype
+
+### Goals
+
+- Upgrade the five featured homepage project detail pages from a simple title/data/gallery layout into a sectioned architectural project narrative.
+- Use the MUJI HOTEL Shenzhen reference as an information-architecture guide: large page head, local anchor navigation, image-first sections, and definition-list metadata.
+- Keep the content as mock copy and reusable local data so formal project text and additional photography can replace it later.
+
+### Files Added or Changed
+
+- `src/content/site.ts`: adds optional project facts and section types, plus mock facts for all five featured projects.
+- `src/app/[locale]/projects/[slug]/page.tsx`: renders project facts, local section navigation, and sectioned image/text story blocks with fallback sections generated from existing project copy and gallery images.
+- `src/app/globals.css`: adds the project detail anchor navigation, image-first story layout, sticky desktop copy column, project facts, and responsive mobile stacking.
+
+### Verification
+
+- `git diff --check`: passed.
+- `npm run lint`: passed after loading the local NVM Node 24.14.1 environment.
+- `npm run build`: passed and generated 20 static pages, including the five featured project detail routes in both Chinese and English.
+- Local dev server smoke checks returned 200 for all five `/zh/projects/[slug]` routes.
+- HTML smoke checks confirmed `/zh/projects/cloud-court-house` includes the local section labels and mock project facts, and `/en/projects/salt-field-guesthouse` includes the English section labels and mock project facts.
+- `agent-browser` verification was skipped because the command is not installed in the local shell.
+
+## 2026-04-15 / Project Immersive Opening Scroll
+
+### Goals
+
+- Adjust the project detail opening to match the intended reference interaction: a full-screen project image carousel stays in place while the reader scrolls through two transparent text groups.
+- Use a downward arrow between the project identity group and the introduction group as the scroll cue.
+- Move from the transparent image-overlaid introduction into the white-background detail page only after the second text group.
+- Capture the rule in `DESIGN.md` so future project detail work does not revert to a simple static hero.
+
+### Files Added or Changed
+
+- `DESIGN.md`: documents the immersive opening sequence, transparent text rule, arrow cue, and white-background transition.
+- `src/app/[locale]/projects/[slug]/page.tsx`: replaces the static project hero with an immersive two-panel scroll opening and CSS-driven project image carousel.
+- `src/app/globals.css`: adds the sticky full-screen image carousel, dark image overlay, project title lockup, transparent introduction text, arrow cue, and reduced-motion fallback.
+
+### Verification
+
+- `git diff --check`: passed.
+- `npm run lint`: passed after loading the local NVM Node 24.14.1 environment.
+- `npm run build`: passed and generated 20 static pages.
+- Local HTML smoke checks confirmed `/zh/projects/cloud-court-house` and `/en/projects/river-archive` include the immersive opening, scroll cues, white detail wrapper, and project section navigation.
+- Local smoke check returned 200 for `/zh/projects/salt-field-guesthouse`.
+
+## 2026-04-15 / Project Detail Text and Metadata Refinement
+
+### Goals
+
+- Correct the second transparent opening text group so it reads as one centered paragraph instead of multiple separated text blocks.
+- Remove horizontal divider lines from the white-background project metadata grid.
+- Capture both refinements in `DESIGN.md` for future project detail iterations.
+
+### Files Added or Changed
+
+- `src/app/[locale]/projects/[slug]/page.tsx`: limits the second transparent intro group to one project-introduction paragraph.
+- `src/app/globals.css`: centers the transparent intro paragraph and removes metadata-grid top rules.
+- `DESIGN.md`: documents the one-paragraph centered intro and no-divider metadata rule.
+
+### Verification
+
+- `git diff --check`: passed.
+- `npm run lint`: passed after loading the local NVM Node 24.14.1 environment.
+- `npm run build`: passed and generated 20 static pages.
+- Local smoke check returned 200 for `/zh/projects/cloud-court-house`.
+- Local HTML smoke check confirmed the project intro paragraph and project data grid still render after the refinement.
+
+## 2026-04-15 / Aliyun ECS Deployment Planning
+
+### Goals
+
+- Move the deployment plan from Vercel/Tencent Cloud discussion to Alibaba Cloud ECS.
+- Keep the current phase on Scheme A: code-managed content updates through GitHub, without a CMS.
+- Plan for two runtime environments: company internal preview and public production.
+
+### Files Added or Changed
+
+- `docs/DEPLOYMENT_PLAN.md`: defines the Alibaba Cloud ECS architecture, recommended ECS specifications, preview/production split, ICP constraint, Nginx/PM2 runtime shape, release flow, security group rules, and operational checklist.
+
+### Verification
+
+- `git diff --check`: passed.
+
+## 2026-04-16 / Preview Image Optimization and OSS Prep
+
+### Goals
+
+- Reduce first-load pressure on the low-bandwidth Aliyun ECS preview server.
+- Compress the current local review images before moving approved runtime assets to Alibaba Cloud OSS.
+- Document the OSS rule that browser-facing images should load directly from OSS or CDN rather than being proxied through ECS.
+
+### Files Added or Changed
+
+- `scripts/optimize-images.mjs`: adds a repeatable Sharp-based image optimization script for homepage, about, founders, and logo assets.
+- `package.json`: adds `npm run optimize:images`.
+- `public/images/home/*`: compresses homepage images from roughly 10.5 MB to roughly 2.8 MB.
+- `public/images/about/*`: compresses about images from roughly 12.6 MB to roughly 1.5 MB.
+- `public/images/LOGO/logo.png`: reduces the splash logo dimensions and file size for faster decode.
+- `docs/DEPLOYMENT_PLAN.md`: updates the media policy for OSS direct delivery and CDN readiness.
+
+### Verification
+
+- `npm run optimize:images`: passed and reduced the optimized image set from roughly 23.0 MB to roughly 4.0 MB.
+- `npm run build`: passed and generated 20 static pages.
+- `npm run lint`: passed.
+- Preview deployment `20260416004224-optimized-images` is online on port `8080`.
+- Smoke checks confirmed `/zh` returns 200, `/images/home/home-01.jpeg` is served at roughly 337 KB, and `/images/about/founders.jpeg` is served at roughly 239 KB.
+
+## 2026-04-16 / Homepage Hero Image Captions
+
+### Goals
+
+- Add lower-left text labels to the ten homepage carousel images.
+- Keep labels as explicit content data instead of deriving them from filenames, so image names can change during OSS migration without affecting displayed copy.
+- Keep production offline while publishing the update to preview.
+
+### Files Added or Changed
+
+- `src/content/site.ts`: adds the ten homepage image captions.
+- `src/components/hero.tsx`: renders the active image caption with the carousel state.
+- `src/app/[locale]/page.tsx`: passes the active locale into the hero component.
+- `src/app/globals.css`: positions and styles the lower-left hero caption.
+- `DESIGN.md`: documents the homepage caption rule.
+
+### Verification
+
+- `npm run lint`: passed.
+- `npm run build`: passed and generated 20 static pages.
+- Preview deployment `20260416022338-home-captions` is online on port `8080`.
+- Smoke checks confirmed `/zh` returns 200 and production remains stopped with the port `80` offline message.
+
+## 2026-04-16 / Caption Contrast and Detail Cleanup
+
+### Goals
+
+- Keep homepage carousel captions visually consistent over changing image backgrounds.
+- Hide project detail section divider lines between the overview/site/material/image areas.
+- Remove repeated visible "Mist Architect" labels from the about-page internal navigation and section headings.
+
+### Files Added or Changed
+
+- `src/app/globals.css`: removes blend-mode color inversion from hero captions, strengthens the caption shadow, and removes project detail section/nav divider lines.
+- `src/app/[locale]/about/page.tsx`: removes the about-page side label and repeated section kicker labels.
+
+### Verification
+
+- `npm run lint`: passed.
+- `npm run build`: passed and generated 20 static pages.
+- Preview deployment `20260416024633-caption-about-lines` is online on port `8080`.
+- Smoke checks confirmed `/zh` returns 200, project detail HTML renders the expected sections, and production remains stopped.
+
+## 2026-04-16 / About Content Divider Removal
+
+### Goals
+
+- Remove the remaining horizontal divider lines in the about-page content introduction area.
+- Keep the about page as open text sections without section, founder, media-list, or mobile index separator rules.
+
+### Files Added or Changed
+
+- `src/app/globals.css`: removes about section top borders, founder entry borders, media list item borders, and the mobile about index bottom border.
+
+### Verification
+
+- `npm run lint`: passed.
+- `npm run build`: passed and generated 20 static pages.
+- `git diff --check`: passed.
+- Preview deployment `20260416025250-about-no-dividers` is online on port `8080`.
+- Smoke check confirmed `/zh/about` returns 200 and production remains stopped.
+
+## 2026-04-16 / Localized Header and Static Featured Tiles
+
+### Goals
+
+- Show only one localized brand name in the header: Chinese name on Chinese pages, English name on English pages.
+- Update the five homepage featured project tile labels to match the first five supplied project captions.
+- Temporarily disable featured project tile links and hide the full project index entry point during prototype review.
+
+### Files Added or Changed
+
+- `src/components/site-header.tsx`: renders one localized brand label instead of both Chinese and English names.
+- `src/components/project-card.tsx`: adds disabled/static rendering support for non-clickable featured tiles.
+- `src/app/[locale]/page.tsx`: passes the five homepage captions into the featured tiles and removes the full-index link.
+- `src/app/globals.css`: simplifies single-line brand styling.
+- `DESIGN.md`: documents localized header branding and temporary non-interactive featured tiles.
+
+### Verification
+
+- `npm run lint`: passed.
+- `npm run build`: passed and generated 20 static pages.
+- Preview deployment `20260416152348-home-static-featured` is online on port `8080`.
+- Smoke checks confirmed `/zh` includes the five requested tile labels, has no featured project detail links or full-index link, and `/en` shows `Mist Architect` without the Chinese brand label.
+- Production remains stopped.
+
+## 2026-04-16 / Hero Controls and Language Switch
+
+### Goals
+
+- Add manual controls to the homepage image carousel: previous/next arrows and clickable dot navigation.
+- Move the active carousel caption above the dot navigation at the lower center of the viewport.
+- Add a compact right-header `中文 | EN` language switch that preserves the current route.
+- Translate homepage carousel and featured-project labels into English.
+
+### Files Added or Changed
+
+- `src/components/hero.tsx`: adds previous/next handlers, arrow buttons, dot navigation, and centered carousel caption controls.
+- `src/components/language-switch.tsx`: adds a client-side language switch using the current pathname.
+- `src/components/site-header.tsx`: adds the language switch to the right header action area.
+- `src/content/site.ts`: translates homepage carousel captions and changes the English navigation label to `About`.
+- `src/app/globals.css`: styles the carousel arrows, dots, centered caption, and header language switch.
+- `DESIGN.md`: documents the carousel controls and language switch behavior.
+
+### Verification
+
+- `npm run lint`: passed.
+- `npm run build`: passed and generated 20 static pages.
+- Preview deployment `20260416154811-hero-controls-lang` is online on port `8080`.
+- Smoke checks confirmed `/zh` renders carousel controls and `/en` renders English carousel/featured labels, English branding, `About`, and the language switch.
+- Production remains stopped.
+
+## 2026-04-16 / About Intro Label and Featured Tile Typography
+
+### Goals
+
+- Rename the about-page intro navigation item from `简介` to `岚`, and update the intro section heading from `事务所简介` to `岚`.
+- Keep the English version synchronized with `Mist`.
+- Reformat homepage featured project captions as `year · location` plus a separate project-name line.
+
+### Files Added or Changed
+
+- `src/content/site.ts`: updates the localized about intro labels.
+- `src/app/[locale]/about/page.tsx`: updates the visible about intro heading.
+- `src/app/[locale]/page.tsx`: splits featured captions into location and project-name display data.
+- `src/components/project-card.tsx`: adds an optional featured-project eyebrow line for the static homepage tiles.
+- `src/app/globals.css`: adds neutral grey hierarchy styles for the featured tile year/location and project-name lines.
+- `DESIGN.md`: documents the homepage featured tile caption hierarchy.
+
+### Verification
+
+- `npm run lint`: passed.
+- `npm run build`: passed and generated 20 static pages.
+- `git diff --check`: passed.
+- Preview deployment `20260416163941-about-featured-type` is online on port `8080`.
+- Smoke checks confirmed `/zh` and `/en` render the new featured tile hierarchy, `/zh/about` renders `岚` for the intro nav and heading, `/en/about` renders `Mist`, and production remains stopped.
+
+## 2026-04-17 / Splash Timing and Hero Control Hotspots
+
+### Goals
+
+- Slow the opening logo splash animation by 35%.
+- Restart the homepage carousel autoplay timer after any manual previous, next, or dot navigation action.
+- Expand homepage carousel click targets to the left and right 30% of the hero image.
+- Keep the visible control as a small circle and reveal the simple directional mark on hover or keyboard focus.
+
+### Files Added or Changed
+
+- `src/components/intro-splash.tsx`: promotes splash timing values to constants and increases the visible/fade durations by 35%.
+- `src/components/hero.tsx`: adds a reset key for autoplay and routes all manual carousel actions through reset-aware handlers.
+- `src/app/globals.css`: converts the arrow buttons into large transparent hero hotspots with 34px circular indicators.
+- `DESIGN.md`: documents the autoplay reset and hero hotspot interaction rules.
+
+### Verification
+
+- `npm run lint`: passed.
+- `npm run build`: passed and generated 20 static pages.
+- `git diff --check`: passed.
+- Preview deployment `20260417012030-hero-hotspots-splash` is online on port `8080`.
+- Smoke checks confirmed `/zh` renders the new hero control markup, the deployed CSS contains the 30% hero hotspots, and production remains stopped.
