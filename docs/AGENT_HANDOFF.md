@@ -1,6 +1,6 @@
 # Mist Architect Agent Handoff
 
-Last updated: 2026-04-17, Asia/Shanghai
+Last updated: 2026-04-17, Asia/Shanghai (session 2)
 
 This document is for another coding agent or developer taking over the current prototype work. It summarizes the local repository state, the active Alibaba Cloud deployment, and the operational commands needed to continue safely.
 
@@ -12,7 +12,7 @@ This document is for another coding agent or developer taking over the current p
 - Current local branch: `preview/home-featured-projects`.
 - GitHub remote:
   - `origin`: `https://github.com/MistArchitect/MistArchitectWeb.git`
-- Important: the local worktree currently has many uncommitted changes. Do not assume GitHub already contains the deployed preview state.
+- Important: branch is up to date with `origin/preview/home-featured-projects` as of session 2. GitHub now matches the deployed preview state.
 
 Current focus:
 
@@ -33,7 +33,7 @@ Homepage:
 - Dot navigation at the bottom.
 - Manual carousel actions reset the autoplay timer.
 - Left and right carousel hit areas each cover roughly 30% of the hero image.
-- The visible arrow control is a 34px circular indicator; the directional mark appears on hover/focus.
+- The visible arrow control is a 60px × 1.5px semi-transparent vertical line; on hover the line animates into a `‹` or `›` chevron via two-half rotation (±22°).
 - Active carousel caption is content-driven from `src/content/site.ts`, not inferred from filenames.
 - Featured project tiles are currently non-clickable during prototype review.
 - Featured tile text format is:
@@ -124,12 +124,13 @@ Directory layout:
 Latest preview release:
 
 ```text
-20260417012030-hero-hotspots-splash
+20260417030911-hero-line-arrows
 ```
 
 Recent release folders on ECS:
 
 ```text
+20260417030911-hero-line-arrows
 20260417012030-hero-hotspots-splash
 20260416163941-about-featured-type
 20260416154811-hero-controls-lang

@@ -711,6 +711,36 @@ Environment limitation:
 - Preview deployment `20260416163941-about-featured-type` is online on port `8080`.
 - Smoke checks confirmed `/zh` and `/en` render the new featured tile hierarchy, `/zh/about` renders `岚` for the intro nav and heading, `/en/about` renders `Mist`, and production remains stopped.
 
+## 2026-04-17 / Hero Carousel Line-Arrow Controls
+
+### Goals
+
+- Replace the 34px circular hero carousel indicators with two semi-transparent floating vertical lines.
+- On hover over the left 30% area, animate the left line into a minimal left-pointing arrow (`‹`).
+- On hover over the right 30% area, animate the right line into a minimal right-pointing arrow (`›`).
+- Fix Next.js dev server HMR cross-origin block so `127.0.0.1` receives hot-reload updates.
+
+### Files Added or Changed
+
+- `src/app/globals.css`: replaces `.hero-arrow-indicator` circle with a 60px × 1.5px vertical line built from two pseudo-elements (`::before` top half, `::after` bottom half); hover rotates each half ±22° around its shared midpoint to form a chevron; opacity transitions from 0.36 to 0.92 on hover.
+- `next.config.ts`: adds `allowedDevOrigins: ["127.0.0.1"]` to allow HMR websocket connections from the loopback IP.
+
+### Interaction Detail
+
+- Default: two translucent white lines sit in the left and right 30% hit zones, visible at rest.
+- Hover left zone: top half rotates `+22deg` (origin bottom), bottom half rotates `-22deg` (origin top) → `‹`.
+- Hover right zone: top half rotates `-22deg`, bottom half rotates `+22deg` → `›`.
+- Transition: 300ms ease on both transform and background.
+- Keyboard focus triggers the same visual state as hover.
+
+### Verification
+
+- `npm run lint`: passed.
+- `npm run build`: passed and generated 20 static pages.
+- Preview deployment `20260417030911-hero-line-arrows` is online on port `8080`.
+- Smoke checks returned 200 for `/zh`, `/en`, and `/zh/about`.
+- Production remains stopped.
+
 ## 2026-04-17 / Splash Timing and Hero Control Hotspots
 
 ### Goals

@@ -342,39 +342,58 @@ button {
 }
 
 .hero-arrow-indicator {
-  align-items: center;
-  background: rgba(0, 0, 0, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.58);
-  border-radius: 999px;
-  display: flex;
-  height: 34px;
-  justify-content: center;
-  transition: background-color 240ms ease, border-color 240ms ease, opacity 240ms ease;
-  width: 34px;
+  display: block;
+  height: 60px;
+  position: relative;
+  width: 1.5px;
+}
+
+.hero-arrow-indicator::before,
+.hero-arrow-indicator::after {
+  background: rgba(255, 255, 255, 0.36);
+  border-radius: 1px;
+  content: "";
+  height: 50%;
+  left: 0;
+  position: absolute;
+  transition: transform 300ms ease, background 300ms ease;
+  width: 100%;
 }
 
 .hero-arrow-indicator::before {
-  border-bottom: 1.5px solid currentColor;
-  border-left: 1.5px solid currentColor;
-  content: "";
-  display: block;
-  height: 8px;
-  opacity: 0;
-  transform: rotate(45deg);
-  transition: opacity 220ms ease;
-  width: 8px;
+  top: 0;
+  transform: rotate(0deg);
+  transform-origin: bottom center;
 }
 
-.hero-arrow:hover .hero-arrow-indicator,
-.hero-arrow:focus-visible .hero-arrow-indicator {
-  background: rgba(255, 255, 255, 0.14);
-  border-color: rgba(255, 255, 255, 0.84);
-  opacity: 1;
+.hero-arrow-indicator::after {
+  bottom: 0;
+  transform: rotate(0deg);
+  transform-origin: top center;
 }
 
-.hero-arrow:hover .hero-arrow-indicator::before,
-.hero-arrow:focus-visible .hero-arrow-indicator::before {
-  opacity: 1;
+.hero-arrow-prev:hover .hero-arrow-indicator::before,
+.hero-arrow-prev:focus-visible .hero-arrow-indicator::before {
+  background: rgba(255, 255, 255, 0.92);
+  transform: rotate(22deg);
+}
+
+.hero-arrow-prev:hover .hero-arrow-indicator::after,
+.hero-arrow-prev:focus-visible .hero-arrow-indicator::after {
+  background: rgba(255, 255, 255, 0.92);
+  transform: rotate(-22deg);
+}
+
+.hero-arrow-next:hover .hero-arrow-indicator::before,
+.hero-arrow-next:focus-visible .hero-arrow-indicator::before {
+  background: rgba(255, 255, 255, 0.92);
+  transform: rotate(-22deg);
+}
+
+.hero-arrow-next:hover .hero-arrow-indicator::after,
+.hero-arrow-next:focus-visible .hero-arrow-indicator::after {
+  background: rgba(255, 255, 255, 0.92);
+  transform: rotate(22deg);
 }
 
 .hero-arrow-prev {
@@ -384,10 +403,6 @@ button {
 .hero-arrow-next {
   justify-content: flex-end;
   right: 0;
-}
-
-.hero-arrow-next .hero-arrow-indicator::before {
-  transform: rotate(225deg);
 }
 
 .hero-carousel-controls {
