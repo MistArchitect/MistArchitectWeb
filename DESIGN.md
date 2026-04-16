@@ -63,7 +63,7 @@ Typography must be clinical, geometric, and perfectly aligned, mirroring archite
 - **Hero Image (Index)**: Absolute full-screen (`100svh`), edge-to-edge. Let the image swallow the screen.
   - The homepage image carousel must provide left/right arrow controls and clickable dot navigation.
   - Manual carousel actions must restart the autoplay timer so a user click never immediately collides with the next automatic transition.
-  - The left and right carousel hit areas should each cover roughly 30% of the hero image. Keep the visible control as a small neutral circle, revealing the directional mark only on hover or keyboard focus.
+  - The left and right carousel hit areas each cover roughly 30% of the hero image. The visible control is a semi-transparent white vertical line (60px tall, 1.5px wide) resting at rest opacity. On hover or keyboard focus the line animates into a minimal chevron arrow: the top half and bottom half each rotate ±22° around the shared midpoint to form `‹` (left zone) or `›` (right zone). Transition is 300ms ease. No circle, no border-radius, no icon glyph.
   - The active image caption sits above the dot navigation near the lower center of the viewport.
   - Homepage featured project tiles can be temporarily non-interactive during prototype review; when disabled, remove detail links and the full-index entry point.
   - Homepage featured project tile captions use two lines: `year · location` on the first line and project name on the second line. Both use neutral greys, with the project name slightly stronger and the first line smaller.
