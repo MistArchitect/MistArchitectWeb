@@ -8,10 +8,10 @@ type SiteHeaderProps = {
 };
 
 export function SiteHeader({ locale }: SiteHeaderProps) {
-  const brandLabel = locale === "zh" ? "岚·建筑设计" : "MIST";
+  const brandLabel = locale === "zh" ? "岚·建筑设计" : "MIST Architects";
 
   return (
-    <header className="site-header" aria-label="MIST ARCHITECT">
+    <header className="site-header" aria-label="MIST Architects">
       <div className="main-nav">
         <Link className="brand-mark" href={withLocale(locale, "/")}>
           {brandLabel}
