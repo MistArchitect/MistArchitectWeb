@@ -213,7 +213,7 @@ export const about = {
       id: "intro",
       label: {
         zh: "岚",
-        en: "Mist"
+        en: "MIST"
       }
     },
     {
@@ -245,7 +245,7 @@ export const about = {
     },
     title: {
       zh: "岚",
-      en: "Mist"
+      en: "MIST"
     },
     deck: {
       zh: "岚·建筑设计",
@@ -255,7 +255,7 @@ export const about = {
   intro: {
     label: {
       zh: "岚",
-      en: "Mist"
+      en: "MIST"
     },
     title: {
       zh: "程博和李博自瑞士归国后创立「岚」并专注于创造富有情感的壮阔体验、有力场的广义建筑。我们的工作重视建筑的品质、令人沉浸的空间氛围，以及与良好生活的连接。",

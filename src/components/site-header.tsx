@@ -8,7 +8,7 @@ type SiteHeaderProps = {
 };
 
 export function SiteHeader({ locale }: SiteHeaderProps) {
-  const brandLabel = locale === "zh" ? "岚·建筑设计" : "Mist Architect";
+  const brandLabel = locale === "zh" ? "岚·建筑设计" : "MIST";
 
   return (
     <header className="site-header" aria-label="Mist Architect">
