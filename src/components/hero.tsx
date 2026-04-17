@@ -53,7 +53,7 @@ export function Hero({ locale }: HeroProps) {
   return (
     <section className="hero-shell" aria-labelledby="hero-title">
       <h1 id="hero-title" className="sr-only">
-        Mist Architect
+        MIST ARCHITECT
       </h1>
       <AnimatePresence>
         <motion.img

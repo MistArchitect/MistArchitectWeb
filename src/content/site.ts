@@ -81,8 +81,8 @@ export const home = {
       en: "Architecture Practice / Shanghai / Living Archive"
     },
     title: {
-      zh: "Mist Architect",
-      en: "Mist Architect"
+      zh: "MIST ARCHITECT",
+      en: "MIST ARCHITECT"
     },
     deck: {
       zh: "以雾、光、结构和城市记忆为线索，记录空间从概念到建成的过程。",
@@ -169,8 +169,8 @@ export const home = {
       en: "Architecture as a readable site."
     },
     copy: {
-      zh: "Mist Architect 关注建筑、室内、城市更新与材料研究，以清晰的空间秩序回应复杂的场地条件。",
-      en: "Mist Architect works across architecture, interiors, adaptive reuse, and material research with spatial clarity as its operating discipline."
+      zh: "MIST ARCHITECT 关注建筑、室内、城市更新与材料研究，以清晰的空间秩序回应复杂的场地条件。",
+      en: "MIST ARCHITECT works across architecture, interiors, adaptive reuse, and material research with spatial clarity as its operating discipline."
     }
   },
   films: {
@@ -240,8 +240,8 @@ export const about = {
   ],
   hero: {
     kicker: {
-      zh: "Mist Architect / 岚",
-      en: "Mist Architect / Lan"
+      zh: "MIST ARCHITECT / 岚",
+      en: "MIST ARCHITECT / Lan"
     },
     title: {
       zh: "岚",
@@ -249,7 +249,7 @@ export const about = {
     },
     deck: {
       zh: "岚·建筑设计",
-      en: "Mist Architect"
+      en: "MIST ARCHITECT"
     }
   },
   intro: {
@@ -259,7 +259,7 @@ export const about = {
     },
     title: {
       zh: "程博和李博自瑞士归国后创立「岚」并专注于创造富有情感的壮阔体验、有力场的广义建筑。我们的工作重视建筑的品质、令人沉浸的空间氛围，以及与良好生活的连接。",
-      en: "Cheng Bo and Li Bo founded Mist after returning from Switzerland."
+      en: "Cheng Bo and Li Bo founded MIST after returning from Switzerland."
     },
     body: {
       zh: [],
@@ -437,7 +437,7 @@ function projectFacts(area: Localized, client: Localized): ProjectFact[] {
       label: projectFactLabel.team,
       value: {
         zh: "岚·建筑设计",
-        en: "Mist Architect"
+        en: "MIST ARCHITECT"
       }
     }
   ];
@@ -486,7 +486,7 @@ export const projects: Project[] = [
       zh: "被树木环绕的现代住宅",
       en: "Modern residence surrounded by trees"
     },
-    credit: "Mist Architect Archive",
+    credit: "MIST ARCHITECT ARCHIVE",
     facts: projectFacts(
       {
         zh: "约 620 平方米",
@@ -504,7 +504,7 @@ export const projects: Project[] = [
           zh: "带有木质家具的住宅室内",
           en: "Residential interior with timber furniture"
         },
-        credit: "Mist Architect Archive"
+        credit: "MIST ARCHITECT ARCHIVE"
       },
       {
         src: "/images/home/home-07.jpeg",
@@ -512,7 +512,7 @@ export const projects: Project[] = [
           zh: "现代住宅中的楼梯与自然光",
           en: "Stair and daylight inside a modern residence"
         },
-        credit: "Mist Architect Archive"
+        credit: "MIST ARCHITECT ARCHIVE"
       }
     ],
     videoUrl: "https://cdn.pixabay.com/video/2022/02/02/106340-673544770_large.mp4"
@@ -559,7 +559,7 @@ export const projects: Project[] = [
       zh: "几何立面和蓝天",
       en: "Geometric facade against blue sky"
     },
-    credit: "Mist Architect Archive",
+    credit: "MIST ARCHITECT ARCHIVE",
     facts: projectFacts(
       {
         zh: "约 4,800 平方米",
@@ -577,7 +577,7 @@ export const projects: Project[] = [
           zh: "城市中的建筑立面",
           en: "Architectural facade in the city"
         },
-        credit: "Mist Architect Archive"
+        credit: "MIST ARCHITECT ARCHIVE"
       },
       {
         src: "/images/home/home-09.jpeg",
@@ -585,7 +585,7 @@ export const projects: Project[] = [
           zh: "高层建筑的结构细部",
           en: "Structural details of a high-rise facade"
         },
-        credit: "Mist Architect Archive"
+        credit: "MIST ARCHITECT ARCHIVE"
       }
     ]
   },
@@ -631,7 +631,7 @@ export const projects: Project[] = [
       zh: "明亮的现代办公室室内",
       en: "Bright modern office interior"
     },
-    credit: "Mist Architect Archive",
+    credit: "MIST ARCHITECT ARCHIVE",
     facts: projectFacts(
       {
         zh: "约 960 平方米",
@@ -649,7 +649,7 @@ export const projects: Project[] = [
           zh: "带长桌的共享工作室",
           en: "Shared studio with long worktables"
         },
-        credit: "Mist Architect Archive"
+        credit: "MIST ARCHITECT ARCHIVE"
       },
       {
         src: "/images/home/home-01.jpeg",
@@ -657,7 +657,7 @@ export const projects: Project[] = [
           zh: "带自然光的室内空间",
           en: "Interior space with natural light"
         },
-        credit: "Mist Architect Archive"
+        credit: "MIST ARCHITECT ARCHIVE"
       }
     ]
   },
@@ -703,7 +703,7 @@ export const projects: Project[] = [
       zh: "低矮建筑与树影",
       en: "Low building with tree shadows"
     },
-    credit: "Mist Architect Archive",
+    credit: "MIST ARCHITECT ARCHIVE",
     facts: projectFacts(
       {
         zh: "约 2,400 平方米",
@@ -721,7 +721,7 @@ export const projects: Project[] = [
           zh: "社区图书馆的外部界面",
           en: "Exterior edge of a community library"
         },
-        credit: "Mist Architect Archive"
+        credit: "MIST ARCHITECT ARCHIVE"
       },
       {
         src: "/images/home/home-05.jpeg",
@@ -729,7 +729,7 @@ export const projects: Project[] = [
           zh: "阅读空间与自然光",
           en: "Reading space with natural light"
         },
-        credit: "Mist Architect Archive"
+        credit: "MIST ARCHITECT ARCHIVE"
       }
     ]
   },
@@ -775,7 +775,7 @@ export const projects: Project[] = [
       zh: "浅色材料构成的庭院空间",
       en: "Courtyard space formed by pale materials"
     },
-    credit: "Mist Architect Archive",
+    credit: "MIST ARCHITECT ARCHIVE",
     facts: projectFacts(
       {
         zh: "约 780 平方米",
@@ -793,7 +793,7 @@ export const projects: Project[] = [
           zh: "改造客舍的院落视角",
           en: "Courtyard view of the renewed guesthouse"
         },
-        credit: "Mist Architect Archive"
+        credit: "MIST ARCHITECT ARCHIVE"
       },
       {
         src: "/images/home/home-06.jpeg",
@@ -801,7 +801,7 @@ export const projects: Project[] = [
           zh: "客房与半室外平台",
           en: "Guest room and semi-outdoor terrace"
         },
-        credit: "Mist Architect Archive"
+        credit: "MIST ARCHITECT ARCHIVE"
       }
     ]
   }

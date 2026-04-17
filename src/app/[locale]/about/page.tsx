@@ -42,7 +42,7 @@ export default async function AboutPage({ params }: AboutPageProps) {
   }
 
   const locale = rawLocale as Locale;
-  const introHeading = locale === "zh" ? "岚" : "Mist";
+  const introHeading = locale === "zh" ? "岚" : "MIST";
   const foundersHeading = locale === "zh" ? "创始人" : "Founders";
   const mediaGroups = [
     {

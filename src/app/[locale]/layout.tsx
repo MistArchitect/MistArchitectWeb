@@ -11,8 +11,8 @@ import "../globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
   title: {
-    default: "Mist Architect",
-    template: "%s | Mist Architect"
+    default: "MIST ARCHITECT",
+    template: "%s | MIST ARCHITECT"
   },
   description:
     "A bilingual architecture studio website for projects, films, journals, and long-term editorial updates."

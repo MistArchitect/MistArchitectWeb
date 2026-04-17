@@ -4,8 +4,8 @@ import type { ReactNode } from "react";
 import "../globals.css";
 
 export const metadata: Metadata = {
-  title: "Studio | Mist Architect",
-  description: "Content management backend for Mist Architect."
+  title: "Studio | MIST ARCHITECT",
+  description: "Content management backend for MIST ARCHITECT."
 };
 
 export default function StudioLayout({ children }: { children: ReactNode }) {

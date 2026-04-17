@@ -7,7 +7,7 @@ export default function StudioPage() {
     return (
       <main className="studio-setup">
         <p className="kicker">CMS Setup</p>
-        <h1>Connect Sanity to open Mist Architect Studio.</h1>
+        <h1>Connect Sanity to open MIST ARCHITECT Studio.</h1>
         <p>
           Create a Sanity project, copy `.env.example` to `.env.local`, then fill in
           the project ID and dataset. Restart the dev server after changing env vars.
