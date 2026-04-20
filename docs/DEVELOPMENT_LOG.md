@@ -1304,3 +1304,8 @@ ALIYUN_ECS_SSH_KEY
 - `npm run lint`: passed.
 - `npm run build`: passed and generated 20 static pages.
 - `actionlint` was not run because it is not installed locally, `npx actionlint` is not an executable npm package, and this machine does not have Go installed for `go run github.com/rhysd/actionlint/cmd/actionlint@latest`.
+
+### 2026-04-21 Follow-up
+
+- Registered `.github/workflows/deploy-preview.yml` on the default branch `main` as commit `61ce091` so GitHub's Actions UI can list the manual `Deploy Preview` workflow. No application code from `preview/home-featured-projects` was merged into `main`.
+- Removed the obsolete `vercel.json` from `preview/home-featured-projects` after the Vercel GitHub Environments were deleted. The project deployment path is now Alibaba Cloud ECS + GitHub Actions preview workflow.
