@@ -29,6 +29,16 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "cdn.sanity.io"
+      },
+      {
+        protocol: "https",
+        hostname: "mist-architects-media.oss-cn-shenzhen.aliyuncs.com"
+      },
+      {
+        // Future CDN fronting the OSS bucket. Kept here so switching
+        // to a production domain only requires flipping NEXT_PUBLIC_MEDIA_BASE.
+        protocol: "https",
+        hostname: "media.mistarchitects.com"
       }
     ]
   }

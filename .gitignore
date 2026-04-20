@@ -10,3 +10,9 @@ coverage/
 !.env.example
 .DS_Store
 .vercel
+
+# Local OSS upload staging — masters live here, never ship with the Next.js bundle
+/assets/for_OSS/
+
+# Claude Code / agent workspace metadata — local only
+.claude/

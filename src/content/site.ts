@@ -74,6 +74,274 @@ export const navigation: Record<Locale, { label: string; href: string }[]> = {
   ]
 };
 
+/**
+ * Homepage hero carousel slides.
+ *
+ * Each slide provides both a horizontal (landscape) and a vertical
+ * (portrait) source, resolved against the OSS bucket at runtime by
+ * `mediaUrl()`. The Hero component picks the variant that matches the
+ * active viewport orientation so desktop visitors get the wide frame
+ * and mobile visitors get the tall frame without a forced crop.
+ *
+ * Filenames follow the pattern `NN[.N] <caption>.ext` inside the
+ * bucket. The leading sequence number is metadata only and is stripped
+ * from the caption here. English captions mirror the Chinese caption
+ * so translators can revise them in one place.
+ */
+export type HeroSlide = {
+  id: string;
+  /**
+   * 4:3 horizontal master. Served on iPad / near-square viewports
+   * (the "standard" aspect band). Also acts as the fallback for the
+   * "wide" band when no `horizontalWide` is provided — the hero
+   * pipeline then server-crops it to 16:9 via OSS `m_fill`.
+   */
+  horizontal: string;
+  /**
+   * Optional pre-shot 16:9 horizontal master. When present, wide
+   * desktop viewports get this file directly (no server crop), so
+   * the photographer's intended 16:9 framing is preserved instead
+   * of a center-crop guess from the 4:3 source.
+   */
+  horizontalWide?: string;
+  vertical: string;
+  caption: Localized;
+};
+
+export const heroSlides: HeroSlide[] = [
+  {
+    id: "dream-factory",
+    horizontal: "home/horizontal/01 深圳·梦工场·青年实验剧场.jpg",
+    vertical: "home/vertical/01 深圳 · 梦工场剧场.jpeg",
+    caption: {
+      zh: "深圳 · 梦工场 · 青年实验剧场",
+      en: "Shenzhen · Dream Factory · Experimental Theater"
+    }
+  },
+  {
+    id: "wanzhi-natural-museum",
+    // Photographer supplied hand-framed 4:3 + 16:9 masters. Kept the
+    // original `012 …` file in OSS for reference but the site now
+    // serves the explicit `_4:3` / `_16:9` crops.
+    horizontal: "home/horizontal/12_4:3 深圳 ·万致天地·自然博物园.jpg",
+    horizontalWide: "home/horizontal/12_16:9_深圳 ·万致天地·自然博物园.jpg",
+    vertical: "home/vertical/012 深圳 ·万致天地·自然博物园.jpg",
+    caption: {
+      zh: "深圳 · 万致天地 · 自然博物园",
+      en: "Shenzhen · Wanzhi Tiandi · Natural Museum"
+    }
+  },
+  {
+    id: "wanzhi-natural-museum-02",
+    horizontal: "home/horizontal/12.1_4:3_深圳 ·万致天地·自然博物园.jpg",
+    horizontalWide: "home/horizontal/12.1_16:9_深圳 ·万致天地·自然博物园.jpg",
+    // Vertical-set variant: vertical 012 is reused — only one
+    // portrait crop exists for this project.
+    vertical: "home/vertical/012 深圳 ·万致天地·自然博物园.jpg",
+    caption: {
+      zh: "深圳 · 万致天地 · 自然博物园",
+      en: "Shenzhen · Wanzhi Tiandi · Natural Museum"
+    }
+  },
+  {
+    id: "field-academy",
+    horizontal: "home/horizontal/02 苏州 · 原野学社.jpeg",
+    vertical: "home/vertical/02 苏州 · 原野学社.jpeg",
+    caption: {
+      zh: "苏州 · 原野学社",
+      en: "Suzhou · Field Academy"
+    }
+  },
+  {
+    id: "field-academy-02",
+    // Horizontal variant repeats the base file — no additional
+    // landscape crop in OSS for this project.
+    horizontal: "home/horizontal/02 苏州 · 原野学社.jpeg",
+    vertical: "home/vertical/02.1 苏州 · 原野学社.jpeg",
+    caption: {
+      zh: "苏州 · 原野学社",
+      en: "Suzhou · Field Academy"
+    }
+  },
+  {
+    id: "wujingkui-ruins-garden",
+    horizontal: "home/horizontal/03 惠州 · 五经魁废墟花园.jpg",
+    vertical: "home/vertical/03 惠州 · 五经魁废墟花园.jpg",
+    caption: {
+      zh: "惠州 · 五经魁废墟花园",
+      en: "Huizhou · Wujingkui Ruins Garden"
+    }
+  },
+  {
+    id: "pavilion-of-light",
+    horizontal: "home/horizontal/04 深圳 · 光之展亭.jpeg",
+    vertical: "home/vertical/04 深圳 · 光之展亭.jpeg",
+    caption: {
+      zh: "深圳 · 光之展亭",
+      en: "Shenzhen · Pavilion of Light"
+    }
+  },
+  {
+    id: "light-encounter-theater",
+    horizontal: "home/horizontal/05 深圳 · 光遇剧场.jpeg",
+    vertical: "home/vertical/05 深圳 · 光遇剧场.jpeg",
+    caption: {
+      zh: "深圳 · 光遇剧场",
+      en: "Shenzhen · Light Encounter Theater"
+    }
+  },
+  {
+    id: "teastone-mixc",
+    horizontal: "home/horizontal/06 杭州 · 万象城 tea’stone.jpeg",
+    vertical: "home/vertical/06 杭州 · 万象城 tea’stone.jpeg",
+    caption: {
+      zh: "杭州 · 万象城 tea’stone",
+      en: "Hangzhou · MixC tea’stone"
+    }
+  },
+  {
+    id: "bambu-lab-first-store",
+    horizontal: "home/horizontal/07 深圳 · 拓竹科技首店.jpeg",
+    vertical: "home/vertical/07 深圳 · 拓竹科技首店.jpeg",
+    caption: {
+      zh: "深圳 · 拓竹科技首店",
+      en: "Shenzhen · Bambu Lab First Store"
+    }
+  },
+  {
+    id: "wetland-meditation-hall",
+    horizontal: "home/horizontal/08 北京 · 湿地旁的禅修馆.jpeg",
+    vertical: "home/vertical/08 北京 · 湿地旁的禅修馆.jpeg",
+    caption: {
+      zh: "北京 · 湿地旁的禅修馆",
+      en: "Beijing · Meditation Hall by the Wetland"
+    }
+  },
+  {
+    id: "ruoxian-pilates",
+    horizontal: "home/horizontal/09 上海·若弦普拉提.jpg",
+    vertical: "home/vertical/09 上海 · 若弦普拉提.jpeg",
+    caption: {
+      zh: "上海 · 若弦普拉提",
+      en: "Shanghai · Ruoxian Pilates"
+    }
+  },
+  {
+    id: "stone-ruins-theater",
+    horizontal: "home/horizontal/10 龙游 · 石墟剧场.jpeg",
+    vertical: "home/vertical/10 龙游 · 石墟剧场.jpeg",
+    caption: {
+      zh: "龙游 · 石墟剧场",
+      en: "Longyou · Stone Ruins Theater"
+    }
+  },
+  {
+    id: "seaside-boardwalk",
+    // 4:3 master is the original `11 …` file. A photographer-framed
+    // 16:9 master is also uploaded and served to wide desktops so
+    // the horizon line sits where intended, not where a center-crop
+    // would land.
+    horizontal: "home/horizontal/11 深圳 · 海边栈道.jpg",
+    horizontalWide: "home/horizontal/11_16:9_深圳 · 海边栈道.jpg",
+    vertical: "home/vertical/011 深圳 · 海边栈道.jpg",
+    caption: {
+      zh: "深圳 · 海边栈道",
+      en: "Shenzhen · Seaside Boardwalk"
+    }
+  },
+  {
+    id: "seaside-boardwalk-02",
+    horizontal: "home/horizontal/11.1_4:3_深圳 · 海边栈道.jpg",
+    horizontalWide: "home/horizontal/11.1_16:9_深圳 · 海边栈道.jpg",
+    vertical: "home/vertical/011.1 深圳 · 海边栈道.jpg",
+    caption: {
+      zh: "深圳 · 海边栈道",
+      en: "Shenzhen · Seaside Boardwalk"
+    }
+  },
+  {
+    id: "seaside-boardwalk-03",
+    horizontal: "home/horizontal/11.2 深圳 · 海边栈道.jpg",
+    vertical: "home/vertical/011.2 深圳 · 海边栈道.jpg",
+    caption: {
+      zh: "深圳 · 海边栈道",
+      en: "Shenzhen · Seaside Boardwalk"
+    }
+  }
+];
+
+/**
+ * Featured project tiles shown on the homepage under the hero.
+ *
+ * Source filenames live in `home/feature/` and embed `year·location·title`.
+ * The sequence prefix is metadata only and stripped at the data layer.
+ * Duplicated location fragments in source names (e.g. "深圳 · 深圳 ·…")
+ * have been collapsed here so the UI is not affected by source typos.
+ *
+ * Tiles are currently non-interactive during prototype review; the
+ * homepage renders them with `isDisabled` via `ProjectCard`.
+ */
+export type FeaturedTile = {
+  id: string;
+  image: string;
+  year: string;
+  location: Localized;
+  title: Localized;
+};
+
+export const featuredTiles: FeaturedTile[] = [
+  {
+    id: "dream-factory-experimental-theater",
+    image: "home/feature/01 2023·深圳·梦工场·青年实验剧场.jpg",
+    year: "2023",
+    location: { zh: "深圳", en: "Shenzhen" },
+    title: {
+      zh: "梦工场 · 青年实验剧场",
+      en: "Dream Factory Experimental Theater"
+    }
+  },
+  {
+    id: "wanzhi-natural-history-park",
+    image: "home/feature/02 2024·深圳 · 深圳 ·万致天地·自然博物园.jpg",
+    year: "2024",
+    location: { zh: "深圳", en: "Shenzhen" },
+    title: {
+      zh: "万致天地 · 自然博物园",
+      en: "Wanzhi Tiandi · Natural History Park"
+    }
+  },
+  {
+    id: "wujingkui-ruins-garden",
+    image: "home/feature/03 2025·惠州 · 五经魁废墟花园.jpg",
+    year: "2025",
+    location: { zh: "惠州", en: "Huizhou" },
+    title: {
+      zh: "五经魁废墟花园",
+      en: "Wujingkui Ruins Garden"
+    }
+  },
+  {
+    id: "pavilion-of-light",
+    image: "home/feature/04 2021·深圳 · 光之展亭·光影艺术季主展场.jpeg",
+    year: "2021",
+    location: { zh: "深圳", en: "Shenzhen" },
+    title: {
+      zh: "光之展亭 · 光影艺术季主展场",
+      en: "Pavilion of Light · Main Hall, Light & Shadow Art Season"
+    }
+  },
+  {
+    id: "bambu-lab-first-store",
+    image: "home/feature/05 2025·深圳 · 拓竹科技首店.jpeg",
+    year: "2025",
+    location: { zh: "深圳", en: "Shenzhen" },
+    title: {
+      zh: "拓竹科技首店",
+      en: "Bambu Lab First Store"
+    }
+  }
+];
+
 export const home = {
   hero: {
     kicker: {
@@ -201,13 +469,31 @@ export const home = {
 };
 
 export const about = {
-  heroImage: "/images/about/about-1.jpeg",
-  heroImages: [
-    "/images/about/about-1.jpeg",
-    "/images/about/about-2.jpeg",
-    "/images/about/about-3.jpeg"
-  ],
-  foundersImage: "/images/about/founders.jpeg",
+  // OSS bucket-relative paths. Resolved through `mediaUrl()` in components.
+  //
+  // About hero carousel now mirrors the homepage hero's aspect-band
+  // switching: horizontal masters feed landscape + wide viewports,
+  // vertical masters feed portrait phones / narrow windows. Paired by
+  // index — slot N shows `aboutHero.horizontal[N]` on landscape and
+  // `aboutHero.vertical[N]` on portrait so the carousel position stays
+  // consistent across orientation changes. Both arrays MUST be the
+  // same length.
+  heroImage: "about/horizontal/about-h1.jpeg",
+  aboutHero: {
+    horizontal: [
+      "about/horizontal/about-h1.jpeg",
+      "about/horizontal/about-h2.jpeg",
+      "about/horizontal/about-h3.jpeg",
+      "about/horizontal/about-h4.jpeg"
+    ],
+    vertical: [
+      "about/vertical/about-v1.jpeg",
+      "about/vertical/about-v2.jpeg",
+      "about/vertical/about-v3.jpeg",
+      "about/vertical/about-v4.jpeg"
+    ]
+  },
+  foundersImage: "about/founders.jpeg",
   nav: [
     {
       id: "intro",
@@ -333,13 +619,9 @@ export const about = {
       zh: "联系方式",
       en: "Contact"
     },
-    title: {
-      zh: "新的场地、改造计划或研究合作。",
-      en: "New sites, adaptive reuse plans, and research collaborations."
-    },
     body: {
-      zh: ["info@mist-arch.com", "深圳"],
-      en: ["info@mist-arch.com", "Shenzhen"]
+      zh: ["info@mist-arch.com"],
+      en: ["info@mist-arch.com"]
     }
   },
   founders: [

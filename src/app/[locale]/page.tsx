@@ -1,8 +1,9 @@
 import { Hero } from "@/components/hero";
 import { MotionReveal } from "@/components/motion-reveal";
-import { ProjectCard } from "@/components/project-card";
+import { OssPicture } from "@/components/oss-picture";
 import { SectionRibbon } from "@/components/section-ribbon";
-import { getHomeContent, getProjects } from "@/lib/content";
+import { featuredTiles } from "@/content/site";
+import { getHomeContent } from "@/lib/content";
 import { isLocale, type Locale } from "@/lib/i18n";
 import { notFound } from "next/navigation";
 
@@ -14,15 +15,6 @@ type HomePageProps = {
   }>;
 };
 
-function splitFeaturedCaption(caption: string) {
-  const [location, ...titleParts] = caption.split(" · ");
-
-  return {
-    location,
-    title: titleParts.join(" · ") || caption
-  };
-}
-
 export default async function HomePage({ params }: HomePageProps) {
   const { locale: rawLocale } = await params;
 
@@ -32,8 +24,6 @@ export default async function HomePage({ params }: HomePageProps) {
 
   const locale = rawLocale as Locale;
   const home = getHomeContent();
-  const projects = await getProjects();
-  const recommendedProjects = projects.slice(0, 5);
 
   return (
     <main>
@@ -42,22 +32,31 @@ export default async function HomePage({ params }: HomePageProps) {
       <SectionRibbon>{home.indexLabel[locale]}</SectionRibbon>
       <MotionReveal className="section-shell">
         <div className="project-grid featured-grid recommended-grid">
-          {recommendedProjects.map((project, index) => {
-            const caption = home.hero.captions[index]?.[locale] || project.title[locale];
-            const { location, title } = splitFeaturedCaption(caption);
-            const eyebrow = location ? `${project.year} · ${location}` : project.year;
+          {featuredTiles.map((tile, index) => {
+            const eyebrow = `${tile.year} · ${tile.location[locale]}`;
+            const title = tile.title[locale];
+            const alt = locale === "zh"
+              ? `${tile.location.zh} · ${tile.title.zh}`
+              : `${tile.location.en} · ${tile.title.en}`;
 
             return (
-              <ProjectCard
-                key={project.slug}
-                locale={locale}
-                project={project}
-                priority={index === 0}
-                displayEyebrow={eyebrow}
-                displayTitle={title}
-                hideMeta
-                isDisabled
-              />
+              <article
+                key={tile.id}
+                className="story-tile project-tile"
+              >
+                <div className="project-card-media" aria-label={title}>
+                  <OssPicture
+                    path={tile.image}
+                    layout="feature"
+                    alt={alt}
+                    priority={index === 0}
+                  />
+                </div>
+                <div className="story-copy">
+                  <p className="featured-project-eyebrow">{eyebrow}</p>
+                  <h2 className="featured-project-title">{title}</h2>
+                </div>
+              </article>
             );
           })}
         </div>

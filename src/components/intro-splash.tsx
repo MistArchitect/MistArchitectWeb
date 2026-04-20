@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
+import { mediaUrl } from "@/lib/media";
+
 const SPLASH_STORAGE_KEY = "mist-intro-splash-seen";
 const SPLASH_VISIBLE_MS = 2228;
 const SPLASH_FADE_SECONDS = 1.28;
@@ -12,7 +14,7 @@ type IntroSplashProps = {
   logoSrc?: string;
 };
 
-export function IntroSplash({ logoSrc = "/images/LOGO/logo.png" }: IntroSplashProps) {
+export function IntroSplash({ logoSrc = mediaUrl("LOGO/logo.png") }: IntroSplashProps) {
   const [shouldShow, setShouldShow] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const reduceMotion = useReducedMotion();

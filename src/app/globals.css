@@ -219,10 +219,17 @@ button {
 }
 
 .brand-mark {
-  display: block;
+  /* `inline-flex` + `align-items: center` anchors the glyph midline to
+     the flex box midline so the brand lockup shares its horizontal
+     axis with `.header-actions` (which is also a center-aligned flex
+     row). Previously used `display: block` with `line-height: 1.12`,
+     which left a ~1.2px asymmetric gap above the CJK glyphs and
+     dropped the visual midline below the language switch midline. */
+  align-items: center;
+  display: inline-flex;
   font-size: 20px;
   font-weight: 400;
-  line-height: 1.12;
+  line-height: 1;
   min-width: 164px;
 }
 
@@ -305,11 +312,29 @@ button {
   position: relative;
 }
 
-.hero-media {
-  height: 100%;
+.hero-media-frame {
   inset: 0;
-  object-fit: cover;
   position: absolute;
+}
+
+.hero-media-frame picture {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.hero-media {
+  display: block;
+  height: 100%;
+  /* Three-band aspect source switching (see Hero component): wide
+     viewports get a server-cropped 16:9 master, standard viewports get
+     the 4:3 master as-is, portrait viewports get the 9:16 master. Each
+     band's source is chosen to match the viewport shape, so `cover`
+     fills the screen with at most a sliver of crop on edge cases (e.g.
+     ultra-wide 21:9). Keeps photographer framing intact within each
+     band — the server crop is a thoughtful 16:9 of the 4:3, not a
+     CSS-driven runtime trim. */
+  object-fit: cover;
   width: 100%;
 }
 
@@ -446,6 +471,87 @@ button {
   transform: scale(1.12);
 }
 
+/* Minimal downward chevron inside `.hero-carousel-controls`, ordered
+   as the first flex child so it sits directly under the hero image
+   and above the caption + dots stack. Clicking smooth-scrolls one
+   viewport so visitors know there is more content below. */
+.hero-scroll-hint {
+  background: transparent;
+  border: 0;
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 0;
+  position: relative;
+  transition: opacity 240ms ease;
+  width: 32px;
+}
+
+.hero-scroll-hint:hover,
+.hero-scroll-hint:focus-visible {
+  outline: none;
+}
+
+.hero-scroll-hint-chevron {
+  animation: hero-scroll-hint-bounce 2.2s ease-in-out infinite;
+  display: block;
+  height: 14px;
+  opacity: 0.6;
+  position: relative;
+  transition: opacity 240ms ease;
+  width: 22px;
+}
+
+.hero-scroll-hint:hover .hero-scroll-hint-chevron,
+.hero-scroll-hint:focus-visible .hero-scroll-hint-chevron {
+  opacity: 0.95;
+}
+
+/* Two thin diagonal lines joined at the tip build the `⌄` mark.
+   Rotating around the top-left / top-right corners keeps the joint
+   anchored at the top of the 14px tall box so vertical bounce feels
+   symmetric. */
+.hero-scroll-hint-chevron::before,
+.hero-scroll-hint-chevron::after {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 1px;
+  content: "";
+  height: 1.5px;
+  position: absolute;
+  top: 2px;
+  width: 12px;
+}
+
+.hero-scroll-hint-chevron::before {
+  left: 0;
+  transform-origin: top left;
+  transform: rotate(32deg);
+}
+
+.hero-scroll-hint-chevron::after {
+  right: 0;
+  transform-origin: top right;
+  transform: rotate(-32deg);
+}
+
+@keyframes hero-scroll-hint-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-scroll-hint-chevron {
+    animation: none;
+  }
+}
+
 .kicker {
   color: var(--muted);
   font-family: var(--mono);
@@ -495,8 +601,14 @@ button {
   min-width: 0;
 }
 
+.story-tile picture {
+  display: block;
+  width: 100%;
+}
+
 .story-tile img {
   aspect-ratio: 4 / 3;
+  display: block;
   height: auto;
   object-fit: cover;
   width: 100%;
@@ -1093,24 +1205,41 @@ button {
 }
 
 .about-hero-slide {
-  animation: about-hero-fade 18s ease-in-out infinite;
-  opacity: 0;
+  /* Cycle = slides × stagger. Four slides × 5s stagger → 20s cycle.
+     Per-slide lifetime = 6s (1s > stagger) so adjacent slides overlap
+     by 1s for a true crossfade — previous slide's fade-out runs
+     against the next slide's fade-in. Update cycle (here) and stagger
+     (animationDelay in AboutHeroCarousel) together when slide count
+     changes, or the crossfades desync. */
+  animation: about-hero-fade 20s ease-in-out infinite;
+  display: block;
+  height: 100%;
+  inset: 0;
   object-fit: cover;
+  opacity: 0;
+  position: absolute;
   transform: scale(1.03);
+  width: 100%;
   will-change: opacity;
 }
 
+/* 20s cycle, 4 slides × 5s stagger. Per-slide budget = 6s (overlaps
+   neighbour by 1s): 1s fade-in (0 → 5%), 4s hold (5% → 25%), 1s
+   fade-out (25% → 30%), 14s off. Slide N fade-out from t=N*5+4s to
+   N*5+5s runs simultaneously with slide N+1's fade-in over the same
+   interval — that 1s overlap eliminates the black gap the old
+   25%/75%-off timing produced. */
 @keyframes about-hero-fade {
   0% {
     opacity: 0;
   }
 
   5%,
-  31% {
+  25% {
     opacity: 1;
   }
 
-  38%,
+  30%,
   100% {
     opacity: 0;
   }
@@ -1222,8 +1351,14 @@ button {
   top: 96px;
 }
 
+.about-founders-image picture {
+  display: block;
+  width: 100%;
+}
+
 .about-founders-image img {
   aspect-ratio: 3 / 4;
+  display: block;
   height: auto;
   object-fit: cover;
   object-position: center 58%;
@@ -1395,7 +1530,10 @@ button {
   }
 
   .main-nav {
-    align-items: flex-start;
+    /* Keep center cross-axis alignment here — the desktop rule
+       already does `align-items: center`. Previously this breakpoint
+       flipped to `flex-start` which pulled the brand to the top edge
+       and broke the shared midline with the language switch. */
     min-height: 84px;
     padding-bottom: 20px;
     padding-top: 20px;

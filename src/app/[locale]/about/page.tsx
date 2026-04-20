@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 
+import { AboutHeroCarousel } from "@/components/about-hero-carousel";
 import { MotionReveal } from "@/components/motion-reveal";
+import { OssPicture } from "@/components/oss-picture";
 import { about } from "@/content/site";
 import { isLocale, type Locale } from "@/lib/i18n";
+import { mediaUrl } from "@/lib/media";
 
 export const revalidate = 60;
 
@@ -29,7 +31,7 @@ export async function generateMetadata({ params }: AboutPageProps): Promise<Meta
     openGraph: {
       title: about.hero.title[locale],
       description: about.hero.deck[locale],
-      images: [about.heroImage]
+      images: [mediaUrl(about.heroImage)]
     }
   };
 }
@@ -59,21 +61,10 @@ export default async function AboutPage({ params }: AboutPageProps) {
     <main className="about-page about-office-page">
       <section className="about-hero" aria-labelledby="about-title">
         <h1 id="about-title" className="sr-only">{about.hero.title[locale]}</h1>
-        <div className="about-hero-carousel" aria-hidden="true">
-          {about.heroImages.map((image, index) => (
-            <Image
-              key={image}
-              src={image}
-              alt=""
-              className="about-hero-slide"
-              fill
-              priority={index === 0}
-              loading={index === 0 ? undefined : "eager"}
-              sizes="100vw"
-              style={{ animationDelay: `${index * 6}s` }}
-            />
-          ))}
-        </div>
+        <AboutHeroCarousel
+          horizontal={about.aboutHero.horizontal}
+          vertical={about.aboutHero.vertical}
+        />
       </section>
 
       <div className="about-office-shell">
@@ -105,16 +96,14 @@ export default async function AboutPage({ params }: AboutPageProps) {
 
           <section className="about-office-section about-founders" id="founders">
             <MotionReveal className="about-founders-image">
-              <Image
-                src={about.foundersImage}
+              <OssPicture
+                path={about.foundersImage}
+                layout="portrait"
                 alt={
                   locale === "zh"
                     ? "创始人合影，左侧为李博，右侧为程博"
                     : "Founders, Li Bo on the left and Cheng Bo on the right"
                 }
-                width={1400}
-                height={1800}
-                sizes="(min-width: 1180px) 38vw, (min-width: 760px) 44vw, 100vw"
               />
             </MotionReveal>
             <MotionReveal className="about-founders-copy" delay={0.12}>
@@ -161,7 +150,6 @@ export default async function AboutPage({ params }: AboutPageProps) {
           >
             <section id="contact">
               <h2>{about.contact.label[locale]}</h2>
-              <p className="about-lead">{about.contact.title[locale]}</p>
               <div className="about-contact-lines">
                 {about.contact.body[locale].map((line) => (
                   <p key={line}>{line}</p>

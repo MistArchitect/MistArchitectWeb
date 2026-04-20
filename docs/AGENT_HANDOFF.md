@@ -1,6 +1,6 @@
 # Mist Architect Agent Handoff
 
-Last updated: 2026-04-17, Asia/Shanghai (session 2)
+Last updated: 2026-04-18, Asia/Shanghai (session 3 — about carousel crossfade fix + raw-origin delivery for about hero)
 
 This document is for another coding agent or developer taking over the current prototype work. It summarizes the local repository state, the active Alibaba Cloud deployment, and the operational commands needed to continue safely.
 
@@ -47,7 +47,7 @@ About page:
 
 - Primary navigation currently only exposes `关于`.
 - About page internal intro section is labeled `岚` in Chinese and `Mist` in English.
-- About page uses `about-1`, `about-2`, and `about-3` as a full-bleed carousel.
+- About page hero is a 4-slide full-bleed crossfade carousel rendered by `src/components/about-hero-carousel.tsx`. It renders plain `<img>` tags against raw OSS origin URLs (no `x-oss-process`, no `<picture>` srcset) because the master files are already <400KB each. CSS cycle is 20s with a 5s stagger; slide lifetime 6s produces a 1s crossfade overlap between adjacent slides. Viewport aspect <= 3/4 swaps to the vertical image set (`about/vertical/about-v*.jpeg`); wider viewports use the horizontal set (`about/horizontal/about-h*.jpeg`).
 - Founder image and founder metadata are rendered from `src/content/site.ts`.
 
 Splash:
@@ -71,6 +71,12 @@ Splash:
   - Route-preserving Chinese/English switch.
 - `src/components/project-card.tsx`
   - Project tile rendering, including static featured tile mode.
+- `src/lib/media.ts`
+  - OSS URL helper, `pictureSet()` builder, `LAYOUTS` + `COMPRESSION` presets, `AVIF_MAX_WIDTH` cap.
+- `src/components/oss-picture.tsx`
+  - `<OssPicture>` wrapper that renders AVIF + WebP + JPG `<picture>` sources from a layout preset.
+- `docs/IMAGE_PIPELINE.md`
+  - Image pipeline spec — bucket layout, OSS IMG limits, quality matrix, layout presets, byte benchmarks, workflow.
 - `src/app/[locale]/page.tsx`
   - Homepage layout and featured project mapping.
 - `src/app/[locale]/about/page.tsx`
@@ -124,12 +130,25 @@ Directory layout:
 Latest preview release:
 
 ```text
-20260417030911-hero-line-arrows
+20260419132134-scrollhint-above-caption
 ```
 
 Recent release folders on ECS:
 
 ```text
+20260419132134-scrollhint-above-caption
+20260419041212-header-swipe-scrollhint
+20260418234908-about-contact-email-only
+20260418230518-about-carousel-crossfade
+20260418225425-about-aspect-carousel
+20260418211649-hero-band-dedup (stalled mid-rsync; never promoted)
+20260418205813-hero-aspect-masters
+20260418152449-hero-multi-aspect
+20260418145101-hero-contain
+20260418143430-quality-slides
+20260418142159-hero-eager
+20260418135624-img-pipeline
+20260418003750-oss-cutover
 20260417030911-hero-line-arrows
 20260417012030-hero-hotspots-splash
 20260416163941-about-featured-type
@@ -303,12 +322,51 @@ Before real production launch:
 6. Deploy the exact approved release to `mist-production`.
 7. Run smoke checks on production domain.
 
+### Pre-production OSS hardening checklist
+
+The OSS bucket `mist-architects-media` is currently wide-open public read
+over the raw Alibaba endpoint. Before promoting to production, finalize
+the rules below. These are intentionally deferred to avoid churn while
+the frontend wiring is still being iterated.
+
+1. **Custom media domain + CDN.** Point `media.mistarchitects.com` (or
+   final chosen subdomain) at Alibaba Cloud CDN fronting the OSS origin.
+   Switch `NEXT_PUBLIC_MEDIA_BASE` to the CDN origin. The hostname is
+   already pre-registered in `next.config.ts` `images.remotePatterns`.
+2. **HTTPS certificate** on the media domain via Alibaba Cloud CDN /
+   DCDN or Certificate Service. OSS endpoint HTTPS is fine short-term
+   but the CDN in front is the long-term answer.
+3. **Referrer whitelist** on the bucket (`referer`) so only the production
+   domain, preview IP/domain, and `localhost` / `127.0.0.1` can hotlink
+   images. Blocks casual scraping without breaking the site.
+4. **CORS rules** only if a future feature needs `fetch` / `XHR` access
+   to raw image bytes. Plain `<img>` and `next/image` do not need CORS.
+   Default: leave unset.
+5. **Cache headers.** Set long-lived `Cache-Control: public, max-age=31536000, immutable`
+   at the bucket or CDN layer for image objects. Images are
+   content-addressed by filename; immutable is safe as long as renames
+   ship with new filenames.
+6. **Lifecycle rules.** Optional transition of old/unreferenced assets
+   to Infrequent Access or Archive after 90+ days. Revisit once the
+   archive volume grows.
+7. **Versioning.** Enable bucket versioning before the production
+   launch so accidental overwrites are recoverable.
+8. **Access control.** Rotate the upload AK pair into a dedicated RAM
+   user scoped to `oss:PutObject` / `oss:DeleteObject` on this bucket
+   only; remove root-account AK usage from day-to-day deploys.
+9. **Monitoring.** Enable OSS access logs delivered to a separate
+   bucket. Gives an audit trail and feeds future CDN hit-rate tuning.
+10. **ICP alignment.** Confirm the media subdomain is covered by the
+    same ICP filing as the main site before it serves public mainland
+    traffic.
+
 ## 9. Known Constraints and Risks
 
 - The ECS is the low-cost Alibaba Cloud economy instance. Keep builds local when possible.
 - ECS bandwidth is limited. Large media will be slow until OSS/CDN migration.
 - Current images were compressed once. User noted homepage images lost visible quality; do not further compress homepage hero images without approval.
-- OSS migration is desired but not implemented yet.
+- OSS bucket `mist-architects-media` (cn-shenzhen) is provisioned and seeded with the lossless HD image tree from `assets/for_OSS/` (moved out of `public/` on 2026-04-18 so the 353 MB of masters no longer rsync to ECS on every deploy — the folder is a local upload staging dir only, not a web asset). Public endpoint: `https://mist-architects-media.oss-cn-shenzhen.aliyuncs.com/`. Frontend resolves hero, featured, about, and splash-logo images through `mediaUrl()` / `pictureSet()` (see `src/lib/media.ts`), with the base URL overridable via `NEXT_PUBLIC_MEDIA_BASE`. **The full OSS IMG pipeline is now live**: `<OssPicture>` (`src/components/oss-picture.tsx`) renders AVIF + WebP + JPG sources via `<picture>`, sized by layout preset (`hero-landscape` 1280–3840w, `feature` 640–1920w, etc.), compressed by quality tier (`high`/`std`/`low`/`raw`). AVIF rungs cap at 2560w to stay under OSS's AVIF pixel ceiling. Measured: WebP 1920 hero ≈ 411 KB, AVIF 2560 hero ≈ 245 KB, WebP 3840 hero ≈ 1.03 MB, WebP 1280 feature tile ≈ 194 KB. Spec: `docs/IMAGE_PIPELINE.md`. Project detail pages still reference local `/images/home/*` paths from the `public/` bundle and will migrate when those pages get reworked.
+- New buckets default to `BlockPublicAccess=true`. If a fresh bucket returns 403 on public GET, run `aliyun --profile mist ossutil api put-bucket-public-access-block --bucket <name> --public-access-block-configuration '{"BlockPublicAccess":"false"}'` then `aliyun --profile mist oss set-acl oss://<name> public-read -b` before expecting public GETs to succeed.
 - CMS/admin editing is not implemented yet. Content is still code-managed.
 - The current preview was deployed from the local worktree; commit/push state should be checked before assuming reproducibility from GitHub.
 - Vercel is no longer the target deployment path for this project because of mainland China access concerns.
@@ -318,6 +376,6 @@ Before real production launch:
 1. Commit and push the current stable preview state to GitHub.
 2. Add a formal deploy script under `scripts/` to avoid hand-running long rsync commands.
 3. Add a release cleanup command to keep only the latest 5-8 release folders on the 40 GiB disk.
-4. Prepare OSS bucket and image URL strategy before adding more high-resolution media.
+4. Migrate project detail pages and journal entries off `/images/home/home-NN.*` onto OSS paths via `<OssPicture>` (use `feature` or new project-specific layout preset). The helper (`mediaUrl()`, `pictureSet()`) and component (`OssPicture`) already exist — extend `LAYOUTS` in `src/lib/media.ts` if project detail surfaces need a different size ladder.
 5. Decide preview access policy: open IP preview, Basic Auth, or temporary preview domain.
 6. When domain/ICP is ready, configure production HTTPS and promote a reviewed release.
