@@ -91,6 +91,8 @@ Splash:
   - Chronological development log.
 - `docs/DEPLOYMENT_PLAN.md`
   - Longer-term Alibaba Cloud deployment plan.
+- `.github/workflows/deploy-preview.yml`
+  - GitHub Actions preview-only deployment workflow. It is currently manual (`workflow_dispatch`) until deploy secrets are configured and the first manual run is verified.
 
 ## 4. Current Alibaba Cloud Deployment
 
@@ -243,6 +245,43 @@ The latest verified build generated 20 static pages.
 
 ## 7. Preview Deployment Procedure
 
+### GitHub Actions preview deployment
+
+The repository now contains a preview-only deployment workflow:
+
+```text
+.github/workflows/deploy-preview.yml
+```
+
+Current behavior:
+
+- Manual trigger only through GitHub Actions `workflow_dispatch`.
+- Builds on GitHub-hosted Ubuntu runner.
+- Runs `npm ci`, `npm run typecheck`, `npm run lint`, and `npm run build`.
+- Uploads the Next.js standalone output to `/srv/mist-architect/releases/<timestamp>-<sha>/`.
+- Switches `/srv/mist-architect/current-preview`.
+- Restarts PM2 process `mist-preview` on `127.0.0.1:3001`.
+- Smoke-checks `/zh`, `/en`, and `/zh/about` through port `8080`.
+- Does not touch `mist-production`.
+
+Required GitHub Secrets before first run:
+
+```text
+ALIYUN_ECS_HOST      47.106.120.253
+ALIYUN_ECS_USER      deploy
+ALIYUN_ECS_PORT      22
+ALIYUN_ECS_SSH_KEY   private SSH key matching deploy user's authorized_keys
+```
+
+`ALIYUN_ECS_USER` and `ALIYUN_ECS_PORT` have workflow defaults (`deploy`,
+`22`), but setting them explicitly is clearer.
+
+After one manual deployment is verified, the commented `push` trigger in the
+workflow can be enabled for automatic preview deployment from
+`preview/home-featured-projects`.
+
+### Manual fallback
+
 Build locally:
 
 ```bash
@@ -380,8 +419,9 @@ the frontend wiring is still being iterated.
 ## 10. Recommended Next Tasks
 
 1. Before the next deploy, re-check GitHub sync and confirm whether the target source is the GitHub branch or local working tree.
-2. Add a formal deploy script under `scripts/` to avoid hand-running long rsync commands.
-3. Add a release cleanup command to keep only the latest 5-8 release folders on the 40 GiB disk.
-4. Migrate project detail pages and journal entries off `/images/home/home-NN.*` onto OSS paths via `<OssPicture>` (use `feature` or new project-specific layout preset). The helper (`mediaUrl()`, `pictureSet()`) and component (`OssPicture`) already exist — extend `LAYOUTS` in `src/lib/media.ts` if project detail surfaces need a different size ladder.
-5. Decide preview access policy: open IP preview, Basic Auth, or temporary preview domain.
-6. When domain/ICP is ready, configure production HTTPS and promote a reviewed release.
+2. Configure the required GitHub Secrets for `.github/workflows/deploy-preview.yml`, then run one manual preview deployment from GitHub Actions.
+3. After the manual run is verified, enable the commented `push` trigger for automatic preview deployment from `preview/home-featured-projects`.
+4. Add a release cleanup command to keep only the latest 5-8 release folders on the 40 GiB disk.
+5. Migrate project detail pages and journal entries off `/images/home/home-NN.*` onto OSS paths via `<OssPicture>` (use `feature` or new project-specific layout preset). The helper (`mediaUrl()`, `pictureSet()`) and component (`OssPicture`) already exist — extend `LAYOUTS` in `src/lib/media.ts` if project detail surfaces need a different size ladder.
+6. Decide preview access policy: open IP preview, Basic Auth, or temporary preview domain.
+7. When domain/ICP is ready, configure production HTTPS and promote a reviewed release.

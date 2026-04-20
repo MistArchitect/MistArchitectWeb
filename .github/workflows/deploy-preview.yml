@@ -1,0 +1,161 @@
+name: Deploy Preview
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_note:
+        description: "Optional note stored in the GitHub Actions run only."
+        required: false
+        type: string
+  # Enable this push trigger after the required GitHub Secrets are configured
+  # and the first manual preview deployment has been verified.
+  #
+  # push:
+  #   branches:
+  #     - preview/home-featured-projects
+
+concurrency:
+  group: deploy-preview
+  cancel-in-progress: false
+
+env:
+  NEXT_TELEMETRY_DISABLED: "1"
+  REMOTE_BASE: /srv/mist-architect
+  PREVIEW_PROCESS: mist-preview
+  PREVIEW_HOSTNAME: 127.0.0.1
+  PREVIEW_PORT: "3001"
+  PREVIEW_HTTP_PORT: "8080"
+
+jobs:
+  deploy-preview:
+    name: Build and deploy preview
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
+
+      - name: Install deployment tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y rsync
+
+      - name: Prepare SSH
+        env:
+          ALIYUN_ECS_HOST: ${{ secrets.ALIYUN_ECS_HOST }}
+          ALIYUN_ECS_PORT: ${{ secrets.ALIYUN_ECS_PORT || '22' }}
+          ALIYUN_ECS_SSH_KEY: ${{ secrets.ALIYUN_ECS_SSH_KEY }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "$ALIYUN_ECS_HOST" ] || [ -z "$ALIYUN_ECS_SSH_KEY" ]; then
+            echo "Missing required secrets: ALIYUN_ECS_HOST and/or ALIYUN_ECS_SSH_KEY." >&2
+            exit 1
+          fi
+
+          mkdir -p "$HOME/.ssh"
+          printf '%s\n' "$ALIYUN_ECS_SSH_KEY" > "$HOME/.ssh/mist_aliyun_ed25519"
+          chmod 600 "$HOME/.ssh/mist_aliyun_ed25519"
+          ssh-keyscan -p "$ALIYUN_ECS_PORT" "$ALIYUN_ECS_HOST" >> "$HOME/.ssh/known_hosts"
+
+      - name: Create remote release directory
+        env:
+          ALIYUN_ECS_HOST: ${{ secrets.ALIYUN_ECS_HOST }}
+          ALIYUN_ECS_USER: ${{ secrets.ALIYUN_ECS_USER || 'deploy' }}
+          ALIYUN_ECS_PORT: ${{ secrets.ALIYUN_ECS_PORT || '22' }}
+        run: |
+          set -euo pipefail
+          release_id="$(date -u +'%Y%m%d%H%M%S')-${GITHUB_SHA::7}"
+          echo "RELEASE_ID=$release_id" >> "$GITHUB_ENV"
+
+          ssh -i "$HOME/.ssh/mist_aliyun_ed25519" \
+            -p "$ALIYUN_ECS_PORT" \
+            -o IdentitiesOnly=yes \
+            "$ALIYUN_ECS_USER@$ALIYUN_ECS_HOST" \
+            "mkdir -p '$REMOTE_BASE/releases/$release_id'"
+
+      - name: Upload standalone release
+        env:
+          ALIYUN_ECS_HOST: ${{ secrets.ALIYUN_ECS_HOST }}
+          ALIYUN_ECS_USER: ${{ secrets.ALIYUN_ECS_USER || 'deploy' }}
+          ALIYUN_ECS_PORT: ${{ secrets.ALIYUN_ECS_PORT || '22' }}
+        run: |
+          set -euo pipefail
+          remote_dir="$REMOTE_BASE/releases/$RELEASE_ID"
+          ssh_opts="-i $HOME/.ssh/mist_aliyun_ed25519 -p $ALIYUN_ECS_PORT -o IdentitiesOnly=yes"
+
+          rsync -az --delete -e "ssh $ssh_opts" \
+            .next/standalone/ "$ALIYUN_ECS_USER@$ALIYUN_ECS_HOST:$remote_dir/"
+
+          rsync -az --delete -e "ssh $ssh_opts" \
+            .next/static/ "$ALIYUN_ECS_USER@$ALIYUN_ECS_HOST:$remote_dir/.next/static/"
+
+          rsync -az --delete -e "ssh $ssh_opts" \
+            public/ "$ALIYUN_ECS_USER@$ALIYUN_ECS_HOST:$remote_dir/public/"
+
+      - name: Promote preview release
+        env:
+          ALIYUN_ECS_HOST: ${{ secrets.ALIYUN_ECS_HOST }}
+          ALIYUN_ECS_USER: ${{ secrets.ALIYUN_ECS_USER || 'deploy' }}
+          ALIYUN_ECS_PORT: ${{ secrets.ALIYUN_ECS_PORT || '22' }}
+        run: |
+          set -euo pipefail
+
+          ssh -i "$HOME/.ssh/mist_aliyun_ed25519" \
+            -p "$ALIYUN_ECS_PORT" \
+            -o IdentitiesOnly=yes \
+            "$ALIYUN_ECS_USER@$ALIYUN_ECS_HOST" \
+            "REMOTE_BASE='$REMOTE_BASE' RELEASE_ID='$RELEASE_ID' PREVIEW_PROCESS='$PREVIEW_PROCESS' PREVIEW_HOSTNAME='$PREVIEW_HOSTNAME' PREVIEW_PORT='$PREVIEW_PORT' bash -s" <<'REMOTE'
+          set -euo pipefail
+
+          release_dir="$REMOTE_BASE/releases/$RELEASE_ID"
+          if [ ! -f "$release_dir/server.js" ]; then
+            echo "Missing server.js in $release_dir" >&2
+            exit 1
+          fi
+
+          ln -sfn "$release_dir" "$REMOTE_BASE/current-preview"
+          echo "$RELEASE_ID" > "$REMOTE_BASE/shared/current-preview-release.txt"
+
+          export NVM_DIR="$HOME/.nvm"
+          . "$NVM_DIR/nvm.sh"
+
+          pm2 delete "$PREVIEW_PROCESS" >/dev/null 2>&1 || true
+          cd "$REMOTE_BASE/current-preview"
+          HOSTNAME="$PREVIEW_HOSTNAME" PORT="$PREVIEW_PORT" NODE_ENV=production \
+            pm2 start server.js --name "$PREVIEW_PROCESS" --update-env
+          pm2 save
+          pm2 status --no-color
+          REMOTE
+
+      - name: Smoke check preview
+        env:
+          ALIYUN_ECS_HOST: ${{ secrets.ALIYUN_ECS_HOST }}
+        run: |
+          set -euo pipefail
+          base_url="http://$ALIYUN_ECS_HOST:$PREVIEW_HTTP_PORT"
+
+          curl -fsS --retry 3 --retry-delay 2 "$base_url/zh" >/dev/null
+          curl -fsS --retry 3 --retry-delay 2 "$base_url/en" >/dev/null
+          curl -fsS --retry 3 --retry-delay 2 "$base_url/zh/about" >/dev/null
+
+          echo "Preview deployed: $base_url/zh"

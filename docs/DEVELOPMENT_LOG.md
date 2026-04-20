@@ -1265,3 +1265,42 @@ The previous CSS used a 24s cycle with a 6s stagger across 4 slides and per-slid
 - `git status --short --branch`: clean and synchronized before the docs edit.
 - SSH/PM2 check passed after loading the deploy user's nvm environment: `mist-preview` online at the release path above, `mist-production` stopped.
 - No build was run for this entry because the change is documentation-only.
+
+## 2026-04-20 / Preview CI/CD Bootstrap
+
+### Goals
+
+- Move the project away from local-machine-only preview deployment.
+- Add a GitHub Actions path that builds the Next.js standalone output in CI and deploys only the preview process on Alibaba Cloud ECS.
+- Keep production deployment disabled until domain, ICP, HTTPS, and approval flow are ready.
+
+### Decisions
+
+- Use GitHub-hosted runners for build/typecheck/lint instead of building on the 2C2G economy ECS instance.
+- Use SSH/rsync to upload the release artifact to ECS, matching the existing manual release layout.
+- Keep the workflow manual-only first (`workflow_dispatch`). The `push` trigger for `preview/home-featured-projects` is present as a commented block and should only be enabled after GitHub Secrets are configured and one manual deployment passes.
+- Do not store or upload the local deploy private key automatically. The key must be added by a repository admin as a GitHub Secret.
+
+### Files Changed
+
+- `.github/workflows/deploy-preview.yml`: new preview-only deployment workflow. It runs `npm ci`, `npm run typecheck`, `npm run lint`, `npm run build`, installs `rsync`, uploads `.next/standalone`, `.next/static`, and `public`, promotes `/srv/mist-architect/current-preview`, restarts `mist-preview`, and smoke-checks `/zh`, `/en`, and `/zh/about`.
+- `docs/AGENT_HANDOFF.md`: documents required GitHub Secrets, manual trigger behavior, and the path to enable automatic preview deploys later.
+
+### Required GitHub Secrets
+
+```text
+ALIYUN_ECS_HOST
+ALIYUN_ECS_USER
+ALIYUN_ECS_PORT
+ALIYUN_ECS_SSH_KEY
+```
+
+### Verification
+
+- Current docs commit `8bbb3d1` was pushed to `origin/preview/home-featured-projects` before the CI/CD workflow work started.
+- `git diff --check`: passed.
+- Ruby YAML parse of `.github/workflows/deploy-preview.yml`: passed.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `npm run build`: passed and generated 20 static pages.
+- `actionlint` was not run because it is not installed locally, `npx actionlint` is not an executable npm package, and this machine does not have Go installed for `go run github.com/rhysd/actionlint/cmd/actionlint@latest`.
