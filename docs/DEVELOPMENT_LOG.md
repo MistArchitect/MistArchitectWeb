@@ -1309,3 +1309,6 @@ ALIYUN_ECS_SSH_KEY
 
 - Registered `.github/workflows/deploy-preview.yml` on the default branch `main` as commit `61ce091` so GitHub's Actions UI can list the manual `Deploy Preview` workflow. No application code from `preview/home-featured-projects` was merged into `main`.
 - Removed the obsolete `vercel.json` from `preview/home-featured-projects` after the Vercel GitHub Environments were deleted. The project deployment path is now Alibaba Cloud ECS + GitHub Actions preview workflow.
+- First manual `Deploy Preview` run failed because `ALIYUN_ECS_SSH_KEY` contained a malformed private key value (`Load key ... error in libcrypto`). The secret was reset through `gh secret set` from the verified local deploy key.
+- Retry run `24684681445` succeeded from branch `preview/home-featured-projects` at commit `f176d9d`. It deployed release `20260420185834-f176d9d` to `/srv/mist-architect/current-preview`, restarted `mist-preview`, and smoke checks returned 200 for `/zh`, `/en`, and `/zh/about`.
+- Added `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true` to the workflow environment to opt GitHub JavaScript actions into Node 24 and avoid the Node 20 deprecation warning shown by the first successful run.
