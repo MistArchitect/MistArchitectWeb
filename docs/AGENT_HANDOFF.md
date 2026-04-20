@@ -91,6 +91,8 @@ Splash:
   - Chronological development log.
 - `docs/DEPLOYMENT_PLAN.md`
   - Longer-term Alibaba Cloud deployment plan.
+- `docs/CICD.md`
+  - GitHub Actions CI/CD operating notes, including workflow purposes, required secrets, deploy flow, and the difference between `Re-run all jobs` and `Run workflow`.
 - `.github/workflows/deploy-preview.yml`
   - GitHub Actions preview-only deployment workflow. It is currently manual (`workflow_dispatch`) until deploy secrets are configured and the first manual run is verified.
 
@@ -125,19 +127,21 @@ Directory layout:
   shared/
     current-preview-release.txt
     current-release.txt
-  current-preview -> /srv/mist-architect/releases/20260419132134-scrollhint-above-caption
+  current-preview -> /srv/mist-architect/releases/20260420194149-f176d9d
   current-production -> /srv/mist-architect/releases/20260415230115-local
 ```
 
 Latest preview release:
 
 ```text
-20260419132134-scrollhint-above-caption
+20260420194149-f176d9d
 ```
 
 Recent release folders on ECS:
 
 ```text
+20260420194149-f176d9d
+20260420185834-f176d9d
 20260419132134-scrollhint-above-caption
 20260419041212-header-swipe-scrollhint
 20260418234908-about-contact-email-only
@@ -172,10 +176,10 @@ mist-production  stopped  configured historically for port 3002
 
 Production is intentionally offline.
 
-The latest checked PM2 process path on 2026-04-20 was:
+The latest checked PM2 process path on 2026-04-21 was:
 
 ```text
-/srv/mist-architect/releases/20260419132134-scrollhint-above-caption/server.js
+/srv/mist-architect/releases/20260420194149-f176d9d/server.js
 ```
 
 ## 5. Current Nginx Routing
@@ -246,6 +250,12 @@ The latest verified build generated 20 static pages.
 ## 7. Preview Deployment Procedure
 
 ### GitHub Actions preview deployment
+
+Detailed CI/CD notes are maintained in:
+
+```text
+docs/CICD.md
+```
 
 The repository now contains a preview-only deployment workflow:
 

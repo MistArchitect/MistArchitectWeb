@@ -1312,3 +1312,9 @@ ALIYUN_ECS_SSH_KEY
 - First manual `Deploy Preview` run failed because `ALIYUN_ECS_SSH_KEY` contained a malformed private key value (`Load key ... error in libcrypto`). The secret was reset through `gh secret set` from the verified local deploy key.
 - Retry run `24684681445` succeeded from branch `preview/home-featured-projects` at commit `f176d9d`. It deployed release `20260420185834-f176d9d` to `/srv/mist-architect/current-preview`, restarted `mist-preview`, and smoke checks returned 200 for `/zh`, `/en`, and `/zh/about`.
 - Added `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true` to the workflow environment to opt GitHub JavaScript actions into Node 24 and avoid the Node 20 deprecation warning shown by the first successful run.
+
+### 2026-04-21 CI/CD Documentation Follow-up
+
+- Added `docs/CICD.md` as the dedicated GitHub Actions CI/CD reference for the project owner and future agents.
+- Documented why `Re-run all jobs` keeps the old `headSha` and why deploying the newest `preview/home-featured-projects` commit requires starting a new `Run workflow` run.
+- Current observed re-run behavior: run `24684681445` stayed on `f176d9d` and redeployed ECS release `20260420194149-f176d9d`; this is expected GitHub Actions behavior.
