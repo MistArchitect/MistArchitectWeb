@@ -1,6 +1,6 @@
 # Mist Architect Agent Handoff
 
-Last updated: 2026-04-18, Asia/Shanghai (session 3 — about carousel crossfade fix + raw-origin delivery for about hero)
+Last updated: 2026-04-20, Asia/Shanghai (repository sync + Alibaba Cloud deployment handoff refresh)
 
 This document is for another coding agent or developer taking over the current prototype work. It summarizes the local repository state, the active Alibaba Cloud deployment, and the operational commands needed to continue safely.
 
@@ -12,7 +12,7 @@ This document is for another coding agent or developer taking over the current p
 - Current local branch: `preview/home-featured-projects`.
 - GitHub remote:
   - `origin`: `https://github.com/MistArchitect/MistArchitectWeb.git`
-- Important: branch is up to date with `origin/preview/home-featured-projects` as of session 2. GitHub now matches the deployed preview state.
+- Important: branch is clean and up to date with `origin/preview/home-featured-projects` as of 2026-04-20. GitHub now matches the current preview source state.
 
 Current focus:
 
@@ -22,7 +22,7 @@ Current focus:
 - About page is active and uses the `岚` section naming.
 - Project detail pages are prototype/mock-detail pages following the MUJI HOTEL Shenzhen interaction reference.
 - CMS is not connected in the current phase.
-- OSS migration is planned but not done. Images are still served from the ECS app bundle.
+- OSS image delivery is live for the homepage hero, featured project tiles, about page imagery, and splash logo. Remaining migration work is mainly project detail pages / journal content that still reference local `/images/home/*` paths.
 
 ## 2. Key Recent Frontend Features
 
@@ -52,7 +52,7 @@ About page:
 
 Splash:
 
-- Opening logo splash uses `/public/images/LOGO/logo.png`.
+- Opening logo splash resolves the logo via `mediaUrl("LOGO/logo.png")`, defaulting to the Alibaba Cloud OSS public origin unless `NEXT_PUBLIC_MEDIA_BASE` points at a future CDN/custom media domain.
 - Splash is session-aware through `sessionStorage`.
 - The latest change slowed the splash timing by 35%.
 - Reduced-motion users still get a short animation.
@@ -123,7 +123,7 @@ Directory layout:
   shared/
     current-preview-release.txt
     current-release.txt
-  current-preview -> /srv/mist-architect/releases/20260417012030-hero-hotspots-splash
+  current-preview -> /srv/mist-architect/releases/20260419132134-scrollhint-above-caption
   current-production -> /srv/mist-architect/releases/20260415230115-local
 ```
 
@@ -169,6 +169,12 @@ mist-production  stopped  configured historically for port 3002
 ```
 
 Production is intentionally offline.
+
+The latest checked PM2 process path on 2026-04-20 was:
+
+```text
+/srv/mist-architect/releases/20260419132134-scrollhint-above-caption/server.js
+```
 
 ## 5. Current Nginx Routing
 
@@ -363,17 +369,17 @@ the frontend wiring is still being iterated.
 ## 9. Known Constraints and Risks
 
 - The ECS is the low-cost Alibaba Cloud economy instance. Keep builds local when possible.
-- ECS bandwidth is limited. Large media will be slow until OSS/CDN migration.
-- Current images were compressed once. User noted homepage images lost visible quality; do not further compress homepage hero images without approval.
+- ECS bandwidth is limited, but homepage/about/splash media now loads from OSS instead of the ECS app bundle. Remaining large-media risk is any local project-detail or journal imagery until those surfaces are moved to OSS.
+- Do not further compress homepage hero masters without approval. The user already noted visible quality loss in an earlier local compression pass; current image quality should be controlled through OSS IMG presets in `src/lib/media.ts` and documented in `docs/IMAGE_PIPELINE.md`.
 - OSS bucket `mist-architects-media` (cn-shenzhen) is provisioned and seeded with the lossless HD image tree from `assets/for_OSS/` (moved out of `public/` on 2026-04-18 so the 353 MB of masters no longer rsync to ECS on every deploy — the folder is a local upload staging dir only, not a web asset). Public endpoint: `https://mist-architects-media.oss-cn-shenzhen.aliyuncs.com/`. Frontend resolves hero, featured, about, and splash-logo images through `mediaUrl()` / `pictureSet()` (see `src/lib/media.ts`), with the base URL overridable via `NEXT_PUBLIC_MEDIA_BASE`. **The full OSS IMG pipeline is now live**: `<OssPicture>` (`src/components/oss-picture.tsx`) renders AVIF + WebP + JPG sources via `<picture>`, sized by layout preset (`hero-landscape` 1280–3840w, `feature` 640–1920w, etc.), compressed by quality tier (`high`/`std`/`low`/`raw`). AVIF rungs cap at 2560w to stay under OSS's AVIF pixel ceiling. Measured: WebP 1920 hero ≈ 411 KB, AVIF 2560 hero ≈ 245 KB, WebP 3840 hero ≈ 1.03 MB, WebP 1280 feature tile ≈ 194 KB. Spec: `docs/IMAGE_PIPELINE.md`. Project detail pages still reference local `/images/home/*` paths from the `public/` bundle and will migrate when those pages get reworked.
 - New buckets default to `BlockPublicAccess=true`. If a fresh bucket returns 403 on public GET, run `aliyun --profile mist ossutil api put-bucket-public-access-block --bucket <name> --public-access-block-configuration '{"BlockPublicAccess":"false"}'` then `aliyun --profile mist oss set-acl oss://<name> public-read -b` before expecting public GETs to succeed.
 - CMS/admin editing is not implemented yet. Content is still code-managed.
-- The current preview was deployed from the local worktree; commit/push state should be checked before assuming reproducibility from GitHub.
+- GitHub and the local branch were verified synchronized on 2026-04-20. Still run `git fetch origin --prune` and `git status --short --branch` before each deploy because other agents may push changes between sessions.
 - Vercel is no longer the target deployment path for this project because of mainland China access concerns.
 
 ## 10. Recommended Next Tasks
 
-1. Commit and push the current stable preview state to GitHub.
+1. Before the next deploy, re-check GitHub sync and confirm whether the target source is the GitHub branch or local working tree.
 2. Add a formal deploy script under `scripts/` to avoid hand-running long rsync commands.
 3. Add a release cleanup command to keep only the latest 5-8 release folders on the 40 GiB disk.
 4. Migrate project detail pages and journal entries off `/images/home/home-NN.*` onto OSS paths via `<OssPicture>` (use `feature` or new project-specific layout preset). The helper (`mediaUrl()`, `pictureSet()`) and component (`OssPicture`) already exist — extend `LAYOUTS` in `src/lib/media.ts` if project detail surfaces need a different size ladder.

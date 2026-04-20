@@ -1225,3 +1225,43 @@ The previous CSS used a 24s cycle with a 6s stagger across 4 slides and per-slid
 - Preview deployment `20260419132134-scrollhint-above-caption` is online on port `8080`.
 - Smoke checks returned 200 for `/zh`. `grep` over the rendered HTML confirmed the scroll-hint button is the first child of `.hero-carousel-controls`, above the caption and dots.
 - Production remains stopped.
+
+## 2026-04-20 / Repository Sync and Handoff Refresh
+
+### Goals
+
+- Confirm the local repository and GitHub branch are synchronized after external Claude Code work.
+- Refresh the handoff documentation so future agents use the current Alibaba Cloud ECS / OSS assumptions instead of stale Vercel or pre-OSS notes.
+- Record the currently active preview deployment and production-offline state.
+
+### Repository State
+
+- Branch: `preview/home-featured-projects`.
+- Remote: `origin https://github.com/MistArchitect/MistArchitectWeb.git`.
+- Current HEAD: `b8ecc4d OSS image pipeline, aspect-band hero, about carousel, header alignment, scroll hint`.
+- `git fetch origin --prune` completed successfully.
+- `git status --short --branch` reported `## preview/home-featured-projects...origin/preview/home-featured-projects` with no modified or untracked files before this documentation update.
+
+### Deployment State
+
+- Preview remains on Alibaba Cloud ECS at `http://47.106.120.253:8080/zh` and `http://47.106.120.253:8080/en`.
+- Production remains intentionally offline on port `80`, returning the Nginx 503 message.
+- PM2 preview process is online and running from:
+
+```text
+/srv/mist-architect/releases/20260419132134-scrollhint-above-caption/server.js
+```
+
+- PM2 production process exists but is stopped.
+
+### Files Changed
+
+- `docs/AGENT_HANDOFF.md`: updated repository sync status, OSS cutover status, splash logo source, current preview release path, PM2 runtime note, known constraints, and next-task ordering.
+- `docs/DEVELOPMENT_LOG.md`: added this handoff refresh entry.
+
+### Verification
+
+- `git fetch origin --prune`: passed.
+- `git status --short --branch`: clean and synchronized before the docs edit.
+- SSH/PM2 check passed after loading the deploy user's nvm environment: `mist-preview` online at the release path above, `mist-production` stopped.
+- No build was run for this entry because the change is documentation-only.
