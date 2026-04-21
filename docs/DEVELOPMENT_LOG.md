@@ -1434,3 +1434,15 @@ ALIYUN_ECS_SSH_KEY
 - Added homepage progress copy below the featured project grid:
   - Chinese: `网站内容持续更新中 / Work in progress.`
   - English: `Work in progress. The website is being updated.`
+
+### Deployment
+
+- Pushed commit `b84b20a` to `origin/preview/home-featured-projects`.
+- Triggered manual GitHub Actions run `24738362474`; it passed typecheck, lint, build, upload, preview promotion, and preview smoke checks.
+- Preview release: `20260421180550-b84b20a`.
+- Promoted the same release to production:
+  - `/srv/mist-architect/current-production -> /srv/mist-architect/releases/20260421180550-b84b20a`
+  - `mist-production` online on `127.0.0.1:3002`
+- Verified `https://mist-arch.com/zh` contains the home progress note and footer copyright.
+- Verified `https://mist-arch.com/en` contains the English progress note and footer copyright.
+- ICP filing copy is intentionally absent until `NEXT_PUBLIC_ICP_LICENSE` is set to the real filing number.
