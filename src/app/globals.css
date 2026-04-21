@@ -669,8 +669,10 @@ button {
   flex-wrap: wrap;
   gap: 8px;
   font-size: 11px;
+  justify-content: center;
   line-height: 1.7;
   margin: 0;
+  text-align: center;
 }
 
 .site-footer span:not(:last-child)::after,

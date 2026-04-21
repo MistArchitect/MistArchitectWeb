@@ -1446,3 +1446,9 @@ ALIYUN_ECS_SSH_KEY
 - Verified `https://mist-arch.com/zh` contains the home progress note and footer copyright.
 - Verified `https://mist-arch.com/en` contains the English progress note and footer copyright.
 - ICP filing copy is intentionally absent until `NEXT_PUBLIC_ICP_LICENSE` is set to the real filing number.
+
+## 2026-04-22 / Center Footer Legal Copy
+
+### Change
+
+- Centered the site footer legal text so the copyright line sits in the middle of the page on desktop and wraps centered on smaller screens.
