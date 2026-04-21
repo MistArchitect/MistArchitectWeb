@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 
 import { IntroSplash } from "@/components/intro-splash";
 import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 import { isLocale, locales, type Locale } from "@/lib/i18n";
 
 import "../globals.css";
@@ -44,6 +45,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
         <IntroSplash />
         <SiteHeader locale={locale} />
         {children}
+        <SiteFooter locale={locale} />
       </body>
     </html>
   );

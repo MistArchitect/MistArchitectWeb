@@ -1418,3 +1418,19 @@ ALIYUN_ECS_SSH_KEY
 - Direct no-Referer GET for `https://mist-architects-media.oss-cn-shenzhen.aliyuncs.com/LOGO/logo.png`: HTTP 403.
 - Same object with production Referer: HTTP 200.
 - `https://mist-arch.com/zh`: HTTP 200.
+
+## 2026-04-22 / Footer Legal Copy and Home Progress Note
+
+### Goals
+
+- Add production-ready footer structure for copyright and ICP filing copy.
+- Add a small homepage note that the website content remains in progress.
+
+### Changes
+
+- Added `src/components/site-footer.tsx` and mounted it in the localized root layout so all public locale pages share one legal footer.
+- Footer renders localized brand copy, copyright year, rights text, and an optional ICP filing link when `NEXT_PUBLIC_ICP_LICENSE` is set.
+- Added `NEXT_PUBLIC_ICP_LICENSE` to `.env.example`. Production should set this to the real ICP filing number before launch; the site intentionally does not render a guessed placeholder.
+- Added homepage progress copy below the featured project grid:
+  - Chinese: `网站内容持续更新中 / Work in progress.`
+  - English: `Work in progress. The website is being updated.`

@@ -60,6 +60,11 @@ export default async function HomePage({ params }: HomePageProps) {
             );
           })}
         </div>
+        <p className="home-progress-note">
+          {locale === "zh"
+            ? "网站内容持续更新中 / Work in progress."
+            : "Work in progress. The website is being updated."}
+        </p>
       </MotionReveal>
     </main>
   );
