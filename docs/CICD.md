@@ -105,6 +105,8 @@ ALIYUN_ECS_HOST      47.106.120.253
 ALIYUN_ECS_USER      deploy
 ALIYUN_ECS_PORT      22
 ALIYUN_ECS_SSH_KEY   private SSH key matching deploy user's authorized_keys
+PREVIEW_AUTH_USER    Basic Auth username for preview smoke checks
+PREVIEW_AUTH_PASSWORD Basic Auth password for preview smoke checks
 ```
 
 Notes:
@@ -152,10 +154,10 @@ When a new manual `Deploy Preview` run is started on
 14. Update /srv/mist-architect/current-preview symlink.
 15. Write /srv/mist-architect/shared/current-preview-release.txt.
 16. Restart PM2 process mist-preview on HOSTNAME=127.0.0.1 PORT=3001.
-17. Smoke check:
-    - http://47.106.120.253:8080/zh
-    - http://47.106.120.253:8080/en
-    - http://47.106.120.253:8080/zh/about
+17. Smoke check through Basic Auth:
+    - https://preview.mist-arch.com/zh
+    - https://preview.mist-arch.com/en
+    - https://preview.mist-arch.com/zh/about
 ```
 
 The release id format is:
@@ -237,7 +239,7 @@ ECS preview after that re-run:
 PM2 process: mist-preview
 Release: 20260420194149-f176d9d
 Server path: /srv/mist-architect/releases/20260420194149-f176d9d/server.js
-Preview URL: http://47.106.120.253:8080/zh
+Preview URL: https://preview.mist-arch.com/zh
 ```
 
 Latest preview branch HEAD at the time the re-run behavior was observed,
@@ -281,3 +283,54 @@ Current state:
 - Some package-lock references to `@vercel/*` remain because they are transitive
   dependencies of Next/Sanity-related tooling, not active Vercel deployment
   configuration.
+
+## 9. Production Domain State
+
+Production was brought online on 2026-04-21.
+
+Canonical production:
+
+```text
+https://mist-arch.com
+```
+
+Production aliases:
+
+```text
+https://www.mist-arch.com       -> https://mist-arch.com
+https://mist.archi              -> https://mist-arch.com
+https://www.mist.archi          -> https://mist-arch.com
+https://hilarchitects.com       -> https://mist-arch.com
+https://www.hilarchitects.com   -> https://mist-arch.com
+```
+
+Protected preview:
+
+```text
+https://preview.mist-arch.com
+```
+
+Preview access:
+
+- Nginx Basic Auth enabled.
+- `X-Robots-Tag: noindex` enabled.
+- Public `8080/tcp` closed in the Alibaba Cloud security group.
+
+Current runtime split:
+
+```text
+mist-production -> 127.0.0.1:3002 -> /srv/mist-architect/current-production
+mist-preview    -> 127.0.0.1:3001 -> /srv/mist-architect/current-preview
+```
+
+Current production release:
+
+```text
+20260420194149-f176d9d
+```
+
+HTTPS:
+
+- Certbot / Let's Encrypt certificate name: `mist-arch.com`.
+- Certificate currently covers all production aliases plus `preview.mist-arch.com`.
+- Certbot timer is enabled for automatic renewal.

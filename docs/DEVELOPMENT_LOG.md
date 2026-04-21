@@ -1318,3 +1318,65 @@ ALIYUN_ECS_SSH_KEY
 - Added `docs/CICD.md` as the dedicated GitHub Actions CI/CD reference for the project owner and future agents.
 - Documented why `Re-run all jobs` keeps the old `headSha` and why deploying the newest `preview/home-featured-projects` commit requires starting a new `Run workflow` run.
 - Current observed re-run behavior: run `24684681445` stayed on `f176d9d` and redeployed ECS release `20260420194149-f176d9d`; this is expected GitHub Actions behavior.
+- After production domain setup, preview smoke checks were moved from public port `8080` to `https://preview.mist-arch.com` with Basic Auth secrets (`PREVIEW_AUTH_USER`, `PREVIEW_AUTH_PASSWORD`) so the public `8080` preview bypass can be closed.
+
+## 2026-04-21 / Production Domain Launch
+
+### Goals
+
+- Bring the approved preview release online as production.
+- Use `mist-arch.com` as the canonical production domain.
+- Redirect `mist.archi` and `hilarchitects.com` family domains to the canonical production domain.
+- Protect preview behind Basic Auth and remove the old public `8080` preview bypass.
+
+### DNS
+
+- Added Alibaba Cloud DNS A records pointing to ECS `47.106.120.253`:
+  - `mist-arch.com`
+  - `www.mist-arch.com`
+  - `preview.mist-arch.com`
+  - `mist.archi`
+  - `www.mist.archi`
+- Updated Alibaba Cloud DNS A records for `hilarchitects.com` and `www.hilarchitects.com` from `47.240.13.168` to `47.106.120.253`.
+- Left `hilarchitects.com` mail records and `bim` / `bim2` subdomain A records unchanged.
+
+### Runtime
+
+- Promoted release `20260420194149-f176d9d` to production:
+  - `/srv/mist-architect/current-production -> /srv/mist-architect/releases/20260420194149-f176d9d`
+  - `mist-production` online on `127.0.0.1:3002`
+- `mist-preview` remains online on `127.0.0.1:3001`.
+
+### Nginx and HTTPS
+
+- Configured `https://mist-arch.com` as canonical production, proxying to `127.0.0.1:3002`.
+- Configured `https://preview.mist-arch.com` with Nginx Basic Auth and `X-Robots-Tag: noindex`, proxying to `127.0.0.1:3001`.
+- Configured `www.mist-arch.com`, `mist.archi`, `www.mist.archi`, `hilarchitects.com`, and `www.hilarchitects.com` to `301` redirect to `https://mist-arch.com`.
+- Installed Certbot and issued/expanded Let's Encrypt certificate `mist-arch.com` for:
+  - `mist-arch.com`
+  - `www.mist-arch.com`
+  - `preview.mist-arch.com`
+  - `mist.archi`
+  - `www.mist.archi`
+  - `hilarchitects.com`
+  - `www.hilarchitects.com`
+- Certbot timer is enabled for automatic renewal.
+
+### Security Group
+
+- Confirmed inbound `80/tcp` and `443/tcp` are open.
+- Closed public inbound `8080/tcp`; preview should now be reached through `https://preview.mist-arch.com` only.
+- `3001` and `3002` remain internal-only behind Nginx.
+
+### Verification
+
+- `https://mist-arch.com/zh`: HTTP 200.
+- `https://mist-arch.com/en`: HTTP 200.
+- `https://www.mist-arch.com/zh`: HTTP 301 to `https://mist-arch.com/zh`.
+- `https://mist.archi/zh`: HTTP 301 to `https://mist-arch.com/zh`.
+- `https://www.mist.archi/zh`: HTTP 301 to `https://mist-arch.com/zh`.
+- `https://hilarchitects.com/zh`: HTTP 301 to `https://mist-arch.com/zh`.
+- `https://www.hilarchitects.com/zh`: HTTP 301 to `https://mist-arch.com/zh`.
+- `https://preview.mist-arch.com/zh` without credentials: HTTP 401.
+- `https://preview.mist-arch.com/zh` with Basic Auth: HTTP 200.
+- `http://47.106.120.253:8080/zh`: blocked/unreachable after security group rule removal.

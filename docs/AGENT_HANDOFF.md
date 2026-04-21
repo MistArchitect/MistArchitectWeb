@@ -102,8 +102,10 @@ Provider:
 
 - Alibaba Cloud ECS.
 - Public IP: `47.106.120.253`.
-- Current preview URL: `http://47.106.120.253:8080/zh`.
-- English preview URL: `http://47.106.120.253:8080/en`.
+- Production URL: `https://mist-arch.com/zh`.
+- English production URL: `https://mist-arch.com/en`.
+- Current preview URL: `https://preview.mist-arch.com/zh` (Basic Auth required).
+- English preview URL: `https://preview.mist-arch.com/en` (Basic Auth required).
 
 SSH:
 
@@ -128,7 +130,7 @@ Directory layout:
     current-preview-release.txt
     current-release.txt
   current-preview -> /srv/mist-architect/releases/20260420194149-f176d9d
-  current-production -> /srv/mist-architect/releases/20260415230115-local
+  current-production -> /srv/mist-architect/releases/20260420194149-f176d9d
 ```
 
 Latest preview release:
@@ -171,10 +173,10 @@ PM2 current state:
 
 ```text
 mist-preview     online   port 3001 through HOSTNAME=127.0.0.1 PORT=3001
-mist-production  stopped  configured historically for port 3002
+mist-production  online   port 3002 through HOSTNAME=127.0.0.1 PORT=3002
 ```
 
-Production is intentionally offline.
+Production is online.
 
 The latest checked PM2 process path on 2026-04-21 was:
 
@@ -193,43 +195,57 @@ Enabled config:
 
 Current behavior:
 
-- Port `80`: default server returns HTTP 503 with:
-
-```text
-Production is temporarily offline. Use preview on port 8080.
-```
-
-- Port `8080`: proxies preview traffic to `127.0.0.1:3001`.
-- `/images/` has 30-day cache headers and `X-Robots-Tag: noindex`.
+- `https://mist-arch.com`: canonical production host, proxies to `127.0.0.1:3002`.
+- `https://www.mist-arch.com`: redirects to `https://mist-arch.com`.
+- `https://mist.archi` and `https://www.mist.archi`: redirect to `https://mist-arch.com`.
+- `https://hilarchitects.com` and `https://www.hilarchitects.com`: redirect to `https://mist-arch.com`.
+- `https://preview.mist-arch.com`: internal preview host, protected by Nginx Basic Auth, proxies to `127.0.0.1:3001`, and sends `X-Robots-Tag: noindex`.
+- Public `8080/tcp` is closed in the Alibaba Cloud security group. The old IP preview bypass should not be reachable.
 - `/_next/static/` has 30-day immutable-ish static cache headers.
-- General preview traffic includes `X-Robots-Tag: noindex`.
-- No production domain, HTTPS, or ICP production launch is configured yet.
+- HTTPS is handled by Certbot / Let's Encrypt certificate `mist-arch.com`, currently covering `mist-arch.com`, `www.mist-arch.com`, `preview.mist-arch.com`, `mist.archi`, `www.mist.archi`, `hilarchitects.com`, and `www.hilarchitects.com`.
 
 Relevant Nginx shape:
 
 ```nginx
 server {
-    listen 80 default_server;
-    server_name 47.106.120.253 _;
-    return 503 "Production is temporarily offline. Use preview on port 8080.\n";
+    listen 443 ssl;
+    server_name mist-arch.com;
+
+    location / {
+        proxy_pass http://127.0.0.1:3002;
+    }
 }
 
 server {
-    listen 8080;
-    server_name 47.106.120.253 _;
+    listen 443 ssl;
+    server_name www.mist-arch.com mist.archi www.mist.archi hilarchitects.com www.hilarchitects.com;
+    return 301 https://mist-arch.com$request_uri;
+}
 
+server {
+    listen 443 ssl;
+    server_name preview.mist-arch.com;
+    auth_basic "Mist Architect Preview";
+    auth_basic_user_file /etc/nginx/.htpasswd-mist-preview;
     add_header X-Robots-Tag "noindex" always;
 
     location / {
         proxy_pass http://127.0.0.1:3001;
     }
 }
+
+server {
+    listen 80;
+    server_name mist-arch.com www.mist-arch.com preview.mist-arch.com mist.archi www.mist.archi hilarchitects.com www.hilarchitects.com;
+    return 301 https://$host$request_uri;
+}
 ```
 
 Security group expectation:
 
-- Inbound `8080/tcp` must remain open for current preview.
-- Inbound `80/tcp` can remain open but currently only returns the offline production message.
+- Inbound `80/tcp` remains open for HTTP-to-HTTPS redirects and Let's Encrypt renewal.
+- Inbound `443/tcp` remains open for production and protected preview.
+- Inbound `8080/tcp` is closed.
 - Inbound `22/tcp` is needed for SSH deploy/admin access.
 - App ports `3001` and `3002` should not be publicly exposed.
 
@@ -271,7 +287,7 @@ Current behavior:
 - Uploads the Next.js standalone output to `/srv/mist-architect/releases/<timestamp>-<sha>/`.
 - Switches `/srv/mist-architect/current-preview`.
 - Restarts PM2 process `mist-preview` on `127.0.0.1:3001`.
-- Smoke-checks `/zh`, `/en`, and `/zh/about` through port `8080`.
+- Smoke-checks `/zh`, `/en`, and `/zh/about` through `https://preview.mist-arch.com` with Basic Auth.
 - Does not touch `mist-production`.
 
 Required GitHub Secrets before first run:
@@ -281,6 +297,8 @@ ALIYUN_ECS_HOST      47.106.120.253
 ALIYUN_ECS_USER      deploy
 ALIYUN_ECS_PORT      22
 ALIYUN_ECS_SSH_KEY   private SSH key matching deploy user's authorized_keys
+PREVIEW_AUTH_USER    Basic Auth username for preview smoke checks
+PREVIEW_AUTH_PASSWORD Basic Auth password for preview smoke checks
 ```
 
 `ALIYUN_ECS_USER` and `ALIYUN_ECS_PORT` have workflow defaults (`deploy`,
@@ -340,9 +358,9 @@ ssh -i "$ssh_key" -o IdentitiesOnly=yes "$ssh_target" "
 Smoke check:
 
 ```bash
-curl -fsS http://47.106.120.253:8080/zh >/dev/null
-curl -fsS http://47.106.120.253:8080/en >/dev/null
-curl -fsS http://47.106.120.253:8080/zh/about >/dev/null
+curl -fsS https://mist-arch.com/zh >/dev/null
+curl -fsS https://mist-arch.com/en >/dev/null
+curl -fsS -u 'MIST:<preview-password>' https://preview.mist-arch.com/zh >/dev/null
 ```
 
 Check PM2:
@@ -358,24 +376,21 @@ Production is not active.
 
 Current production-related state:
 
-- `mist-production` PM2 process exists but is stopped.
-- `/srv/mist-architect/current-production` points to an old local release.
-- Port `80` intentionally returns 503.
-- No public production domain is attached.
-- No HTTPS certificate is configured.
-- ICP filing / domain readiness is not complete in this repo state.
+- `mist-production` PM2 process is online.
+- `/srv/mist-architect/current-production` points to `20260420194149-f176d9d`.
+- Canonical production domain is `https://mist-arch.com`.
+- User confirmed ICP filing is complete.
+- DNS is managed in Alibaba Cloud DNS.
+- HTTPS is active through Certbot / Let's Encrypt.
+- Preview is protected by Basic Auth at `https://preview.mist-arch.com`.
+- Public `8080/tcp` is closed.
 
-Do not start production unless explicitly requested.
+Before future production changes:
 
-Before real production launch:
-
-1. Confirm final domain and ICP filing status.
-2. Add DNS records to Alibaba Cloud or the chosen DNS provider.
-3. Configure Nginx server blocks for production domain and optional preview domain.
-4. Configure HTTPS certificate.
-5. Decide whether preview should move behind Basic Auth.
-6. Deploy the exact approved release to `mist-production`.
-7. Run smoke checks on production domain.
+1. Deploy and verify in preview first.
+2. Promote the exact approved release to `mist-production`.
+3. Run smoke checks on production domain.
+4. Keep preview protected and `8080/tcp` closed.
 
 ### Pre-production OSS hardening checklist
 

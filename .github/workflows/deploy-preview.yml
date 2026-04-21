@@ -25,7 +25,7 @@ env:
   PREVIEW_PROCESS: mist-preview
   PREVIEW_HOSTNAME: 127.0.0.1
   PREVIEW_PORT: "3001"
-  PREVIEW_HTTP_PORT: "8080"
+  PREVIEW_BASE_URL: https://preview.mist-arch.com
 
 jobs:
   deploy-preview:
@@ -150,13 +150,18 @@ jobs:
 
       - name: Smoke check preview
         env:
-          ALIYUN_ECS_HOST: ${{ secrets.ALIYUN_ECS_HOST }}
+          PREVIEW_AUTH_USER: ${{ secrets.PREVIEW_AUTH_USER }}
+          PREVIEW_AUTH_PASSWORD: ${{ secrets.PREVIEW_AUTH_PASSWORD }}
         run: |
           set -euo pipefail
-          base_url="http://$ALIYUN_ECS_HOST:$PREVIEW_HTTP_PORT"
 
-          curl -fsS --retry 3 --retry-delay 2 "$base_url/zh" >/dev/null
-          curl -fsS --retry 3 --retry-delay 2 "$base_url/en" >/dev/null
-          curl -fsS --retry 3 --retry-delay 2 "$base_url/zh/about" >/dev/null
+          if [ -z "$PREVIEW_AUTH_USER" ] || [ -z "$PREVIEW_AUTH_PASSWORD" ]; then
+            echo "Missing required secrets: PREVIEW_AUTH_USER and/or PREVIEW_AUTH_PASSWORD." >&2
+            exit 1
+          fi
 
-          echo "Preview deployed: $base_url/zh"
+          curl -fsS --retry 3 --retry-delay 2 -u "$PREVIEW_AUTH_USER:$PREVIEW_AUTH_PASSWORD" "$PREVIEW_BASE_URL/zh" >/dev/null
+          curl -fsS --retry 3 --retry-delay 2 -u "$PREVIEW_AUTH_USER:$PREVIEW_AUTH_PASSWORD" "$PREVIEW_BASE_URL/en" >/dev/null
+          curl -fsS --retry 3 --retry-delay 2 -u "$PREVIEW_AUTH_USER:$PREVIEW_AUTH_PASSWORD" "$PREVIEW_BASE_URL/zh/about" >/dev/null
+
+          echo "Preview deployed: $PREVIEW_BASE_URL/zh"
