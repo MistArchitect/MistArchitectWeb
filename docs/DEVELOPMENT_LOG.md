@@ -1452,3 +1452,13 @@ ALIYUN_ECS_SSH_KEY
 ### Change
 
 - Centered the site footer legal text so the copyright line sits in the middle of the page on desktop and wraps centered on smaller screens.
+
+### Deployment
+
+- Pushed commit `2e8474c` to `origin/preview/home-featured-projects`.
+- Triggered manual GitHub Actions run `24739160886`; it passed typecheck, lint, build, upload, preview promotion, and preview smoke checks.
+- Preview release: `20260421182320-2e8474c`.
+- Promoted the same release to production:
+  - `/srv/mist-architect/current-production -> /srv/mist-architect/releases/20260421182320-2e8474c`
+  - `mist-production` online on `127.0.0.1:3002`
+- Verified `https://mist-arch.com/zh` contains the footer and the CSS chunk contains `.site-footer p{text-align:center;...justify-content:center;...}`.
