@@ -1381,3 +1381,40 @@ ALIYUN_ECS_SSH_KEY
 - `https://preview.mist-arch.com/zh` with Basic Auth: HTTP 200.
 - `http://47.106.120.253:8080/zh`: blocked/unreachable after security group rule removal.
 - Manual `Deploy Preview` run `24733248566` was triggered after closing `8080` to verify the new Basic Auth smoke checks. It succeeded from commit `3217212` and deployed preview release `20260421161312-3217212`. Production remained on `20260420194149-f176d9d`.
+
+## 2026-04-22 / OSS Security and CDN Readiness
+
+### Goals
+
+- Add baseline OSS safety controls before wider production sharing.
+- Keep browser-facing images working on production and protected preview.
+- Prepare the final CDN media domain without switching traffic before Alibaba Cloud CDN is active.
+
+### OSS changes
+
+- Enabled Referer protection on bucket `mist-architects-media`.
+- Set `AllowEmptyReferer=false`.
+- Allowed Referers:
+  - `https://mist-arch.com`
+  - `https://www.mist-arch.com`
+  - `https://preview.mist-arch.com`
+  - `https://mist.archi`
+  - `https://www.mist.archi`
+  - `https://hilarchitects.com`
+  - `https://www.hilarchitects.com`
+  - `http://localhost:3000`
+  - `http://127.0.0.1:3000`
+- Left CORS unset because `<img>` / `<picture>` loading does not need XHR access.
+- Enabled OSS bucket versioning so accidental overwrites are recoverable.
+
+### CDN state
+
+- Reserved `media.mist-arch.com` as the future media CDN domain and added it to `next.config.ts` remote image patterns.
+- Alibaba Cloud CLI currently returns `CdnServiceNotFound`, which means CDN service is not open on the account yet. CDN setup must wait for console activation / billing confirmation.
+- After CDN activation, create CDN domain `media.mist-arch.com` with OSS origin, bind HTTPS, add DNS CNAME, set `NEXT_PUBLIC_MEDIA_BASE=https://media.mist-arch.com`, rebuild preview, and verify.
+
+### Verification
+
+- Direct no-Referer GET for `https://mist-architects-media.oss-cn-shenzhen.aliyuncs.com/LOGO/logo.png`: HTTP 403.
+- Same object with production Referer: HTTP 200.
+- `https://mist-arch.com/zh`: HTTP 200.

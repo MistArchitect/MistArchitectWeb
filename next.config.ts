@@ -38,7 +38,7 @@ const nextConfig: NextConfig = {
         // Future CDN fronting the OSS bucket. Kept here so switching
         // to a production domain only requires flipping NEXT_PUBLIC_MEDIA_BASE.
         protocol: "https",
-        hostname: "media.mistarchitects.com"
+        hostname: "media.mist-arch.com"
       }
     ]
   }

@@ -4,7 +4,7 @@ End-to-end spec for how MIST Architects ships imagery: where files
 live, how they are processed, what the page actually requests, and the
 guard rails that keep file weight predictable.
 
-Last reviewed: 2026-04-18 — initial OSS IMG cutover.
+Last reviewed: 2026-04-22 — OSS Referer protection + versioning enabled.
 
 ---
 
@@ -18,11 +18,20 @@ public origin is:
 https://mist-architects-media.oss-cn-shenzhen.aliyuncs.com
 ```
 
-Override in any environment by setting `NEXT_PUBLIC_MEDIA_BASE`. A
-custom domain (`media.mistarchitects.com`) is reserved for the
-production cutover — see `AGENT_HANDOFF.md` → "Pre-production OSS
-hardening checklist" for the launch tasks (CDN + HTTPS + Referer
-allowlist + cache headers).
+Override in any environment by setting `NEXT_PUBLIC_MEDIA_BASE`. The
+reserved CDN media domain is `https://media.mist-arch.com`. It is
+pre-registered in `next.config.ts`, but not active yet because Alibaba
+Cloud CDN service is not open on the account as of 2026-04-22.
+
+Current OSS security state:
+
+- Bucket Referer whitelist is enabled. Direct no-Referer object GETs
+  return 403; production/preview/localhost Referers are allowed.
+- Bucket versioning is enabled.
+- CORS is intentionally unset. Plain `<img>` / `<picture>` rendering
+  does not need it.
+- The raw OSS endpoint remains the active media base until CDN is
+  opened and `NEXT_PUBLIC_MEDIA_BASE` is switched.
 
 Bucket layout (folder names are the contract — code keys off them):
 
@@ -255,12 +264,13 @@ options returns the unprocessed URL.
 
 ## 9. Open production tasks (referenced from launch checklist)
 
-- Bind `media.mistarchitects.com` (CNAME → bucket), enable HTTPS,
-  switch `NEXT_PUBLIC_MEDIA_BASE` to it.
+- Open Alibaba Cloud CDN service for the account. Current CLI response
+  is `CdnServiceNotFound`, so CDN domains cannot be created yet.
+- Bind `media.mist-arch.com` to Alibaba Cloud CDN with the OSS bucket
+  as origin, enable HTTPS, then switch `NEXT_PUBLIC_MEDIA_BASE` to it.
 - Front the bucket with Aliyun CDN (DCDN), configure cache rules:
   long-cache processed URLs (immutable, fingerprinted by query),
   short-cache base paths.
-- Restrict OSS IMG access by Referer to `*.mistarchitects.com` once
-  the custom domain is live to prevent hot-linking.
+- Mirror the Referer whitelist at the CDN layer after CDN is active.
 - See `docs/AGENT_HANDOFF.md` for the full ten-item OSS hardening
   list.

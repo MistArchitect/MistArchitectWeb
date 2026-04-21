@@ -1,6 +1,6 @@
 # Mist Architect Agent Handoff
 
-Last updated: 2026-04-20, Asia/Shanghai (repository sync + Alibaba Cloud deployment handoff refresh)
+Last updated: 2026-04-22, Asia/Shanghai (OSS security + CDN readiness refresh)
 
 This document is for another coding agent or developer taking over the current prototype work. It summarizes the local repository state, the active Alibaba Cloud deployment, and the operational commands needed to continue safely.
 
@@ -393,50 +393,57 @@ Before future production changes:
 3. Run smoke checks on production domain.
 4. Keep preview protected and `8080/tcp` closed.
 
-### Pre-production OSS hardening checklist
+### OSS security and CDN checklist
 
-The OSS bucket `mist-architects-media` is currently wide-open public read
-over the raw Alibaba endpoint. Before promoting to production, finalize
-the rules below. These are intentionally deferred to avoid churn while
-the frontend wiring is still being iterated.
+The OSS bucket `mist-architects-media` is public-read because the
+browser loads image objects directly. It now has baseline production
+protection, but CDN is not active yet.
 
-1. **Custom media domain + CDN.** Point `media.mistarchitects.com` (or
-   final chosen subdomain) at Alibaba Cloud CDN fronting the OSS origin.
-   Switch `NEXT_PUBLIC_MEDIA_BASE` to the CDN origin. The hostname is
-   already pre-registered in `next.config.ts` `images.remotePatterns`.
-2. **HTTPS certificate** on the media domain via Alibaba Cloud CDN /
-   DCDN or Certificate Service. OSS endpoint HTTPS is fine short-term
-   but the CDN in front is the long-term answer.
-3. **Referrer whitelist** on the bucket (`referer`) so only the production
-   domain, preview IP/domain, and `localhost` / `127.0.0.1` can hotlink
-   images. Blocks casual scraping without breaking the site.
-4. **CORS rules** only if a future feature needs `fetch` / `XHR` access
-   to raw image bytes. Plain `<img>` and `next/image` do not need CORS.
-   Default: leave unset.
-5. **Cache headers.** Set long-lived `Cache-Control: public, max-age=31536000, immutable`
-   at the bucket or CDN layer for image objects. Images are
-   content-addressed by filename; immutable is safe as long as renames
-   ship with new filenames.
-6. **Lifecycle rules.** Optional transition of old/unreferenced assets
-   to Infrequent Access or Archive after 90+ days. Revisit once the
-   archive volume grows.
-7. **Versioning.** Enable bucket versioning before the production
-   launch so accidental overwrites are recoverable.
-8. **Access control.** Rotate the upload AK pair into a dedicated RAM
-   user scoped to `oss:PutObject` / `oss:DeleteObject` on this bucket
-   only; remove root-account AK usage from day-to-day deploys.
-9. **Monitoring.** Enable OSS access logs delivered to a separate
-   bucket. Gives an audit trail and feeds future CDN hit-rate tuning.
-10. **ICP alignment.** Confirm the media subdomain is covered by the
-    same ICP filing as the main site before it serves public mainland
-    traffic.
+Completed on 2026-04-22:
+
+1. **Bucket Referer whitelist.** `AllowEmptyReferer=false`.
+   Allowed Referers are:
+   `https://mist-arch.com`, `https://www.mist-arch.com`,
+   `https://preview.mist-arch.com`, `https://mist.archi`,
+   `https://www.mist.archi`, `https://hilarchitects.com`,
+   `https://www.hilarchitects.com`, `http://localhost:3000`,
+   and `http://127.0.0.1:3000`.
+2. **No CORS rule.** Deliberately unset. Plain `<img>` / `<picture>`
+   loading does not need cross-origin XHR permissions.
+3. **Bucket versioning.** Enabled so accidental overwrites can be
+   recovered.
+4. **Runtime check.** Direct no-Referer GET for
+   `LOGO/logo.png` returns 403; production Referer GET returns 200;
+   `https://mist-arch.com/zh` returns 200.
+
+Still open:
+
+1. **CDN service activation.** Alibaba Cloud CLI currently returns
+   `CdnServiceNotFound`, so the account must open Alibaba Cloud CDN
+   service in the console before a CDN domain can be created.
+2. **Media CDN domain.** Use `media.mist-arch.com` as the CDN domain
+   with OSS bucket origin `mist-architects-media.oss-cn-shenzhen.aliyuncs.com`.
+   The hostname is pre-registered in `next.config.ts`.
+3. **HTTPS on media domain.** Bind a certificate for
+   `media.mist-arch.com` in CDN / Certificate Service.
+4. **DNS CNAME.** After CDN returns its CNAME target, add Alibaba DNS
+   record `media.mist-arch.com CNAME <cdn-target>`.
+5. **Environment flip.** Set `NEXT_PUBLIC_MEDIA_BASE=https://media.mist-arch.com`,
+   rebuild, deploy preview, then promote after visual verification.
+6. **CDN cache and hotlink rules.** Configure long cache for processed
+   image URLs and mirror the Referer whitelist at the CDN layer. Do
+   not use same-name overwrites for public images once long cache is
+   active; upload a new filename or refresh CDN cache explicitly.
+7. **Lifecycle / logs / RAM scoping.** Add lifecycle rules, OSS access
+   logging, and a dedicated RAM user for upload/delete operations when
+   the media workflow stabilizes.
 
 ## 9. Known Constraints and Risks
 
 - The ECS is the low-cost Alibaba Cloud economy instance. Keep builds local when possible.
 - ECS bandwidth is limited, but homepage/about/splash media now loads from OSS instead of the ECS app bundle. Remaining large-media risk is any local project-detail or journal imagery until those surfaces are moved to OSS.
 - Do not further compress homepage hero masters without approval. The user already noted visible quality loss in an earlier local compression pass; current image quality should be controlled through OSS IMG presets in `src/lib/media.ts` and documented in `docs/IMAGE_PIPELINE.md`.
-- OSS bucket `mist-architects-media` (cn-shenzhen) is provisioned and seeded with the lossless HD image tree from `assets/for_OSS/` (moved out of `public/` on 2026-04-18 so the 353 MB of masters no longer rsync to ECS on every deploy — the folder is a local upload staging dir only, not a web asset). Public endpoint: `https://mist-architects-media.oss-cn-shenzhen.aliyuncs.com/`. Frontend resolves hero, featured, about, and splash-logo images through `mediaUrl()` / `pictureSet()` (see `src/lib/media.ts`), with the base URL overridable via `NEXT_PUBLIC_MEDIA_BASE`. **The full OSS IMG pipeline is now live**: `<OssPicture>` (`src/components/oss-picture.tsx`) renders AVIF + WebP + JPG sources via `<picture>`, sized by layout preset (`hero-landscape` 1280–3840w, `feature` 640–1920w, etc.), compressed by quality tier (`high`/`std`/`low`/`raw`). AVIF rungs cap at 2560w to stay under OSS's AVIF pixel ceiling. Measured: WebP 1920 hero ≈ 411 KB, AVIF 2560 hero ≈ 245 KB, WebP 3840 hero ≈ 1.03 MB, WebP 1280 feature tile ≈ 194 KB. Spec: `docs/IMAGE_PIPELINE.md`. Project detail pages still reference local `/images/home/*` paths from the `public/` bundle and will migrate when those pages get reworked.
+- OSS bucket `mist-architects-media` (cn-shenzhen) is provisioned and seeded with the lossless HD image tree from `assets/for_OSS/` (moved out of `public/` on 2026-04-18 so the 353 MB of masters no longer rsync to ECS on every deploy — the folder is a local upload staging dir only, not a web asset). Public endpoint: `https://mist-architects-media.oss-cn-shenzhen.aliyuncs.com/`. Frontend resolves hero, featured, about, and splash-logo images through `mediaUrl()` / `pictureSet()` (see `src/lib/media.ts`), with the base URL overridable via `NEXT_PUBLIC_MEDIA_BASE`. **The full OSS IMG pipeline is now live**: `<OssPicture>` (`src/components/oss-picture.tsx`) renders AVIF + WebP + JPG sources via `<picture>`, sized by layout preset (`hero-landscape` 1280–3840w, `feature` 640–1920w, etc.), compressed by quality tier (`high`/`std`/`low`/`raw`). AVIF rungs cap at 2560w to stay under OSS's AVIF pixel ceiling. Bucket Referer protection and versioning are enabled as of 2026-04-22; CDN is pending Alibaba Cloud CDN service activation. Measured: WebP 1920 hero ≈ 411 KB, AVIF 2560 hero ≈ 245 KB, WebP 3840 hero ≈ 1.03 MB, WebP 1280 feature tile ≈ 194 KB. Spec: `docs/IMAGE_PIPELINE.md`. Project detail pages still reference local `/images/home/*` paths from the `public/` bundle and will migrate when those pages get reworked.
 - New buckets default to `BlockPublicAccess=true`. If a fresh bucket returns 403 on public GET, run `aliyun --profile mist ossutil api put-bucket-public-access-block --bucket <name> --public-access-block-configuration '{"BlockPublicAccess":"false"}'` then `aliyun --profile mist oss set-acl oss://<name> public-read -b` before expecting public GETs to succeed.
 - CMS/admin editing is not implemented yet. Content is still code-managed.
 - GitHub and the local branch were verified synchronized on 2026-04-20. Still run `git fetch origin --prune` and `git status --short --branch` before each deploy because other agents may push changes between sessions.

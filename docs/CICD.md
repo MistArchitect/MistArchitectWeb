@@ -255,22 +255,18 @@ Because `f8eea51` was newer than the original run, deploying it requires a new
 
 ## 7. Production Status
 
-Production deployment is not configured in GitHub Actions yet.
+Production is online, but production deployment is not automated in
+GitHub Actions yet.
 
 Current production state:
 
 ```text
-mist-production: stopped
-port 80: Nginx returns production-offline 503 message
+https://mist-arch.com
+mist-production -> 127.0.0.1:3002 -> /srv/mist-architect/current-production
 ```
 
-Do not add production deployment to GitHub Actions until:
-
-- production domain is confirmed,
-- ICP requirements are handled,
-- HTTPS is configured,
-- preview access policy is finalized,
-- manual approval or tag-based production release policy is agreed.
+Keep production promotion manual until a release approval policy is
+agreed. The current automated workflow deploys preview only.
 
 ## 8. Vercel Status
 
