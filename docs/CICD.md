@@ -329,6 +329,17 @@ Current production release:
 20260420194149-f176d9d
 ```
 
+Latest verified preview workflow after production launch:
+
+```text
+Run id: 24733248566
+Branch: preview/home-featured-projects
+Head SHA: 3217212a59a4b9e0375a61856f25a1bb7b633e3a
+Short SHA: 3217212
+Preview release: 20260421161312-3217212
+Conclusion: success
+```
+
 HTTPS:
 
 - Certbot / Let's Encrypt certificate name: `mist-arch.com`.

@@ -129,19 +129,20 @@ Directory layout:
   shared/
     current-preview-release.txt
     current-release.txt
-  current-preview -> /srv/mist-architect/releases/20260420194149-f176d9d
+  current-preview -> /srv/mist-architect/releases/20260421161312-3217212
   current-production -> /srv/mist-architect/releases/20260420194149-f176d9d
 ```
 
 Latest preview release:
 
 ```text
-20260420194149-f176d9d
+20260421161312-3217212
 ```
 
 Recent release folders on ECS:
 
 ```text
+20260421161312-3217212
 20260420194149-f176d9d
 20260420185834-f176d9d
 20260419132134-scrollhint-above-caption
@@ -181,7 +182,7 @@ Production is online.
 The latest checked PM2 process path on 2026-04-21 was:
 
 ```text
-/srv/mist-architect/releases/20260420194149-f176d9d/server.js
+/srv/mist-architect/releases/20260421161312-3217212/server.js
 ```
 
 ## 5. Current Nginx Routing

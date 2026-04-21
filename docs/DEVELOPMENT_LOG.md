@@ -1380,3 +1380,4 @@ ALIYUN_ECS_SSH_KEY
 - `https://preview.mist-arch.com/zh` without credentials: HTTP 401.
 - `https://preview.mist-arch.com/zh` with Basic Auth: HTTP 200.
 - `http://47.106.120.253:8080/zh`: blocked/unreachable after security group rule removal.
+- Manual `Deploy Preview` run `24733248566` was triggered after closing `8080` to verify the new Basic Auth smoke checks. It succeeded from commit `3217212` and deployed preview release `20260421161312-3217212`. Production remained on `20260420194149-f176d9d`.
