@@ -86,21 +86,13 @@ Purpose:
 Current trigger:
 
 ```text
-workflow_dispatch only
+push to preview/home-featured-projects
+workflow_dispatch
 ```
 
-That means preview deployment is currently manual. It does not run
-automatically on every push yet.
-
-The workflow contains a commented `push` trigger for future use:
-
-```yaml
-# push:
-#   branches:
-#     - preview/home-featured-projects
-```
-
-Only enable this after manual preview deployments are consistently stable.
+That means preview deployment is automatic for the active preview branch.
+Manual `workflow_dispatch` remains available when a deployment needs to be
+re-run without creating a new commit.
 
 ## 3. Required GitHub Secrets
 
@@ -208,8 +200,9 @@ network timeout or an invalid secret that has since been fixed.
 
 This creates a new workflow run from the currently selected branch.
 
-Use this when the branch has moved forward and you want to deploy the latest
-commit.
+Use this only when you need to redeploy the selected branch without creating a
+new commit. Normal preview deployment happens automatically after pushing to
+`preview/home-featured-projects`.
 
 Correct manual deployment path:
 

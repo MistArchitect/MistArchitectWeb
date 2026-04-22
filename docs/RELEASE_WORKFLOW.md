@@ -50,7 +50,7 @@ Process:
 
 1. Commit the local changes.
 2. Push to `origin/preview/home-featured-projects`.
-3. Manually run GitHub Actions workflow `Deploy Preview`.
+3. GitHub Actions workflow `Deploy Preview` runs automatically from that push.
 4. Share the protected preview URL after the workflow succeeds.
 
 Preview URL:
