@@ -1490,3 +1490,93 @@ ALIYUN_ECS_SSH_KEY
 - Added `AGENTS.md` at the repository root.
 - Linked `AGENTS.md` from `README.md`.
 - Kept detailed operational content in existing docs instead of duplicating it.
+
+## 2026-04-22 / Mobile Hero Swipe Direction Lock
+
+### Goals
+
+- Improve homepage Hero carousel touch behavior on portrait/mobile viewports.
+- Prevent slightly diagonal left/right swipes from accidentally scrolling the page vertically.
+- Give mobile swipe transitions a more directional feel than the desktop crossfade.
+
+### Changes
+
+- `src/components/hero.tsx`: added a touch-move direction lock with a small dead zone. Slightly diagonal horizontal gestures lock as carousel swipes and call `preventDefault()` while strongly vertical gestures keep normal page scrolling.
+- `src/components/hero.tsx`: added a portrait/mobile drag track using `motion/react` motion values. The active, previous, and next images move with the finger, can pause mid-gesture, then either settle back or complete the image change on release.
+- `src/app/globals.css`: set `touch-action: pan-y` on the hero shell so normal vertical gestures remain available while horizontal gestures are handled by the carousel.
+- `src/app/globals.css`: added the three-frame mobile carousel stage/track styles.
+- `DESIGN.md`: documented the mobile direction-lock rule, gesture-driven mobile swipe animation, and the project-detail `sticky hero` / `scroll overlay` naming.
+
+## 2026-04-22 / Mobile Hero Light Stack Transition
+
+### Goals
+
+- Replace the portrait/mobile Hero's side-by-side push feel with a calmer stacked transition.
+- Keep the interaction gesture-driven so the image can stop naturally under the finger.
+- Remove mobile left/right tap controls and keep swipe as the only mobile carousel change gesture.
+
+### Changes
+
+- `src/components/hero.tsx`: changed the portrait/mobile Hero structure from a three-frame horizontal track to a light stacked deck. The current image sits above the previous/next images and follows `mobileDragX`; the incoming image fades, scales, and shifts subtly from the layer below.
+- `src/components/hero.tsx`: kept the release behavior spring-based. Under-threshold gestures rebound to the current image; committed gestures animate the current image out and then update the active index.
+- `src/app/globals.css`: replaced mobile track positioning with stacked frame layering and current-frame drag cursor/touch styles.
+- `DESIGN.md`: updated the mobile Hero rule to describe the light stacked deck model instead of a lateral push transition.
+
+## 2026-04-22 / Homepage Scroll Overlay
+
+### Goals
+
+- Bring the project-detail `sticky hero` / `scroll overlay` behavior to the homepage.
+- Keep the first screen as a full Hero image carousel.
+- Let the recommended-projects white page body rise over the Hero during downward scroll.
+
+### Changes
+
+- `src/app/[locale]/page.tsx`: wrapped the homepage Hero and recommended-projects content in a `home-scroll-overlay` section. The Hero sits inside `home-hero-sticky`, followed by a transparent one-viewport spacer and then the white content layer.
+- `src/app/globals.css`: added `home-page`, `home-scroll-overlay`, `home-hero-sticky`, `home-overlay-spacer`, and `home-overlay-content` styles. The sticky Hero uses `margin-bottom: -100svh` so the spacer controls when the white layer begins to cover the image.
+- `DESIGN.md`: documented the homepage `scroll overlay` / `cover reveal` rule.
+
+## 2026-04-22 / About Scroll Overlay
+
+### Goals
+
+- Apply the same `scroll overlay` / `cover reveal` entry rhythm to the About page.
+- Keep the About image carousel as a full-screen photographic entry.
+- Let the white office profile content rise over the image, with the secondary About navigation staying in the white content layer.
+
+### Changes
+
+- `src/app/[locale]/about/page.tsx`: wrapped the About hero carousel and office content in `about-scroll-overlay`, with a sticky hero layer, one-viewport spacer, and white content layer.
+- `src/app/globals.css`: added `about-hero-sticky`, `about-overlay-spacer`, and `about-overlay-content` styles, and changed `.about-hero` from an 88svh block to a 100svh block for a complete first-screen cover reveal.
+- `DESIGN.md`: documented the About page overlay behavior and kept its section anchors explicit.
+
+## 2026-04-22 / Hero Stack Direction and Footer Layering Fix
+
+### Goals
+
+- Restore the mobile Hero autoplay transition after the stacked swipe refactor.
+- Adjust the stacked swipe direction so next images layer in from the right, while previous images are revealed beneath the current image.
+- Prevent sticky Hero layers from showing through the site footer after the homepage/About scroll overlay changes.
+
+### Changes
+
+- `src/components/hero.tsx`: mobile autoplay now animates `mobileDragX` to the next-image position before updating `currentIndex`, so timed image changes use the same stacked transition as manual gestures.
+- `src/components/hero.tsx`: adjusted the mobile stack transforms. The next slide is positioned offscreen to the right and moves left above the current image; the previous slide stays below and is revealed as the current image moves right.
+- `src/app/globals.css`: raised the next-slide stack layer above the current slide for the incoming-next transition.
+- `src/app/globals.css`: gave `.site-footer` an explicit paper background, full-width stacking context, and higher z-index so sticky image layers cannot bleed behind the footer.
+- `DESIGN.md`: clarified the intended asymmetric mobile stack behavior and noted that autoplay must animate instead of swapping instantly.
+
+## 2026-04-22 / Hero Next Overlay and About Scroll Cue
+
+### Goals
+
+- Fix the mobile next-image and autoplay transitions so they read as a right-to-left overlay, not a left-to-right push.
+- Add a clear scroll cue to the About hero.
+
+### Changes
+
+- `src/components/hero.tsx`: added a counter-motion layer inside the current mobile slide. During next-image gestures/autoplay, the current image remains visually anchored while the next image enters from the right above it; previous-image gestures still move the current image rightward to reveal the lower layer.
+- `src/app/globals.css`: allowed the current mobile frame to overflow and added `.hero-mobile-current-visual` so the counter-motion layer can keep the current image visually fixed during next-image drags.
+- `src/app/[locale]/about/page.tsx`: added a minimal downward chevron anchor in the About hero, linking to the intro section.
+- `src/app/globals.css`: added `.about-scroll-hint` positioning and hover/focus treatment, reusing the homepage chevron mark.
+- `DESIGN.md`: clarified that mobile autoplay uses the same next-image overlay animation and documented the About scroll cue.

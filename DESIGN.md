@@ -65,6 +65,9 @@ Typography must be clinical, geometric, and perfectly aligned, mirroring archite
   - Manual carousel actions must restart the autoplay timer so a user click never immediately collides with the next automatic transition.
   - The left and right carousel hit areas each cover roughly 30% of the hero image. The visible control is a semi-transparent white vertical line (60px tall, 1.5px wide) resting at rest opacity. On hover or keyboard focus the line animates into a minimal chevron arrow: the top half and bottom half each rotate ±22° around the shared midpoint to form `‹` (left zone) or `›` (right zone). Transition is 300ms ease. No circle, no border-radius, no icon glyph.
   - The active image caption sits above the dot navigation near the lower center of the viewport.
+  - On portrait/mobile viewports, horizontal swipe gestures must include a small direction-lock dead zone. Slightly diagonal left/right swipes should remain carousel gestures and should not drift the page vertically; strongly vertical gestures should continue to allow normal page scroll.
+  - Portrait/mobile swipe transitions should use a light stacked deck model. Swiping toward the next/right-side image brings that image in from the right and layers it above the current image while the current image stays visually anchored; swiping toward the previous/left-side image moves the current image rightward and reveals the previous image underneath. The gesture can pause mid-drag, then either settle back or complete the image change on release. Autoplay should use the same stacked next-image overlay animation instead of an instant index swap. Avoid hard push animations, bounce, or large lateral movement.
+  - After the initial homepage Hero, the recommended-projects page body should enter with a `scroll overlay` / `cover reveal`: keep the Hero sticky for the first scroll screen, then let the white content layer rise from below and cover the image. Do not add divider lines or decorative edges at the transition; the shift from image to white page is the visual cue.
   - Homepage featured project tiles can be temporarily non-interactive during prototype review; when disabled, remove detail links and the full-index entry point.
   - Homepage featured project tile captions use two lines: `year · location` on the first line and project name on the second line. Both use neutral greys, with the project name slightly stronger and the first line smaller.
   - Caption text is content data, not derived from filenames, so future renames or OSS migration do not change public-facing labels.
@@ -72,6 +75,13 @@ Typography must be clinical, geometric, and perfectly aligned, mirroring archite
   - Do *not* round the corners (`border-radius: 0`). Images must have sharp, crisp edges.
   - Follow strict proportions (16:9, 3:2, or 1:1).
   - Add generous `margin-bottom` beneath images before any caption text.
+
+### About Page
+
+- The About page uses the same `scroll overlay` / `cover reveal` entry rhythm as the homepage: keep the full-screen office-image carousel sticky for the first scroll screen, then let the white office text layer rise over it.
+- Add the same minimal downward chevron cue used on the homepage Hero so users understand that the About hero can scroll into the office content.
+- The secondary About navigation belongs to the white content layer, not the image layer, so the image remains a quiet photographic introduction rather than a navigational panel.
+- Preserve the existing section anchors: intro, founders, media, and contact.
 
 ### Project Detail Pages
 
@@ -93,6 +103,7 @@ Adopt the following principles for Mist Architect project detail pages:
    - The second text group is a single centered project-introduction paragraph, still over the full-screen image carousel with a darkened image overlay for legibility.
    - After the second transparent text group, the next scroll enters the white-background detail page.
    - Use a quiet parallax or sticky depth effect only if it remains subtle and does not disturb reading.
+   - This opening pattern is a `sticky hero` / `scroll overlay` / `scrollytelling cover reveal`: the image remains sticky while later white-background content scrolls over it.
 
 2. **Sectioned Narrative**
    - Structure every project as anchored sections rather than one long undifferentiated article.

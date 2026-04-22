@@ -310,11 +310,51 @@ button {
   height: 100svh;
   overflow: hidden;
   position: relative;
+  touch-action: pan-y;
 }
 
 .hero-media-frame {
   inset: 0;
   position: absolute;
+}
+
+.hero-mobile-stage {
+  inset: 0;
+  position: absolute;
+}
+
+.hero-mobile-stage {
+  overflow: hidden;
+}
+
+.hero-media-frame-mobile {
+  overflow: hidden;
+  transform-origin: center;
+  will-change: opacity, transform;
+}
+
+.hero-media-frame-previous {
+  z-index: 1;
+}
+
+.hero-media-frame-current {
+  cursor: grab;
+  overflow: visible;
+  touch-action: pan-y;
+  z-index: 2;
+}
+
+.hero-media-frame-next {
+  z-index: 3;
+}
+
+.hero-media-frame-current:active {
+  cursor: grabbing;
+}
+
+.hero-mobile-current-visual {
+  height: 100%;
+  width: 100%;
 }
 
 .hero-media-frame picture {
@@ -336,6 +376,38 @@ button {
      CSS-driven runtime trim. */
   object-fit: cover;
   width: 100%;
+}
+
+.home-page {
+  background: var(--paper);
+}
+
+.home-scroll-overlay {
+  background: transparent;
+  position: relative;
+}
+
+.home-hero-sticky {
+  height: 100svh;
+  margin-bottom: -100svh;
+  overflow: hidden;
+  position: sticky;
+  top: 0;
+  z-index: 0;
+}
+
+.home-overlay-spacer {
+  height: 100svh;
+  pointer-events: none;
+  position: relative;
+  z-index: 1;
+}
+
+.home-overlay-content {
+  background: var(--paper);
+  min-height: 100svh;
+  position: relative;
+  z-index: 2;
 }
 
 .hero-caption {
@@ -658,10 +730,13 @@ button {
 }
 
 .site-footer {
+  background: var(--paper);
   color: var(--muted);
-  margin: 0 auto;
-  max-width: var(--max);
+  margin: 0;
+  max-width: none;
   padding: 0 var(--gutter) 34px;
+  position: relative;
+  z-index: 4;
 }
 
 .site-footer p {
@@ -671,7 +746,8 @@ button {
   font-size: 11px;
   justify-content: center;
   line-height: 1.7;
-  margin: 0;
+  margin: 0 auto;
+  max-width: var(--max);
   text-align: center;
 }
 
@@ -1222,10 +1298,39 @@ button {
   color: var(--page-ink);
 }
 
+.about-scroll-overlay {
+  background: transparent;
+  position: relative;
+}
+
+.about-hero-sticky {
+  height: 100svh;
+  margin-bottom: -100svh;
+  overflow: hidden;
+  position: sticky;
+  top: 0;
+  z-index: 0;
+}
+
+.about-overlay-spacer {
+  height: 100svh;
+  pointer-events: none;
+  position: relative;
+  z-index: 1;
+}
+
+.about-overlay-content {
+  background: var(--paper);
+  min-height: 100svh;
+  position: relative;
+  z-index: 2;
+}
+
 .about-hero {
   background: var(--solid-bg);
   color: var(--on-image);
-  min-height: 88svh;
+  height: 100svh;
+  min-height: 100svh;
   overflow: hidden;
   position: relative;
 }
@@ -1242,6 +1347,29 @@ button {
   pointer-events: none;
   position: absolute;
   z-index: 2;
+}
+
+.about-scroll-hint {
+  align-items: center;
+  bottom: 30px;
+  color: #ffffff;
+  display: flex;
+  height: 32px;
+  justify-content: center;
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%);
+  width: 32px;
+  z-index: 3;
+}
+
+.about-scroll-hint:hover {
+  opacity: 1;
+}
+
+.about-scroll-hint:hover .hero-scroll-hint-chevron,
+.about-scroll-hint:focus-visible .hero-scroll-hint-chevron {
+  opacity: 0.95;
 }
 
 .about-hero-slide {
