@@ -35,6 +35,7 @@ http://localhost:3000/studio
 
 ## Project Notes
 
+- `AGENTS.md` is the top-level entry file for coding agents.
 - `DESIGN.md` contains the imported WIRED-inspired design reference.
 - `docs/RELEASE_WORKFLOW.md` defines the Local → Preview → Production operating flow.
 - `docs/DEVELOPMENT_LOG.md` tracks implementation decisions, commands, and handoff notes.

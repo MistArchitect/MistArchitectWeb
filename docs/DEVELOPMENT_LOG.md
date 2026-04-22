@@ -1477,3 +1477,16 @@ ALIYUN_ECS_SSH_KEY
 - Corrected stale handoff wording from `Production is not active` to `Production is active`.
 - Confirmed local branch is synchronized with `origin/preview/home-featured-projects`.
 - Confirmed ECS preview and production both point to `20260421182320-2e8474c`.
+
+## 2026-04-22 / Add Top-Level Agent Entry File
+
+### Goals
+
+- Provide a single repository-root entry point for future coding agents.
+- Define document reading order, hard rules, and release-flow guardrails.
+
+### Changes
+
+- Added `AGENTS.md` at the repository root.
+- Linked `AGENTS.md` from `README.md`.
+- Kept detailed operational content in existing docs instead of duplicating it.
