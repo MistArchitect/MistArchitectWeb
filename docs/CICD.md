@@ -148,7 +148,7 @@ When a new manual `Deploy Preview` run is started on
 10. Create /srv/mist-architect/releases/<timestamp>-<short-sha>/ on ECS.
 11. rsync .next/standalone/ into the release directory.
 12. rsync .next/static/ into release/.next/static/.
-13. rsync public/ into release/public/.
+13. rsync public/ into /srv/mist-architect/shared/public/ and symlink that shared directory into the release. This avoids re-uploading the 76 MB font bundle into every new release.
 14. Update /srv/mist-architect/current-preview symlink.
 15. Write /srv/mist-architect/shared/current-preview-release.txt.
 16. Restart PM2 process mist-preview on HOSTNAME=127.0.0.1 PORT=3001.

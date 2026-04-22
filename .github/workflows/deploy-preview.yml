@@ -108,7 +108,7 @@ jobs:
             .next/static/ "$ALIYUN_ECS_USER@$ALIYUN_ECS_HOST:$remote_dir/.next/static/"
 
           rsync -az --delete -e "ssh $ssh_opts" \
-            public/ "$ALIYUN_ECS_USER@$ALIYUN_ECS_HOST:$remote_dir/public/"
+            public/ "$ALIYUN_ECS_USER@$ALIYUN_ECS_HOST:$REMOTE_BASE/shared/public/"
 
       - name: Promote preview release
         env:
@@ -130,6 +130,14 @@ jobs:
             echo "Missing server.js in $release_dir" >&2
             exit 1
           fi
+
+          if [ ! -d "$REMOTE_BASE/shared/public" ]; then
+            echo "Missing shared public directory at $REMOTE_BASE/shared/public" >&2
+            exit 1
+          fi
+
+          rm -rf "$release_dir/public"
+          ln -sfn "$REMOTE_BASE/shared/public" "$release_dir/public"
 
           ln -sfn "$release_dir" "$REMOTE_BASE/current-preview"
           echo "$RELEASE_ID" > "$REMOTE_BASE/shared/current-preview-release.txt"

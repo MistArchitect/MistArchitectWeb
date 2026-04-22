@@ -1594,3 +1594,16 @@ ALIYUN_ECS_SSH_KEY
 - `.github/workflows/deploy-preview.yml`: kept the public Basic Auth smoke checks, but added HTTP/1.1, connection/max-time limits, longer retry count, and `--retry-all-errors` so TLS reset/transient network failures get retried.
 - `.github/workflows/deploy-preview.yml`: made public preview smoke failures warnings after ECS-local smoke passes. The deployment should fail only when the deployed app is unhealthy on ECS; GitHub-hosted runner TLS resets against `preview.mist-arch.com` are tracked as warnings.
 - `docs/CICD.md`: documented the two-stage smoke check: ECS-local first, public Basic Auth second.
+
+## 2026-04-22 / Preview Shared Public Assets
+
+### Goals
+
+- Prevent preview deployments from re-uploading the same 76 MB `public/font` bundle into every timestamped release directory.
+- Keep future automatic preview deployments fast enough for push-based CI/CD.
+
+### Changes
+
+- Seeded `/srv/mist-architect/shared/public` on ECS from the current preview release's `public` directory.
+- `.github/workflows/deploy-preview.yml`: now rsyncs `public/` into `/srv/mist-architect/shared/public/` and symlinks that directory into each new preview release during promotion.
+- `docs/CICD.md`: documented the shared public asset directory and the release symlink behavior.
