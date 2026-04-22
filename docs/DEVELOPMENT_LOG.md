@@ -1580,3 +1580,16 @@ ALIYUN_ECS_SSH_KEY
 - `src/app/[locale]/about/page.tsx`: added a minimal downward chevron anchor in the About hero, linking to the intro section.
 - `src/app/globals.css`: added `.about-scroll-hint` positioning and hover/focus treatment, reusing the homepage chevron mark.
 - `DESIGN.md`: clarified that mobile autoplay uses the same next-image overlay animation and documented the About scroll cue.
+
+## 2026-04-22 / Preview Smoke Check Hardening
+
+### Goals
+
+- Keep preview deployment automatic on push while reducing false-negative smoke failures.
+- Distinguish application deployment success from transient public HTTPS connection resets.
+
+### Changes
+
+- `.github/workflows/deploy-preview.yml`: changed the smoke step to first SSH into ECS and check `/zh`, `/en`, and `/zh/about` directly against `http://127.0.0.1:3001`.
+- `.github/workflows/deploy-preview.yml`: kept the public Basic Auth smoke checks, but added HTTP/1.1, connection/max-time limits, longer retry count, and `--retry-all-errors` so TLS reset/transient network failures get retried.
+- `docs/CICD.md`: documented the two-stage smoke check: ECS-local first, public Basic Auth second.

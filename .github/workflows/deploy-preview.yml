@@ -147,6 +147,9 @@ jobs:
 
       - name: Smoke check preview
         env:
+          ALIYUN_ECS_HOST: ${{ secrets.ALIYUN_ECS_HOST }}
+          ALIYUN_ECS_USER: ${{ secrets.ALIYUN_ECS_USER || 'deploy' }}
+          ALIYUN_ECS_PORT: ${{ secrets.ALIYUN_ECS_PORT || '22' }}
           PREVIEW_AUTH_USER: ${{ secrets.PREVIEW_AUTH_USER }}
           PREVIEW_AUTH_PASSWORD: ${{ secrets.PREVIEW_AUTH_PASSWORD }}
         run: |
@@ -157,8 +160,27 @@ jobs:
             exit 1
           fi
 
-          curl -fsS --retry 3 --retry-delay 2 -u "$PREVIEW_AUTH_USER:$PREVIEW_AUTH_PASSWORD" "$PREVIEW_BASE_URL/zh" >/dev/null
-          curl -fsS --retry 3 --retry-delay 2 -u "$PREVIEW_AUTH_USER:$PREVIEW_AUTH_PASSWORD" "$PREVIEW_BASE_URL/en" >/dev/null
-          curl -fsS --retry 3 --retry-delay 2 -u "$PREVIEW_AUTH_USER:$PREVIEW_AUTH_PASSWORD" "$PREVIEW_BASE_URL/zh/about" >/dev/null
+          ssh -i "$HOME/.ssh/mist_aliyun_ed25519" \
+            -p "$ALIYUN_ECS_PORT" \
+            -o IdentitiesOnly=yes \
+            "$ALIYUN_ECS_USER@$ALIYUN_ECS_HOST" \
+            "PREVIEW_PORT='$PREVIEW_PORT' bash -s" <<'REMOTE'
+          set -euo pipefail
+          for path in /zh /en /zh/about; do
+            curl -fsS --retry 6 --retry-delay 2 "http://127.0.0.1:$PREVIEW_PORT$path" >/dev/null
+          done
+          REMOTE
+
+          for path in /zh /en /zh/about; do
+            curl -fsS \
+              --http1.1 \
+              --connect-timeout 10 \
+              --max-time 30 \
+              --retry 6 \
+              --retry-all-errors \
+              --retry-delay 5 \
+              -u "$PREVIEW_AUTH_USER:$PREVIEW_AUTH_PASSWORD" \
+              "$PREVIEW_BASE_URL$path" >/dev/null
+          done
 
           echo "Preview deployed: $PREVIEW_BASE_URL/zh"

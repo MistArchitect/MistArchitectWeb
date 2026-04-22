@@ -152,7 +152,8 @@ When a new manual `Deploy Preview` run is started on
 14. Update /srv/mist-architect/current-preview symlink.
 15. Write /srv/mist-architect/shared/current-preview-release.txt.
 16. Restart PM2 process mist-preview on HOSTNAME=127.0.0.1 PORT=3001.
-17. Smoke check through Basic Auth:
+17. Smoke check ECS-local preview routes on `http://127.0.0.1:3001`.
+18. Smoke check public preview routes through Basic Auth with HTTP/1.1 and longer retries:
     - https://preview.mist-arch.com/zh
     - https://preview.mist-arch.com/en
     - https://preview.mist-arch.com/zh/about
