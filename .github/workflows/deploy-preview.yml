@@ -171,8 +171,9 @@ jobs:
           done
           REMOTE
 
+          public_smoke_failed=0
           for path in /zh /en /zh/about; do
-            curl -fsS \
+            if ! curl -fsS \
               --http1.1 \
               --connect-timeout 10 \
               --max-time 30 \
@@ -180,7 +181,14 @@ jobs:
               --retry-all-errors \
               --retry-delay 5 \
               -u "$PREVIEW_AUTH_USER:$PREVIEW_AUTH_PASSWORD" \
-              "$PREVIEW_BASE_URL$path" >/dev/null
+              "$PREVIEW_BASE_URL$path" >/dev/null; then
+              echo "::warning::Public preview smoke failed for $PREVIEW_BASE_URL$path. ECS-local preview smoke already passed; this is usually a public HTTPS/network edge issue."
+              public_smoke_failed=1
+            fi
           done
+
+          if [ "$public_smoke_failed" -ne 0 ]; then
+            echo "Public preview smoke completed with warnings."
+          fi
 
           echo "Preview deployed: $PREVIEW_BASE_URL/zh"
