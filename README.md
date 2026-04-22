@@ -15,6 +15,8 @@ adapted for architectural imagery, project archives, films, and long-term conten
 ## Run Locally
 
 ```bash
+export NVM_DIR="$HOME/.nvm"
+. "$NVM_DIR/nvm.sh"
 npm install
 npm run dev
 ```
@@ -34,6 +36,7 @@ http://localhost:3000/studio
 ## Project Notes
 
 - `DESIGN.md` contains the imported WIRED-inspired design reference.
+- `docs/RELEASE_WORKFLOW.md` defines the Local → Preview → Production operating flow.
 - `docs/DEVELOPMENT_LOG.md` tracks implementation decisions, commands, and handoff notes.
 - `docs/DEPLOYMENT_PLAN.md` outlines the preview and mainland-China-ready production path.
 - The app is structured around locale-prefixed routes so extra languages can be added later.

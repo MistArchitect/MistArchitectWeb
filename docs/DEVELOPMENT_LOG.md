@@ -1462,3 +1462,18 @@ ALIYUN_ECS_SSH_KEY
   - `/srv/mist-architect/current-production -> /srv/mist-architect/releases/20260421182320-2e8474c`
   - `mist-production` online on `127.0.0.1:3002`
 - Verified `https://mist-arch.com/zh` contains the footer and the CSS chunk contains `.site-footer p{text-align:center;...justify-content:center;...}`.
+
+## 2026-04-22 / Formalize Release Workflow
+
+### Goals
+
+- Prepare the project for the next development cycle with a clear operating flow.
+- Make the Local → Preview → Production path explicit for future agents and developers.
+
+### Changes
+
+- Added `docs/RELEASE_WORKFLOW.md`.
+- Updated `README.md`, `docs/CICD.md`, and `docs/AGENT_HANDOFF.md` to point to the workflow.
+- Corrected stale handoff wording from `Production is not active` to `Production is active`.
+- Confirmed local branch is synchronized with `origin/preview/home-featured-projects`.
+- Confirmed ECS preview and production both point to `20260421182320-2e8474c`.

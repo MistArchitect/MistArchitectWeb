@@ -259,6 +259,7 @@ Use nvm before npm commands in this local shell:
 ```bash
 export NVM_DIR="$HOME/.nvm"
 . "$NVM_DIR/nvm.sh"
+npm run typecheck
 npm run lint
 npm run build
 git diff --check
@@ -267,6 +268,18 @@ git diff --check
 The latest verified build generated 20 static pages.
 
 ## 7. Preview Deployment Procedure
+
+Primary workflow:
+
+```text
+Local development -> protected preview -> production promotion
+```
+
+The canonical operating notes are in:
+
+```text
+docs/RELEASE_WORKFLOW.md
+```
 
 ### GitHub Actions preview deployment
 
@@ -375,7 +388,7 @@ ssh -i "$HOME/.ssh/mist_aliyun_ed25519" -o IdentitiesOnly=yes deploy@47.106.120.
 
 ## 8. Production Status and Launch Notes
 
-Production is not active.
+Production is active.
 
 Current production-related state:
 
@@ -394,6 +407,7 @@ Before future production changes:
 2. Promote the exact approved release to `mist-production`.
 3. Run smoke checks on production domain.
 4. Keep preview protected and `8080/tcp` closed.
+5. Do not promote local uncommitted changes directly to production.
 
 ### OSS security and CDN checklist
 

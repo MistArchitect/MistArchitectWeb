@@ -1,10 +1,16 @@
 # Mist Architect CI/CD Notes
 
-Last updated: 2026-04-21, Asia/Shanghai.
+Last updated: 2026-04-22, Asia/Shanghai.
 
 This document explains the current GitHub Actions CI/CD setup for the Mist
 Architect website. It is intended for the project owner and future coding
 agents.
+
+For the end-to-end Local → Preview → Production operating flow, see:
+
+```text
+docs/RELEASE_WORKFLOW.md
+```
 
 ## 1. Current Branches
 
@@ -267,6 +273,16 @@ mist-production -> 127.0.0.1:3002 -> /srv/mist-architect/current-production
 
 Keep production promotion manual until a release approval policy is
 agreed. The current automated workflow deploys preview only.
+
+The intended release flow is:
+
+1. Develop and review locally.
+2. Commit and manually deploy `preview/home-featured-projects` to
+   protected preview.
+3. After client approval, promote the exact approved preview release id
+   to production.
+
+Do not deploy an uncommitted local worktree directly to production.
 
 ## 8. Vercel Status
 
