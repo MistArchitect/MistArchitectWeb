@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { AboutHeroCarousel } from "@/components/about-hero-carousel";
+import { GsapPageMotion } from "@/components/gsap-page-motion";
 import { MotionReveal } from "@/components/motion-reveal";
 import { OssPicture } from "@/components/oss-picture";
 import { about } from "@/content/site";
@@ -59,6 +60,7 @@ export default async function AboutPage({ params }: AboutPageProps) {
 
   return (
     <main className="about-page about-office-page">
+      <GsapPageMotion page="about" />
       <section className="about-scroll-overlay" aria-label={locale === "zh" ? "岚" : "About"}>
         <div className="about-hero-sticky">
           <section className="about-hero" aria-labelledby="about-title">

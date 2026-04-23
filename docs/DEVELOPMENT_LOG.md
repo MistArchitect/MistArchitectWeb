@@ -1663,3 +1663,25 @@ ALIYUN_ECS_SSH_KEY
 - `npm run typecheck`: passed.
 - `npm run lint`: passed.
 - `git diff --check`: passed.
+
+## 2026-04-23 / GSAP Deep Motion Branch
+
+### Goals
+
+- Start a dedicated `codex/gsap-deep-motion` branch for deeper homepage, project-detail, and About page motion exploration while preserving the current GSAP interaction baseline.
+- Follow `docs/GSAP_ANIMATIONS.md`: use `@gsap/react`, ScrollTrigger, and Lenis-backed scroll smoothing with reduced-motion fallbacks.
+
+### Changes
+
+- Added `@gsap/react` and `lenis` dependencies.
+- `src/components/smooth-scroll-provider.tsx`: new desktop-only Lenis provider synchronized with GSAP ScrollTrigger; disabled for reduced-motion and coarse-pointer environments.
+- `src/app/[locale]/layout.tsx`: wraps the localized app shell in `SmoothScrollProvider`.
+- `src/components/gsap-page-motion.tsx`: new page-level motion layer for homepage, About, and project detail pages. It adds scroll-scrub image depth on sticky hero imagery plus staggered section/media/copy reveals.
+- `src/app/[locale]/page.tsx`, `src/app/[locale]/about/page.tsx`, and `src/app/[locale]/projects/[slug]/page.tsx`: attach `GsapPageMotion` with page-specific modes.
+
+### Verification
+
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `git diff --check`: passed.
+- `npm run build`: passed.

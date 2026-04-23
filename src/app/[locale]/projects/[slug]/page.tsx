@@ -3,6 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import type { CSSProperties } from "react";
 
+import { GsapPageMotion } from "@/components/gsap-page-motion";
 import { getProjectBySlug, getProjectSlugs } from "@/lib/content";
 import { isLocale, locales, type Locale } from "@/lib/i18n";
 import type { Project, ProjectFact, ProjectSection } from "@/content/site";
@@ -73,6 +74,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
   return (
     <main className="project-detail">
+      <GsapPageMotion page="project" />
       <section className="project-immersive" aria-labelledby="project-title">
         <div className="project-immersive-sticky" aria-hidden="true">
           <div

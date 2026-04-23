@@ -1,5 +1,6 @@
 import { Hero } from "@/components/hero";
 import { FeaturedProjectField } from "@/components/featured-project-field";
+import { GsapPageMotion } from "@/components/gsap-page-motion";
 import { MotionReveal } from "@/components/motion-reveal";
 import { SectionRibbon } from "@/components/section-ribbon";
 import { getHomeContent } from "@/lib/content";
@@ -26,6 +27,7 @@ export default async function HomePage({ params }: HomePageProps) {
 
   return (
     <main className="home-page">
+      <GsapPageMotion page="home" />
       <section className="home-scroll-overlay" aria-label={locale === "zh" ? "首页" : "Home"}>
         <div className="home-hero-sticky">
           <Hero locale={locale} />
