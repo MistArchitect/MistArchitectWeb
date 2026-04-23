@@ -1,9 +1,9 @@
 import Image from "next/image";
-import Link from "next/link";
 
 import type { Project } from "@/content/site";
 import type { Locale } from "@/lib/i18n";
 import { withLocale } from "@/lib/i18n";
+import { ProjectTransitionLink } from "@/components/project-transition-link";
 
 type ProjectCardProps = {
   locale: Locale;
@@ -25,6 +25,7 @@ export function ProjectCard({
   isDisabled = false
 }: ProjectCardProps) {
   const title = displayTitle || project.title[locale];
+  const href = withLocale(locale, `/projects/${project.slug}`);
   const image = (
     <Image
       src={project.image}
@@ -43,9 +44,16 @@ export function ProjectCard({
           {image}
         </div>
       ) : (
-        <Link href={withLocale(locale, `/projects/${project.slug}`)} aria-label={title}>
-          {image}
-        </Link>
+        <ProjectTransitionLink
+          ariaLabel={title}
+          className="project-card-media-link"
+          href={href}
+          transitionId={project.slug}
+        >
+          <span className="project-card-media" data-project-transition-source={project.slug}>
+            {image}
+          </span>
+        </ProjectTransitionLink>
       )}
       <div className="story-copy">
         {hideMeta && displayEyebrow ? (
@@ -58,9 +66,9 @@ export function ProjectCard({
         )}
         <h2 className={hideMeta ? "featured-project-title" : undefined}>
           {isDisabled ? title : (
-            <Link href={withLocale(locale, `/projects/${project.slug}`)}>
+            <ProjectTransitionLink href={href} transitionId={project.slug}>
               {title}
-            </Link>
+            </ProjectTransitionLink>
           )}
         </h2>
         {hideMeta ? null : <p>{project.dek[locale]}</p>}

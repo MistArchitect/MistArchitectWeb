@@ -1607,3 +1607,59 @@ ALIYUN_ECS_SSH_KEY
 - Seeded `/srv/mist-architect/shared/public` on ECS from the current preview release's `public` directory.
 - `.github/workflows/deploy-preview.yml`: now rsyncs `public/` into `/srv/mist-architect/shared/public/` and symlinks that directory into each new preview release during promotion.
 - `docs/CICD.md`: documented the shared public asset directory and the release symlink behavior.
+
+## 2026-04-22 / Temporary IP Preview OSS Referer
+
+### Goals
+
+- Let reviewers access the preview build before `mist-arch.com` finishes ICP filing.
+- Keep OSS Referer protection enabled while allowing the temporary IP preview entry.
+
+### Changes
+
+- Confirmed `mist-arch.com` HTTPS failures are caused by Alibaba Cloud ICP/domain interception before the request reaches Nginx.
+- Confirmed `http://47.106.120.253:8080/zh` reaches the preview Next.js app, but OSS images returned 403 because the IP preview origin was not in the bucket Referer whitelist.
+- Added `http://47.106.120.253:8080` to the OSS bucket `mist-architects-media` Referer whitelist with `AllowEmptyReferer=false` unchanged.
+- Verified homepage OSS image URLs and `LOGO/logo.png` return 200 when requested with `Referer: http://47.106.120.253:8080/zh`.
+- Updated `docs/IMAGE_PIPELINE.md` and `docs/AGENT_HANDOFF.md` to mark this as a temporary pre-ICP preview allowance.
+
+## 2026-04-23 / Homepage Featured Project Pointer Field
+
+### Goals
+
+- Add a restrained GSAP-driven pointer response to the homepage featured project tiles.
+- Keep the effect photographic and architectural rather than decorative, with mobile and reduced-motion users receiving the static layout.
+
+### Changes
+
+- Added `gsap` as a runtime dependency.
+- `src/components/featured-project-field.tsx`: new client component for the homepage featured project grid. It uses GSAP quick setters for pointer-following CSS variables that drive micro image translation, subtle tilt, and a smaller counter-motion on the project copy.
+- `src/app/[locale]/page.tsx`: replaced inline featured tile rendering with `FeaturedProjectField`.
+- `src/app/globals.css`: added the featured pointer parallax styles plus coarse-pointer and reduced-motion fallbacks.
+- `src/content/site.ts`: updated the featured tile comment to match the new render path.
+
+### Verification
+
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `git diff --check`: passed.
+- `npm run build`: passed.
+
+## 2026-04-23 / Project Card Entry Transition
+
+### Goals
+
+- Add a restrained project-list-to-detail transition inspired by high-end portfolio project entries.
+- Keep the transition scoped to clickable archive project cards while homepage featured tiles remain non-clickable for prototype review.
+
+### Changes
+
+- `src/components/project-transition-link.tsx`: added a client link wrapper that intercepts normal clicks, clones the source project card image, expands it to the viewport with GSAP, then navigates to the project detail route.
+- `src/components/project-card.tsx`: replaced project archive image/title links with `ProjectTransitionLink` and marked the media source for the shared-image transition.
+- `src/app/globals.css`: added the fixed route-transition overlay styles.
+
+### Verification
+
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `git diff --check`: passed.

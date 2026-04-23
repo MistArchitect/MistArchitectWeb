@@ -278,8 +278,9 @@ export const heroSlides: HeroSlide[] = [
  * Duplicated location fragments in source names (e.g. "深圳 · 深圳 ·…")
  * have been collapsed here so the UI is not affected by source typos.
  *
- * Tiles are currently non-interactive during prototype review; the
- * homepage renders them with `isDisabled` via `ProjectCard`.
+ * Tiles are currently non-clickable during prototype review. The homepage
+ * renders them through `FeaturedProjectField` so the imagery can keep a
+ * quiet pointer-responsive treatment without exposing detail links yet.
  */
 export type FeaturedTile = {
   id: string;

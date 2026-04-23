@@ -422,8 +422,11 @@ Completed on 2026-04-22:
    `https://mist-arch.com`, `https://www.mist-arch.com`,
    `https://preview.mist-arch.com`, `https://mist.archi`,
    `https://www.mist.archi`, `https://hilarchitects.com`,
-   `https://www.hilarchitects.com`, `http://localhost:3000`,
-   and `http://127.0.0.1:3000`.
+   `https://www.hilarchitects.com`, `http://47.106.120.253:8080`,
+   `http://localhost:3000`, and `http://127.0.0.1:3000`.
+   The IP Referer is a temporary preview allowance while
+   `mist-arch.com` is not ICP-filed; remove it after the domain entry
+   is restored.
 2. **No CORS rule.** Deliberately unset. Plain `<img>` / `<picture>`
    loading does not need cross-origin XHR permissions.
 3. **Bucket versioning.** Enabled so accidental overwrites can be

@@ -27,6 +27,7 @@ Current OSS security state:
 
 - Bucket Referer whitelist is enabled. Direct no-Referer object GETs
   return 403; production/preview/localhost Referers are allowed.
+  Temporary pre-ICP preview also allows `http://47.106.120.253:8080`.
 - Bucket versioning is enabled.
 - CORS is intentionally unset. Plain `<img>` / `<picture>` rendering
   does not need it.

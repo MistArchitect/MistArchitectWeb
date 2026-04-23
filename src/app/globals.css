@@ -669,13 +669,76 @@ button {
   grid-column: span 2;
 }
 
+.featured-project-field {
+  isolation: isolate;
+  position: relative;
+}
+
 .story-tile {
   min-width: 0;
+}
+
+.featured-project-reactive-tile {
+  --copy-x: 0px;
+  --copy-y: 0px;
+  --image-scale: 1;
+  --image-x: 0px;
+  --image-y: 0px;
+  --tile-tilt-x: 0deg;
+  --tile-tilt-y: 0deg;
+  position: relative;
+  transform: perspective(1200px)
+    rotateX(var(--tile-tilt-x))
+    rotateY(var(--tile-tilt-y));
+  transform-origin: center;
+  transform-style: preserve-3d;
+  will-change: transform;
+  z-index: 1;
+}
+
+.project-card-media {
+  display: block;
+  overflow: hidden;
+}
+
+.project-card-media-link {
+  display: block;
+}
+
+.project-route-transition {
+  background: var(--solid-bg);
+  overflow: hidden;
+  pointer-events: none;
+  position: fixed;
+  z-index: 1200;
+}
+
+.project-route-transition img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.featured-project-reactive-tile .project-card-media {
+  background: color-mix(in srgb, var(--paper) 88%, var(--ink));
+  isolation: isolate;
+  position: relative;
 }
 
 .story-tile picture {
   display: block;
   width: 100%;
+}
+
+.featured-project-reactive-tile picture {
+  transform: translate3d(
+      var(--image-x),
+      var(--image-y),
+      0
+    )
+    scale(var(--image-scale));
+  transform-origin: center;
+  will-change: transform;
 }
 
 .story-tile img {
@@ -688,6 +751,12 @@ button {
 
 .story-copy {
   padding-top: 22px;
+}
+
+.featured-project-reactive-tile .story-copy {
+  transform: translate3d(var(--copy-x), var(--copy-y), 0);
+  transform-origin: left top;
+  will-change: transform;
 }
 
 .story-copy h2 {
@@ -1630,6 +1699,12 @@ button {
     grid-column: auto;
   }
 
+  .featured-project-reactive-tile,
+  .featured-project-reactive-tile picture,
+  .featured-project-reactive-tile .story-copy {
+    transform: none;
+  }
+
 	  .project-grid,
 	  .journal-list,
 	  .project-gallery {
@@ -1835,4 +1910,10 @@ button {
 	  .project-scroll-cue {
 	    animation: none !important;
 	  }
+
+    .featured-project-reactive-tile,
+    .featured-project-reactive-tile picture,
+    .featured-project-reactive-tile .story-copy {
+      transform: none !important;
+    }
 	}
