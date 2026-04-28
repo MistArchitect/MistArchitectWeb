@@ -1,100 +1,108 @@
 "use client";
 
-import { useMemo } from "react";
+/* eslint-disable @next/next/no-img-element */
+import { useMemo, useRef, type PointerEvent as ReactPointerEvent } from "react";
 
-import { TiltedCard } from "@/components/react-bits/tilted-card";
-import { ProjectTransitionLink } from "@/components/project-transition-link";
+import { MotionReveal } from "@/components/motion-reveal";
 import { featuredTiles } from "@/content/site";
 import type { Locale } from "@/lib/i18n";
-import { withLocale } from "@/lib/i18n";
 import { mediaUrl } from "@/lib/media";
 
 type FeaturedProjectFieldProps = {
   locale: Locale;
 };
 
+const PARALLAX_DEPTH = 14;
+const TEXT_PARALLAX_DEPTH = 6;
+const HOVER_SCALE = 1.04;
+
+type ProjectTileProps = {
+  alt: string;
+  eyebrow: string;
+  imageSrc: string;
+  index: number;
+  title: string;
+};
+
+function ProjectTile({ alt, eyebrow, imageSrc, index, title }: ProjectTileProps) {
+  const tileRef = useRef<HTMLElement | null>(null);
+
+  const handlePointerMove = (event: ReactPointerEvent<HTMLElement>) => {
+    const node = tileRef.current;
+    if (!node) return;
+    const rect = node.getBoundingClientRect();
+    const dx = (event.clientX - rect.left) / rect.width - 0.5;
+    const dy = (event.clientY - rect.top) / rect.height - 0.5;
+    node.style.setProperty("--tile-px", `${dx * PARALLAX_DEPTH}px`);
+    node.style.setProperty("--tile-py", `${dy * PARALLAX_DEPTH}px`);
+    node.style.setProperty("--tile-tx", `${dx * TEXT_PARALLAX_DEPTH}px`);
+    node.style.setProperty("--tile-ty", `${dy * TEXT_PARALLAX_DEPTH}px`);
+    node.style.setProperty("--tile-scale", `${HOVER_SCALE}`);
+  };
+
+  const handlePointerLeave = () => {
+    const node = tileRef.current;
+    if (!node) return;
+    node.style.setProperty("--tile-px", "0px");
+    node.style.setProperty("--tile-py", "0px");
+    node.style.setProperty("--tile-tx", "0px");
+    node.style.setProperty("--tile-ty", "0px");
+    node.style.setProperty("--tile-scale", "1");
+  };
+
+  return (
+    <MotionReveal className="project-index-reveal" delay={Math.min(index * 0.06, 0.36)}>
+      <article
+        className="project-index-tile"
+        onPointerLeave={handlePointerLeave}
+        onPointerMove={handlePointerMove}
+        ref={tileRef}
+      >
+        <div aria-label={title} className="project-index-media-link">
+          <div className="project-index-media">
+            <img alt={alt} className="project-index-image" loading="lazy" src={imageSrc} />
+          </div>
+        </div>
+        <div className="project-index-copy">
+          <p className="project-index-eyebrow">{eyebrow}</p>
+          <h2 className="project-index-title">{title}</h2>
+        </div>
+      </article>
+    </MotionReveal>
+  );
+}
+
 export function FeaturedProjectField({ locale }: FeaturedProjectFieldProps) {
   const tiles = useMemo(
     () =>
       featuredTiles.map((tile) => ({
         ...tile,
-        imageSrc: mediaUrl(tile.image, { width: 1920, quality: "std" }),
-        href: tile.slug ? withLocale(locale, `/projects/${tile.slug}`) : undefined
+        imageSrc: mediaUrl(tile.image, { width: 1920, quality: "std" })
       })),
-    [locale]
+    []
   );
-  const pages = useMemo(() => [
-    tiles.slice(0, 4),
-    tiles.slice(4, 8)
-  ], [tiles]);
 
   return (
-    <div className="featured-grid recommended-grid featured-project-field">
-      {pages.map((page, pageIndex) => (
-        <div className="featured-project-page" data-featured-page={pageIndex} key={pageIndex}>
-          {page.map((tile) => {
-            const eyebrow = `${tile.year} · ${tile.location[locale]}`;
-            const title = tile.title[locale];
-            const alt = locale === "zh"
-              ? `${tile.location.zh} · ${tile.title.zh}`
-              : `${tile.location.en} · ${tile.title.en}`;
-            const transitionId = `featured-grid-${tile.id}`;
+    <div className="project-index-grid">
+      {tiles.map((tile, index) => {
+        const eyebrow = `${tile.year} · ${tile.location[locale]}`;
+        const title = tile.title[locale];
+        const alt =
+          locale === "zh"
+            ? `${tile.location.zh} · ${tile.title.zh}`
+            : `${tile.location.en} · ${tile.title.en}`;
 
-            const card = (
-              <span className="featured-tilted-card-source" data-project-transition-source={transitionId}>
-                <TiltedCard
-                  altText={alt}
-                  captionText={title}
-                  containerHeight="300px"
-                  containerWidth="300px"
-                  displayOverlayContent={false}
-                  imageHeight="300px"
-                  imageSrc={tile.imageSrc}
-                  imageWidth="300px"
-                  overlayContent={null}
-                  rotateAmplitude={10}
-                  scaleOnHover={1.2}
-                  showMobileWarning={false}
-                  showTooltip={false}
-                />
-              </span>
-            );
-
-            return (
-              <article
-                key={tile.id}
-                className="story-tile project-tile featured-project-reactive-tile featured-tilted-tile"
-              >
-                {tile.href ? (
-                  <ProjectTransitionLink
-                    ariaLabel={title}
-                    className="project-card-media-link featured-tilted-card-link"
-                    href={tile.href}
-                    transitionId={transitionId}
-                  >
-                    {card}
-                  </ProjectTransitionLink>
-                ) : (
-                  <div className="project-card-media featured-tilted-card-link" aria-label={title}>
-                    {card}
-                  </div>
-                )}
-
-                <div className="story-copy">
-                  <p className="featured-project-eyebrow">{eyebrow}</p>
-                  <h2 className="featured-project-title">
-                    {tile.href ? (
-                      <ProjectTransitionLink href={tile.href} transitionId={transitionId}>
-                        {title}
-                      </ProjectTransitionLink>
-                    ) : title}
-                  </h2>
-                </div>
-              </article>
-            );
-          })}
-        </div>
-      ))}
+        return (
+          <ProjectTile
+            alt={alt}
+            eyebrow={eyebrow}
+            imageSrc={tile.imageSrc}
+            index={index}
+            key={tile.id}
+            title={title}
+          />
+        );
+      })}
     </div>
   );
 }

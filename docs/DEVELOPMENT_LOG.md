@@ -1835,3 +1835,186 @@ ALIYUN_ECS_SSH_KEY
 - `npm run build`: passed.
 - Local detail route smoke checks returned 200 for the existing and newly routed project pages.
 - Local media proxy smoke checks returned 200 for the new horizontal and vertical project images.
+
+## 2026-04-28 / Sticky Compact Navigation Prototype
+
+### Goals
+
+- Change the site header from an absolute overlay toward a sticky navigation system.
+- Prioritize the mobile behavior: full brand and inline actions at the top of the page, then a 50% height compact state after scrolling.
+- In the compact state, replace the company name with the logo and collapse right-side actions into a single menu button that opens a vertical menu.
+
+### Changes
+
+- `src/components/site-header.tsx`: converted the header to a client component that tracks scroll position and toggles compact state.
+- `src/components/mobile-menu.tsx`: added a compact mode that renders a menu button and vertical navigation panel, including language switching.
+- `src/components/language-switch.tsx`: added a non-`nav` render mode so it can appear inside the compact vertical menu without nested navigation landmarks.
+- `src/app/globals.css`: made the header sticky, added compact sizing, logo/wordmark crossfade, and mobile-first compact menu styles.
+
+### Verification
+
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `git diff --check`: passed.
+- `npm run build`: passed.
+
+## 2026-04-28 / Project Index Portrait Tuning
+
+### Goals
+
+- Remove the oversized `项目 / Projects` flash from the homepage scroll-driven project index sequence.
+- Improve portrait layout so featured projects fit inside the pinned viewport without oversized card cropping or overlapping text.
+
+### Changes
+
+- `src/components/home-project-intro.tsx`: removed the flash text node and the associated GSAP timeline beats; shortened the ScrollTrigger range so the sequence begins directly with the compact project-index label and cards.
+- `src/app/globals.css`: removed flash-text styles and added smaller portrait breakpoints for the project card grid, card scale, copy width, and pinned stage spacing.
+
+### Verification
+
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `git diff --check`: passed.
+- `npm run build`: passed.
+- Local `/zh` smoke check returned 200.
+
+## 2026-04-28 / Project Index Mobile Flow Fix
+
+### Goals
+
+- Fix portrait project cards stacking into overlapping images and text.
+- Use a regular vertical project flow on portrait/mobile screens instead of the pinned GSAP project-index sequence.
+- Keep only a quiet fade/blur reveal as newly scrolled project cards enter.
+
+### Changes
+
+- `src/components/home-project-intro.tsx`: added a portrait/mobile media-query guard so the ScrollTrigger timeline is reverted and skipped on narrow or portrait viewports.
+- `src/app/globals.css`: changed portrait project pages from absolute stacked panes to normal document flow, with one-column mobile and two-column portrait tablet layouts.
+- `src/app/globals.css`: added a lightweight CSS view-timeline reveal for mobile project cards and disabled it under reduced motion.
+
+### Verification
+
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `git diff --check`: passed.
+- `npm run build`: passed.
+- Local `/zh` smoke check returned 200.
+- Mobile 466px viewport full-page screenshot confirmed the project section renders as a normal single-column scroll list without overlapping pages.
+
+## 2026-04-28 / Mobile Project Card Overlay Captions
+
+### Goals
+
+- Tighten the vertical rhythm between mobile project images.
+- Move mobile project metadata and titles into the lower-left corner of each image.
+- Fix compact scroll menu text disappearing against white page backgrounds.
+- Remove excess whitespace above the project index, between the index label and first project image, and between mobile project cards.
+- Ensure mobile images fully fill their cards without internal white margins or blur artifacts.
+- Let the project owner compare 4:3 and 16:9 mobile project-card proportions directly on the homepage.
+- Increase the mobile project image frame width beyond the visible viewport so the viewport crops the frame edges instead of leaving narrow in-column cards.
+- Anchor the widened mobile project frame to the viewport left edge instead of clipping from the padded project-shell content box.
+- Add a translucent adaptive glass background to the compact scroll menu and expanded menu panel.
+- Remove the mobile project card bottom gradient layer that created a visible horizontal split between stacked images.
+- Replace the compact menu text label with a three-line hamburger icon.
+
+### Changes
+
+- `src/app/globals.css`: reduced portrait/mobile project-grid gaps, constrained cards to the image width, and overlaid captions with a subtle bottom gradient for legibility.
+- `src/app/globals.css`: switched compact header/menu text out of blend mode and onto the page text color.
+- `src/app/globals.css`: removed the mobile card scale transform, made the TiltedCard figure and image fill the responsive square card, and changed the mobile reveal from blur/fade to a sharper opacity/translate reveal.
+- `src/components/home-project-intro.tsx`: added a mobile-only 4:3 / 16:9 ratio toggle for direct comparison.
+- `src/app/globals.css`: switched the mobile card from square to ratio-driven 4:3 / 16:9 landscape layouts and forced project imagery to cover the full card.
+- `src/app/globals.css`: widened mobile project frames to `100vw + bleed`, clipped horizontal overflow at the project section, and offset overlay captions back into the visible viewport.
+- `src/app/globals.css`: moved mobile horizontal clipping to `.home-featured-shell`, restored visible overflow on `.home-project-intro`, and anchored `.featured-tilted-tile` with `margin-left: calc(50% - 50vw)`.
+- `src/app/globals.css`: replaced the frame-width control with `--mobile-card-side-bleed`, which expands the project frame equally past both viewport edges and keeps the caption inset inside the visible area.
+- `src/app/globals.css`: moved the compact glass treatment to the full `.site-header.is-compact::before` bar using React Bits GlassSurface-style fallback values (`color-mix`, `backdrop-filter`, saturation, and inset highlights).
+- `src/app/globals.css`: removed the mobile project card bottom gradient layer and kept captions readable with text shadow.
+- `src/components/mobile-menu.tsx`: replaced the compact menu text with a semantic hamburger icon while preserving accessible labels.
+
+### Verification
+
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `git diff --check`: passed.
+- `npm run build`: passed.
+- Local `/zh` smoke check returned 200.
+- Mobile 466px viewport screenshot confirmed project captions render inside the image lower-left corner, cards have tighter vertical spacing, images fill the card, and the final card is no longer blurred.
+- Mobile 466px viewport screenshots were captured for both 4:3 and 16:9 ratio states.
+- Mobile 466px viewport screenshot confirmed the widened frame approach reduces visible side margin by cropping the oversized frame through the viewport.
+- Mobile 466px viewport screenshot confirmed the project image frame now reaches the viewport left edge.
+- Mobile 466px viewport screenshot confirmed the project card bottom gradient layer is gone.
+
+## 2026-04-28 / Tailwind and shadcn Incremental Integration
+
+### Goals
+
+- Introduce Tailwind and shadcn as an additive component layer without rewriting the existing global CSS system.
+- Keep existing pages stable by avoiding Tailwind Preflight during the first integration pass.
+- Enable React Bits / shadcn registry components for higher-quality motion and glass UI work.
+- Replace the hand-built compact header glass background with an adapted React Bits GlassSurface component.
+
+### Changes
+
+- `package.json` / `package-lock.json`: added Tailwind v4, PostCSS, shadcn utility dependencies, Radix slot, class variance utilities, `lucide-react`, `clsx`, and `tailwind-merge`.
+- `postcss.config.mjs`: added the Tailwind v4 PostCSS plugin.
+- `components.json`: added shadcn configuration for the current Next App Router project, using existing `@/*` aliases and registering the React Bits registry.
+- `src/app/globals.css`: imported Tailwind `theme.css` and `utilities.css` only; intentionally skipped `preflight.css` to avoid resetting the existing hand-built site styles.
+- `src/app/globals.css`: mapped shadcn/Tailwind semantic color tokens to the existing Mist variables (`--paper`, `--page-ink`, `--hairline`, `--muted`).
+- `src/lib/utils.ts`: added the standard `cn()` helper for shadcn/Tailwind class composition.
+- `src/components/react-bits/glass-surface.tsx` and `glass-surface.module.css`: adapted the React Bits GlassSurface registry component into TypeScript and CSS Modules so it can be safely imported in the App Router without global CSS leakage.
+- `src/components/site-header.tsx`: renders GlassSurface as the full compact-header background layer.
+
+### Verification
+
+- `npx shadcn@latest info --json`: detected Next App Router, Tailwind v4, existing aliases, `src/app/globals.css`, and the React Bits registry.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `git diff --check`: passed.
+- `npm run build`: passed.
+- Local smoke checks returned 200 for `/zh`, `/en`, `/zh/about`, and `/zh/projects/dream-factory-experimental-theater`.
+- Mobile 466px viewport screenshot confirmed the homepage still renders after Tailwind/shadcn integration.
+
+### Notes
+
+- Tailwind Preflight remains disabled for now. This keeps the existing page typography, image defaults, buttons, and layout reset from changing unexpectedly.
+- `npm install` reported existing moderate audit findings; no automatic audit fix was run to avoid broad dependency churn.
+
+## 2026-04-28 / Compact Menu Icon Swap
+
+### Goals
+
+- Replace the compact navigation text button with a quieter animated icon swap.
+- Keep the compact menu trigger visible while the menu is open instead of replacing the whole trigger with the menu panel.
+- Avoid a strong boxed button treatment while preserving the full-width translucent header glass.
+
+### Changes
+
+- `src/components/mobile-menu.tsx`: added a compact-only persistent menu trigger that swaps between Lucide `Menu` and `X` icons using the Transitions.dev blur/scale pattern.
+- `src/components/mobile-menu.tsx`: renders the compact menu panel separately under the persistent trigger and closes the panel when a navigation item is selected.
+- `src/app/globals.css`: added reusable `.t-icon-swap` animation styles, reduced-motion handling, and non-boxed compact trigger focus styling.
+- `src/components/site-header.tsx`: disabled GlassSurface channel displacement for the compact header so the top bar keeps the glass blur without colorful image warping.
+
+## 2026-04-29 / Header simplification, footer restore, project index rebuild
+
+### Goals
+
+- Drop scroll-driven compact navigation in favor of a single half-height sticky bar.
+- Reserve a header slot so the home hero stays full-screen below the nav instead of overflowing.
+- Replace the bilingual language toggle with a single-link switch.
+- Restore the footer (with the work-in-progress notice) below all home content.
+- Remove the GSAP-pinned project index sequence; show all featured projects in a responsive grid with scroll-fade reveal and pointer parallax. Disable navigation into project detail routes for now.
+
+### Changes
+
+- `src/components/site-header.tsx`: static sticky header, no scroll listener, no compact state, brand wordmark only.
+- `src/components/mobile-menu.tsx`: removed compact branch; only inline nav and burger-expand paths remain.
+- `src/components/language-switch.tsx`: single anchor that links to the opposite locale and shows the target label.
+- `src/components/site-footer.tsx`: added work-in-progress line above the existing meta row.
+- `src/components/home-project-intro.tsx`: replaced GSAP pin/scrub timeline with a simple labeled section.
+- `src/components/featured-project-field.tsx`: removed paged tilted-card layout; tiles now use `MotionReveal` for scroll-fade and pointer-driven CSS variables for parallax + scale on hover. Project detail links disabled (no `<a>` wrappers) so tiles are non-interactive for navigation.
+- `src/app/globals.css`: hoisted `--header-height` to `:root`; switched home hero/spacer/overlay heights to `calc(100svh - var(--header-height))`; replaced featured-project-field/featured-tilted CSS with `.project-index-grid` system (1 col default, 2 cols on `min-aspect-ratio: 16/9`); added borderless translucent header and language switch styling; pruned compact-related rules; tightened home project index vertical padding.
+
+### Verification
+
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.

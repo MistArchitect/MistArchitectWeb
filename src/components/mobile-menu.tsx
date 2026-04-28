@@ -18,6 +18,7 @@ export function MobileMenu({ locale }: MobileMenuProps) {
   const openLabel = locale === "zh" ? "打开菜单" : "Open menu";
   const closeLabel = locale === "zh" ? "关闭菜单" : "Close menu";
   const closeText = locale === "zh" ? "关闭" : "Close";
+  const menuText = locale === "zh" ? "菜单" : "Menu";
 
   if (links.length <= 1) {
     return (
@@ -54,7 +55,7 @@ export function MobileMenu({ locale }: MobileMenuProps) {
             exit={{ opacity: 0, x: 10 }}
             transition={{ duration: 0.2 }}
           >
-            MENU
+            {menuText}
           </motion.button>
         ) : (
           <motion.nav

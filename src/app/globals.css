@@ -1,3 +1,6 @@
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
 @font-face {
   font-display: swap;
   font-family: "HarmonyOS Sans SC";
@@ -70,10 +73,36 @@
   --max: 1480px;
   --gutter: 40px;
   --section-y: 128px;
+  --header-height: 38px;
   --sans: "HarmonyOS Sans SC", -apple-system, BlinkMacSystemFont, "Segoe UI",
     "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
   --mono: "HarmonyOS Sans Condensed", "HarmonyOS Sans SC", -apple-system,
     BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+@theme inline {
+  --color-background: var(--paper);
+  --color-foreground: var(--page-ink);
+  --color-card: var(--paper);
+  --color-card-foreground: var(--page-ink);
+  --color-popover: var(--paper);
+  --color-popover-foreground: var(--page-ink);
+  --color-primary: var(--page-ink);
+  --color-primary-foreground: var(--paper);
+  --color-secondary: var(--hairline);
+  --color-secondary-foreground: var(--page-ink);
+  --color-muted: var(--hairline);
+  --color-muted-foreground: var(--muted);
+  --color-accent: var(--hairline);
+  --color-accent-foreground: var(--page-ink);
+  --color-destructive: #dc2626;
+  --color-border: var(--hairline);
+  --color-input: var(--hairline);
+  --color-ring: var(--muted);
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -180,30 +209,16 @@ button {
 }
 
 .site-header {
-  background: transparent;
-  color: var(--on-image);
+  background: color-mix(in srgb, var(--paper) 62%, transparent);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  color: var(--ink);
+  height: var(--header-height);
   left: 0;
-  position: absolute;
+  position: sticky;
   top: 0;
   width: 100%;
-  z-index: 50;
-}
-
-.site-header::before {
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0));
-  content: "";
-  height: 160px;
-  left: 0;
-  pointer-events: none;
-  position: absolute;
-  top: 0;
-  width: 100%;
-  z-index: 0;
-}
-
-.brand-mark,
-.header-actions {
-  mix-blend-mode: difference;
+  z-index: 900;
 }
 
 .main-nav {
@@ -212,31 +227,29 @@ button {
   justify-content: space-between;
   margin: 0 auto;
   max-width: var(--max);
-  min-height: 76px;
+  min-height: var(--header-height);
   padding: 0 var(--gutter);
   position: relative;
   z-index: 1;
 }
 
 .brand-mark {
-  /* `inline-flex` + `align-items: center` anchors the glyph midline to
-     the flex box midline so the brand lockup shares its horizontal
-     axis with `.header-actions` (which is also a center-aligned flex
-     row). Previously used `display: block` with `line-height: 1.12`,
-     which left a ~1.2px asymmetric gap above the CJK glyphs and
-     dropped the visual midline below the language switch midline. */
   align-items: center;
   display: inline-flex;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 400;
   line-height: 1;
-  min-width: 164px;
+  position: relative;
+}
+
+.brand-wordmark {
+  display: inline-flex;
 }
 
 .header-actions {
   align-items: center;
   display: flex;
-  gap: 24px;
+  gap: 20px;
   justify-content: flex-end;
 }
 
@@ -244,25 +257,33 @@ button {
   align-items: center;
   color: inherit;
   display: flex;
-  font-size: 14px;
-  gap: 8px;
+  font-size: 13px;
+  letter-spacing: 0.04em;
   line-height: 1;
   white-space: nowrap;
 }
 
-.language-switch a,
-.language-switch span {
-  display: block;
+.language-switch a {
+  color: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  padding: 4px 4px;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: opacity 200ms ease;
 }
 
-.language-switch [aria-current="page"] {
-  opacity: 0.62;
+.language-switch a:hover {
+  opacity: 0.6;
 }
 
 .inline-menu-container {
   align-items: center;
   display: flex;
   justify-content: flex-end;
+  position: relative;
 }
 
 .menu-toggle,
@@ -290,7 +311,7 @@ button {
 }
 
 .inline-nav-links-static {
-  mix-blend-mode: difference;
+  display: flex;
 }
 
 .sr-only {
@@ -307,7 +328,7 @@ button {
 
 .hero-shell {
   background: var(--solid-bg);
-  height: 100svh;
+  height: calc(100svh - var(--header-height));
   overflow: hidden;
   position: relative;
   touch-action: pan-y;
@@ -390,16 +411,16 @@ button {
 }
 
 .home-hero-sticky {
-  height: 100svh;
-  margin-bottom: -100svh;
+  height: calc(100svh - var(--header-height));
+  margin-bottom: calc(-1 * (100svh - var(--header-height)));
   overflow: hidden;
   position: sticky;
-  top: 0;
+  top: var(--header-height);
   z-index: 0;
 }
 
 .home-overlay-spacer {
-  height: 100svh;
+  height: calc(100svh - var(--header-height));
   pointer-events: none;
   position: relative;
   z-index: 1;
@@ -407,7 +428,7 @@ button {
 
 .home-overlay-content {
   background: var(--paper);
-  min-height: 100svh;
+  min-height: calc(100svh - var(--header-height));
   overflow: hidden;
   position: relative;
   z-index: 2;
@@ -668,110 +689,117 @@ button {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.featured-project-field {
-  isolation: isolate;
-  min-height: 440px;
-  padding-top: 0;
-  position: relative;
-}
-
-.featured-project-page {
-  display: grid;
-  gap: clamp(42px, 5vw, 92px) clamp(28px, 4vw, 56px);
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  inset: 0;
-  position: absolute;
-}
-
 .home-project-intro {
-  min-height: 100svh;
-  padding: 0;
+  padding: clamp(28px, 4vw, 56px) 0 clamp(36px, 5vw, 72px);
   position: relative;
 }
 
-.home-project-intro-stage {
-  display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
-  height: 100svh;
-  overflow: hidden;
-  padding: clamp(54px, 7vw, 92px) 0 clamp(42px, 6vw, 78px);
-  position: relative;
-}
-
-.home-project-intro-flash {
-  align-items: center;
-  display: flex;
-  height: 100svh;
-  justify-content: center;
-  pointer-events: none;
-  position: absolute;
-  text-align: center;
-  top: 0;
-  width: 100%;
-  z-index: 4;
-}
-
-.home-project-intro-flash span {
+.home-project-intro-header {
   color: var(--page-ink);
-  display: block;
-  font-size: clamp(96px, 22vw, 280px);
-  font-weight: 400;
-  line-height: 1;
-  transform: translateY(-0.04em);
+  margin-bottom: clamp(18px, 2.5vw, 32px);
 }
 
-.home-project-intro-fixed {
-  color: var(--page-ink);
-  left: 0;
-  line-height: 1.2;
-  position: absolute;
-  top: clamp(30px, 5vw, 70px);
-  z-index: 5;
-}
-
-.home-project-intro-fixed strong {
-  font-size: clamp(18px, 2vw, 28px);
+.home-project-intro-header strong {
+  font-size: clamp(20px, 2vw, 28px);
   font-weight: 400;
+  letter-spacing: 0.01em;
 }
 
 .home-project-sequence-grid {
-  align-self: end;
-  min-height: 440px;
   position: relative;
-  z-index: 3;
 }
 
 .home-featured-shell {
-  padding-left: calc(var(--gutter) + 24px);
-  padding-right: calc(var(--gutter) + 24px);
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
   padding-top: 0;
+  padding-bottom: clamp(8px, 1vw, 14px);
 }
 
-.featured-tilted-tile {
+.project-index-grid {
   display: grid;
-  gap: 0;
-  justify-items: center;
+  gap: clamp(48px, 6vw, 96px);
+  grid-template-columns: minmax(0, 1fr);
 }
 
-.featured-tilted-card-link {
-  align-items: center;
+@media (min-aspect-ratio: 16 / 9) {
+  .project-index-grid {
+    gap: clamp(40px, 4vw, 72px) clamp(32px, 3vw, 56px);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.project-index-reveal {
+  width: 100%;
+}
+
+.project-index-tile {
+  --tile-px: 0px;
+  --tile-py: 0px;
+  --tile-tx: 0px;
+  --tile-ty: 0px;
+  --tile-scale: 1;
+  cursor: pointer;
   display: flex;
-  justify-content: center;
-  min-height: 332px;
+  flex-direction: column;
+  gap: 18px;
+  position: relative;
 }
 
-.featured-tilted-card-source {
-  display: inline-flex;
-  transform-origin: center top;
-}
-
-.featured-tilted-card-source img {
+.project-index-media-link {
   display: block;
+  width: 100%;
 }
 
-.featured-tilted-tile .story-copy {
-  text-align: center;
-  width: min(300px, 100%);
+.project-index-media {
+  aspect-ratio: 4 / 3;
+  background: color-mix(in srgb, var(--ink) 6%, transparent);
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.project-index-image {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  transform: translate3d(var(--tile-px), var(--tile-py), 0) scale(var(--tile-scale));
+  transition: transform 480ms cubic-bezier(0.22, 1, 0.36, 1);
+  width: 100%;
+  will-change: transform;
+}
+
+.project-index-copy {
+  transform: translate3d(var(--tile-tx), var(--tile-ty), 0);
+  transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.project-index-eyebrow {
+  color: var(--featured-meta);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+  margin: 0 0 6px;
+  text-transform: uppercase;
+}
+
+.project-index-title {
+  color: var(--featured-title);
+  font-size: clamp(18px, 1.6vw, 22px);
+  font-weight: 400;
+  line-height: 1.35;
+  margin: 0;
+}
+
+.project-index-title a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 200ms ease;
+}
+
+.project-index-title a:hover {
+  color: var(--ink);
 }
 
 .story-tile {
@@ -849,24 +877,31 @@ button {
   margin-top: 56px;
 }
 
-.home-progress-note {
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.7;
-  margin: 112px 0 0;
-}
-
 .site-footer {
   background: var(--paper);
+  border-top: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
   color: var(--muted);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
   margin: 0;
   max-width: none;
-  padding: 0 var(--gutter) 34px;
+  padding: 28px var(--gutter) 34px;
   position: relative;
   z-index: 4;
 }
 
-.site-footer p {
+.site-footer-progress {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 0 auto;
+  max-width: var(--max);
+  text-align: center;
+  width: 100%;
+}
+
+.site-footer-meta {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
@@ -876,10 +911,11 @@ button {
   margin: 0 auto;
   max-width: var(--max);
   text-align: center;
+  width: 100%;
 }
 
-.site-footer span:not(:last-child)::after,
-.site-footer a::before {
+.site-footer-meta span:not(:last-child)::after,
+.site-footer-meta a::before {
   content: "|";
   margin-left: 8px;
 }
@@ -1757,8 +1793,12 @@ button {
     --section-y: 96px;
   }
 
+  :root {
+    --header-height: 36px;
+  }
+
   .main-nav {
-    min-height: 72px;
+    min-height: var(--header-height);
   }
 
   .inline-nav-links {
@@ -1778,27 +1818,9 @@ button {
 	    grid-template-columns: 1fr;
 	  }
 
-  .featured-project-field {
-    min-height: 760px;
-    padding-top: 0;
-  }
-
-  .featured-project-page {
-    gap: 72px 32px;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .home-featured-shell {
     padding-left: var(--gutter);
     padding-right: var(--gutter);
-  }
-
-  .featured-tilted-card-link {
-    min-height: 312px;
-  }
-
-  .featured-tilted-card-source {
-    transform: scale(0.92);
   }
 
 	  .project-grid,
@@ -1866,33 +1888,29 @@ button {
   :root {
     --gutter: 20px;
     --section-y: 80px;
+    --header-height: 38px;
   }
 
   .main-nav {
-    /* Keep center cross-axis alignment here — the desktop rule
-       already does `align-items: center`. Previously this breakpoint
-       flipped to `flex-start` which pulled the brand to the top edge
-       and broke the shared midline with the language switch. */
-    min-height: 84px;
-    padding-bottom: 20px;
-    padding-top: 20px;
+    min-height: var(--header-height);
+    padding-bottom: 0;
+    padding-top: 0;
   }
 
   .brand-mark {
     max-width: 180px;
-    min-width: 148px;
-    font-size: 18px;
+    font-size: 14px;
   }
 
   .inline-nav-links {
-    align-items: flex-end;
-    flex-direction: column;
-    gap: 10px;
+    align-items: center;
+    flex-direction: row;
+    gap: 14px;
   }
 
   .menu-toggle,
   .inline-nav-item {
-    font-size: 14px;
+    font-size: 13px;
   }
 
   .intro-splash-logo-frame {
@@ -1970,38 +1988,6 @@ button {
   .about-office-section:first-child {
     padding-top: 0;
   }
-
-  .featured-project-field {
-    min-height: 760px;
-    padding-top: 0;
-  }
-
-  .home-project-intro {
-    min-height: 100svh;
-  }
-
-  .featured-project-page {
-    gap: 64px 24px;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .home-project-intro-flash span {
-    font-size: clamp(72px, 28vw, 128px);
-  }
-
-  .home-featured-shell {
-    padding-left: var(--gutter);
-    padding-right: var(--gutter);
-  }
-
-  .featured-tilted-card-link {
-    min-height: 292px;
-  }
-
-  .featured-tilted-card-source {
-    transform: scale(0.88);
-  }
-
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2037,4 +2023,10 @@ button {
 	  .project-scroll-cue {
 	    animation: none !important;
 	  }
+
+  .project-index-image,
+  .project-index-copy {
+    transform: none !important;
+    transition: none !important;
+  }
 	}
