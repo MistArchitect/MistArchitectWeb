@@ -4,6 +4,131 @@ This log is written for both human developers and future coding agents. Keep ent
 short, dated, and implementation-oriented so the next contributor can understand what
 changed, why it changed, how it was checked, and what remains open.
 
+## 2026-04-24 / Homepage Feature Rollback + React Bits Cards
+
+### Goals
+
+- Roll back the homepage featured-project experiment to the calmer baseline presentation.
+- Replace the temporary image-stack / comparison switcher with a single stable featured-project layout.
+- Introduce React Bits `TiltedCard` for featured-project imagery and React Bits `DotGrid` as the section background.
+- Update the dark-mode base background to `#292929`.
+
+### Files Added or Changed
+
+- `src/components/featured-project-field.tsx`: removed the comparison switcher and image-stack mode, restored the single featured-project grid, and rebuilt the media presentation around React Bits style tilted cards with project-detail links.
+- `src/components/react-bits/tilted-card.tsx` + `tilted-card.module.css`: local TypeScript/CSS-module port of the `@react-bits/TiltedCard-JS-CSS` registry component so it works cleanly inside the existing Next.js TypeScript setup.
+- `src/components/react-bits/dot-grid.tsx` + `dot-grid.module.css`: local TypeScript/CSS-module port of the `@react-bits/DotGrid-JS-CSS` registry component for the featured-project background.
+- `src/app/globals.css`: removed the image-stack / switcher styling, added the dot-grid surface and tilted-card layout styles, and changed dark-mode `--paper`, `--solid-bg`, and `--splash-bg` to `#292929`.
+
+### Notes
+
+- The repository is not currently initialized as a full shadcn project (`components.json` is absent), so the React Bits registry items were inspected via `npx shadcn@latest view` and ported locally instead of running a broad `shadcn init`.
+- Registry names verified for this change:
+  - `@react-bits/TiltedCard-JS-CSS`
+  - `@react-bits/DotGrid-JS-CSS`
+
+### Verification
+
+- `npm run typecheck`
+- `npm run lint`
+- `git diff --check`
+- `npm run build`
+- Local smoke checks for `/zh` and `/zh/projects/dream-factory-experimental-theater`
+
+## 2026-04-24 / Homepage DotGrid + Transition Refinement
+
+### Goals
+
+- Extend the homepage DotGrid treatment beyond the featured-project block so it covers the full page background and footer.
+- Remove the standalone homepage section label above featured projects.
+- Change the project-entry route transition from drifting toward the top-left corner to an image expansion that fills the viewport.
+- Reduce the Lenis scroll smoothing strength so wheel input responds more directly.
+
+### Files Added or Changed
+
+- `src/components/home-dot-grid-background.tsx`: new fixed homepage background layer that renders the React Bits DotGrid behind the page content and footer.
+- `src/app/[locale]/page.tsx`: removed the standalone "Featured Projects / 推荐项目" ribbon and mounted the full-page DotGrid background.
+- `src/components/featured-project-field.tsx`: removed the local section-level DotGrid wrapper so featured cards sit directly on the page-level background.
+- `src/components/project-transition-link.tsx`: rewired the transition overlay so the clicked image itself expands to fill the viewport instead of moving the whole container from its top-left origin.
+- `src/components/smooth-scroll-provider.tsx`: reduced Lenis duration / increased lerp for a lighter smoothing effect.
+- `src/app/globals.css`: made homepage content/footer transparent over the fixed DotGrid layer and updated transition overlay positioning.
+
+### Verification
+
+- `npm run typecheck`
+- `npm run lint`
+- `git diff --check`
+- `npm run build`
+- Local smoke checks for `/zh` and `/zh/projects/dream-factory-experimental-theater`
+
+### Follow-Up Refinement
+
+- Moved the DotGrid layer into `.home-overlay-content` so the homepage paper background remains visible and the hero imagery no longer bleeds through the featured-project area.
+- Gave the footer the same dark paper color plus a matching dot pattern so the lower page still reads as one continuous surface.
+
+### Additional Homepage Pass
+
+- Added a homepage full-screen project-intro section ahead of the featured cards using a local TypeScript/CSS-module port of React Bits `@react-bits/ScrollFloat-JS-CSS`.
+- The intro shows `项目 / Projects` as an oversized scroll-reactive word before the featured project cards appear.
+- Changed the homepage featured-project layout to four columns on large screens and increased the local section padding / tile spacing so the grid breathes more.
+
+### Project Intro Refinement
+
+- Replaced the oversized ScrollFloat word treatment with a quieter GSAP-driven project-index threshold.
+- The new intro uses a sticky full-screen plane, a fine progress rail, and a moving project-title track before the featured grid appears.
+- Removed the local ScrollFloat component files after the effect was no longer used.
+
+### Pinned Project Sequence + Local Media Proxy
+
+- Removed the React Bits DotGrid background and deleted its local component files.
+- Rebuilt the homepage project intro as a pinned GSAP sequence: scrolling pins the viewport, flashes the large project label, locks a compact index label in the upper-left, then reveals featured project cards one by one.
+- Removed the separate featured-tile reveal in `GsapPageMotion` so it does not fight the pinned sequence timeline.
+- Added `src/app/api/media/route.ts` and a development-only branch in `mediaUrl()` so local ports not present in the OSS Referer whitelist can still load media through the Next.js dev server.
+- Confirmed OSS returns `403` for featured image requests with `http://127.0.0.1:3001/zh` as Referer and `200` for `http://127.0.0.1:3000/zh`, matching the current whitelist documented in the handoff.
+
+### Pinned Sequence Layout Tuning
+
+- Centered the opening `项目 / Projects` flash on the viewport instead of letting the large CJK glyph sit low in the frame.
+- Reduced the pinned index layer to only `项目索引 / Project Index`, removing the small label, count, descriptive copy, project-directory list, and progress rail.
+- Expanded homepage featured items to eight visual tiles and split the pinned reveal into two overlaid four-card pages: the first four cards reveal, fade out on continued scroll, then the next four cards reveal.
+- The additional homepage-only tiles use existing OSS homepage imagery and do not link to missing detail pages.
+
+## 2026-04-23 / Homepage Featured Presentation Switcher
+
+### Goals
+
+- Replace the homepage featured-project grid with a stronger presentation concept while still preserving the previous layout for side-by-side review.
+- Turn homepage featured projects into real entry points to the current project-detail routes.
+- Add a scroll-led image-stack presentation with background color transitions and synchronized project-title switching.
+
+### Files Added or Changed
+
+- `src/components/featured-project-field.tsx`: rebuilt the homepage featured area as a client-side switcher with two modes:
+  - `新版叠放 / Image Stack`: GSAP scroll-pinned stacked project imagery with animated title changes and project-color background transitions
+  - `原始网格 / Classic Grid`: the previous grid layout with mouse-reactive parallax
+- `src/components/project-transition-link.tsx`: kept the image-led route transition path for entering project details from either homepage mode.
+- `src/content/site.ts`: aligned homepage featured items and local project-detail seed records to the same five featured projects, added folder color metadata, and moved project imagery to OSS-backed remote assets.
+- `src/app/globals.css`: added the image-stack scene, toggle, responsive fallbacks, and preserved the original grid styling as a review mode.
+
+### Notes
+
+- The homepage now exposes an in-page comparison control so the project owner can switch between the previous and redesigned feature presentation without changing branches or reverting code.
+- Project detail slugs are now generated from the featured-project set:
+  - `dream-factory-experimental-theater`
+  - `wanzhi-natural-history-park`
+  - `wujingkui-ruins-garden`
+  - `pavilion-of-light`
+  - `bambu-lab-first-store`
+- This also removes the earlier local-detail-image 404 issue for the currently seeded projects because the detail data now points at OSS media URLs instead of missing `/images/home/*` files.
+
+### Verification
+
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `git diff --check`: passed.
+- `npm run build`: passed.
+- Local HTTP smoke checks returned `200` for `/zh` and `/zh/projects/dream-factory-experimental-theater`.
+
 ## 2026-04-13 / Project Foundation
 
 ### Goals
@@ -1685,3 +1810,28 @@ ALIYUN_ECS_SSH_KEY
 - `npm run lint`: passed.
 - `git diff --check`: passed.
 - `npm run build`: passed.
+
+## 2026-04-24 / Project Detail Route Recovery
+
+### Goals
+
+- Fix the project-detail runtime error seen when entering projects from the homepage animation.
+- Give the newly added homepage project tiles the same detail-page treatment as the existing routed projects.
+- Prevent stale ScrollTrigger pin state from corrupting the homepage project sequence after route transitions or browser back.
+
+### Changes
+
+- `src/app/[locale]/projects/[slug]/page.tsx`: replaced detail-page `next/image` usage with native image elements so development media-proxy URLs render reliably in the App Router RSC path; added a persistent localized return link back to the project index.
+- `src/content/site.ts`: added detail records and slugs for `light-encounter-theater`, `teastone-mixc`, and `meditation-hall-by-the-wetland`.
+- `src/components/home-project-intro.tsx`: added ScrollTrigger refresh handling for `pageshow` and `popstate`, and removed the no-op GSAP cleanup return.
+- `src/components/project-transition-link.tsx`: clears active ScrollTriggers before route navigation so pinned homepage state does not survive into the detail route.
+- `src/app/globals.css`: added return-link styling and native image sizing for the project immersive carousel.
+
+### Verification
+
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `git diff --check`: passed.
+- `npm run build`: passed.
+- Local detail route smoke checks returned 200 for the existing and newly routed project pages.
+- Local media proxy smoke checks returned 200 for the new horizontal and vertical project images.

@@ -1,6 +1,10 @@
 import type { Locale } from "@/lib/i18n";
+import { mediaUrl } from "@/lib/media";
 
 type Localized<T = string> = Record<Locale, T>;
+
+const featureAsset = (path: string) => mediaUrl(path, { width: 1920, quality: "std" });
+const heroAsset = (path: string) => mediaUrl(path, { width: 2560, quality: "high" });
 
 export type Project = {
   slug: string;
@@ -284,61 +288,154 @@ export const heroSlides: HeroSlide[] = [
  */
 export type FeaturedTile = {
   id: string;
+  slug?: string;
   image: string;
   year: string;
   location: Localized;
   title: Localized;
+  folder: {
+    shell: string;
+    tab: string;
+    edge: string;
+    stamp: string;
+  };
 };
 
 export const featuredTiles: FeaturedTile[] = [
   {
     id: "dream-factory-experimental-theater",
+    slug: "dream-factory-experimental-theater",
     image: "home/feature/01 2023·深圳·梦工场·青年实验剧场.jpg",
     year: "2023",
     location: { zh: "深圳", en: "Shenzhen" },
     title: {
       zh: "梦工场 · 青年实验剧场",
       en: "Dream Factory Experimental Theater"
+    },
+    folder: {
+      shell: "#d4cab6",
+      tab: "#c3b696",
+      edge: "#aa9b7e",
+      stamp: "#60574a"
     }
   },
   {
     id: "wanzhi-natural-history-park",
+    slug: "wanzhi-natural-history-park",
     image: "home/feature/02 2024·深圳 · 深圳 ·万致天地·自然博物园.jpg",
     year: "2024",
     location: { zh: "深圳", en: "Shenzhen" },
     title: {
       zh: "万致天地 · 自然博物园",
       en: "Wanzhi Tiandi · Natural History Park"
+    },
+    folder: {
+      shell: "#cfd4cd",
+      tab: "#b9c0b5",
+      edge: "#9ea696",
+      stamp: "#4f5a4b"
     }
   },
   {
     id: "wujingkui-ruins-garden",
+    slug: "wujingkui-ruins-garden",
     image: "home/feature/03 2025·惠州 · 五经魁废墟花园.jpg",
     year: "2025",
     location: { zh: "惠州", en: "Huizhou" },
     title: {
       zh: "五经魁废墟花园",
       en: "Wujingkui Ruins Garden"
+    },
+    folder: {
+      shell: "#d3d0ca",
+      tab: "#c2beb6",
+      edge: "#aaa59c",
+      stamp: "#59554f"
     }
   },
   {
     id: "pavilion-of-light",
+    slug: "pavilion-of-light",
     image: "home/feature/04 2021·深圳 · 光之展亭·光影艺术季主展场.jpeg",
     year: "2021",
     location: { zh: "深圳", en: "Shenzhen" },
     title: {
       zh: "光之展亭 · 光影艺术季主展场",
       en: "Pavilion of Light · Main Hall, Light & Shadow Art Season"
+    },
+    folder: {
+      shell: "#d3d7dc",
+      tab: "#bcc5cd",
+      edge: "#9fabb5",
+      stamp: "#4c5663"
     }
   },
   {
     id: "bambu-lab-first-store",
+    slug: "bambu-lab-first-store",
     image: "home/feature/05 2025·深圳 · 拓竹科技首店.jpeg",
     year: "2025",
     location: { zh: "深圳", en: "Shenzhen" },
     title: {
       zh: "拓竹科技首店",
       en: "Bambu Lab First Store"
+    },
+    folder: {
+      shell: "#cbc8c0",
+      tab: "#b6b5ad",
+      edge: "#96958d",
+      stamp: "#50504a"
+    }
+  },
+  {
+    id: "light-encounter-theater",
+    slug: "light-encounter-theater",
+    image: "home/horizontal/05 深圳 · 光遇剧场.jpeg",
+    year: "2024",
+    location: { zh: "深圳", en: "Shenzhen" },
+    title: {
+      zh: "光遇剧场",
+      en: "Light Encounter Theater"
+    },
+    folder: {
+      shell: "#d1d3d0",
+      tab: "#bdc0bb",
+      edge: "#a1a59e",
+      stamp: "#535951"
+    }
+  },
+  {
+    id: "teastone-mixc",
+    slug: "teastone-mixc",
+    image: "home/horizontal/06 杭州 · 万象城 tea’stone.jpeg",
+    year: "2024",
+    location: { zh: "杭州", en: "Hangzhou" },
+    title: {
+      zh: "万象城 tea’stone",
+      en: "MixC tea’stone"
+    },
+    folder: {
+      shell: "#d4d1c8",
+      tab: "#c2beb4",
+      edge: "#aaa399",
+      stamp: "#59534b"
+    }
+  },
+  {
+    id: "meditation-hall-by-the-wetland",
+    slug: "meditation-hall-by-the-wetland",
+    image: "home/horizontal/08 北京 · 湿地旁的禅修馆.jpeg",
+    year: "2023",
+    location: { zh: "北京", en: "Beijing" },
+    title: {
+      zh: "湿地旁的禅修馆",
+      en: "Meditation Hall by the Wetland"
+    },
+    folder: {
+      shell: "#cfd4d2",
+      tab: "#b8bfbc",
+      edge: "#9fa8a5",
+      stamp: "#505b58"
     }
   }
 ];
@@ -728,361 +825,576 @@ function projectFacts(area: Localized, client: Localized): ProjectFact[] {
 
 export const projects: Project[] = [
   {
-    slug: "cloud-court-house",
-    code: "MST-024",
-    year: "2026",
+    slug: "dream-factory-experimental-theater",
+    code: "MST-023",
+    year: "2023",
     location: {
-      zh: "杭州，中国",
-      en: "Hangzhou, China"
-    },
-    status: {
-      zh: "设计深化",
-      en: "Design Development"
-    },
-    typology: {
-      zh: "住宅 / 庭院",
-      en: "Residential / Courtyard"
-    },
-    title: {
-      zh: "云院",
-      en: "Cloud Court House"
-    },
-    dek: {
-      zh: "一个围绕天井、雨水和半透明边界组织的低层住宅。",
-      en: "A low-rise residence organized around courtyards, rainwater, and translucent edges."
-    },
-    body: {
-      zh: [
-        "项目以连续的院落组织生活动线，让光线、风和雨水成为日常空间的一部分。",
-        "外墙保持低调的矿物质感，室内使用深色木作和白色墙面形成清晰对比。",
-        "主要房间围绕不同尺度的庭院展开，形成可被季节、湿度和植物缓慢改变的居住界面。"
-      ],
-      en: [
-        "The project uses connected courtyards to make light, air, and rainwater part of daily circulation.",
-        "A quiet mineral exterior is paired with dark timber interiors and white planes for a measured contrast.",
-        "Primary rooms unfold around courtyards of different scales, creating a domestic edge slowly altered by season, humidity, and planting."
-      ]
-    },
-    image: "/images/home/home-01.jpeg",
-    heroImage: "/images/home/home-01.jpeg",
-    imageAlt: {
-      zh: "被树木环绕的现代住宅",
-      en: "Modern residence surrounded by trees"
-    },
-    credit: "MIST Architects Archive",
-    facts: projectFacts(
-      {
-        zh: "约 620 平方米",
-        en: "Approx. 620 sqm"
-      },
-      {
-        zh: "私人业主",
-        en: "Private Client"
-      }
-    ),
-    gallery: [
-      {
-        src: "/images/home/home-06.jpeg",
-        alt: {
-          zh: "带有木质家具的住宅室内",
-          en: "Residential interior with timber furniture"
-        },
-        credit: "MIST Architects Archive"
-      },
-      {
-        src: "/images/home/home-07.jpeg",
-        alt: {
-          zh: "现代住宅中的楼梯与自然光",
-          en: "Stair and daylight inside a modern residence"
-        },
-        credit: "MIST Architects Archive"
-      }
-    ],
-    videoUrl: "https://cdn.pixabay.com/video/2022/02/02/106340-673544770_large.mp4"
-  },
-  {
-    slug: "river-archive",
-    code: "MST-021",
-    year: "2025",
-    location: {
-      zh: "苏州，中国",
-      en: "Suzhou, China"
-    },
-    status: {
-      zh: "竞赛入围",
-      en: "Competition Shortlist"
-    },
-    typology: {
-      zh: "文化 / 更新",
-      en: "Cultural / Adaptive Reuse"
-    },
-    title: {
-      zh: "河岸档案馆",
-      en: "River Archive"
-    },
-    dek: {
-      zh: "旧仓库被改造为面向河岸开放的城市档案与展览空间。",
-      en: "A warehouse is reworked into a civic archive and exhibition hall opening toward the river."
-    },
-    body: {
-      zh: [
-        "既有结构被保留为公共记忆的框架，新插入的轻质盒体承担展览、阅读和社区活动。",
-        "立面通过可开启金属格栅调节日照，也让建筑在白天和夜晚呈现不同厚度。",
-        "河岸一侧被处理成连续的公共界面，让档案馆不再是封闭库房，而成为城市日常可经过、可停留的场所。"
-      ],
-      en: [
-        "The existing structure remains as a framework of civic memory, while inserted lightweight volumes hold exhibitions, reading rooms, and community programs.",
-        "Operable metal screens temper sunlight and give the facade different densities between day and night.",
-        "The riverside edge becomes a continuous public interface, turning the archive from a sealed repository into a place for passing, pausing, and gathering."
-      ]
-    },
-    image: "/images/home/home-02.jpeg",
-    heroImage: "/images/home/home-02.jpeg",
-    imageAlt: {
-      zh: "几何立面和蓝天",
-      en: "Geometric facade against blue sky"
-    },
-    credit: "MIST Architects Archive",
-    facts: projectFacts(
-      {
-        zh: "约 4,800 平方米",
-        en: "Approx. 4,800 sqm"
-      },
-      {
-        zh: "城市文化机构",
-        en: "Civic Cultural Institution"
-      }
-    ),
-    gallery: [
-      {
-        src: "/images/home/home-08.jpeg",
-        alt: {
-          zh: "城市中的建筑立面",
-          en: "Architectural facade in the city"
-        },
-        credit: "MIST Architects Archive"
-      },
-      {
-        src: "/images/home/home-09.jpeg",
-        alt: {
-          zh: "高层建筑的结构细部",
-          en: "Structural details of a high-rise facade"
-        },
-        credit: "MIST Architects Archive"
-      }
-    ]
-  },
-  {
-    slug: "north-light-studio",
-    code: "MST-018",
-    year: "2024",
-    location: {
-      zh: "上海，中国",
-      en: "Shanghai, China"
+      zh: "深圳，中国",
+      en: "Shenzhen, China"
     },
     status: {
       zh: "建成",
       en: "Completed"
     },
     typology: {
-      zh: "办公 / 室内",
-      en: "Workplace / Interior"
+      zh: "文化 / 剧场",
+      en: "Culture / Theater"
     },
     title: {
-      zh: "北光工作室",
-      en: "North Light Studio"
+      zh: "梦工场 · 青年实验剧场",
+      en: "Dream Factory Experimental Theater"
     },
     dek: {
-      zh: "将一层厂房改造为用于模型、材料与小型发布的复合工作空间。",
-      en: "A ground-floor factory bay becomes a combined workspace for models, materials, and small presentations."
+      zh: "在城市街区内部植入一座兼具排练、演出与公共交流的青年实验剧场。",
+      en: "A youth theater inserted into an urban block, combining rehearsal, performance, and public exchange."
     },
     body: {
       zh: [
-        "连续天窗提供稳定北向光，工作台、档案柜和展示墙被整合为一套线性基础设施。",
-        "项目尽量保留原有混凝土和钢构痕迹，让工作过程成为空间的主要表情。",
-        "模型制作、材料陈列和日常会议被放在同一条长轴上，工作室在不同时间呈现开放、安静和展示三种状态。"
+        "项目将黑匣子剧场、共享前厅与开放排练空间压缩进有限场地，让青年创作与街区日常发生直接接触。",
+        "观演流线被处理成一条不断展开的灰空间，观众在进入剧场前已经开始感知声响、光线与结构的变化。",
+        "材料保持克制而直接：深色界面吸收舞台干扰，裸露结构与浅色工作区域则维持现场制作的清晰度。"
       ],
       en: [
-        "Continuous skylights provide stable northern light while worktables, archives, and display walls become one linear infrastructure.",
-        "Existing concrete and steel traces are kept visible so the act of working becomes the room's primary expression.",
-        "Model making, material display, and daily meetings are aligned along one long axis, allowing the studio to shift between open work, quiet focus, and presentation."
+        "The project compresses a black-box theater, shared foyer, and open rehearsal rooms into a tight site so young-making and street life stay in direct contact.",
+        "Audience circulation unfolds through a chain of threshold spaces, allowing sound, light, and structure to register before one enters the performance room.",
+        "Material decisions stay restrained and direct: dark surfaces absorb stage distraction while exposed structure and pale work zones keep the act of production legible."
       ]
     },
-    image: "/images/home/home-03.jpg",
-    heroImage: "/images/home/home-03.jpg",
+    image: featureAsset("home/feature/01 2023·深圳·梦工场·青年实验剧场.jpg"),
+    heroImage: heroAsset("home/feature/01 2023·深圳·梦工场·青年实验剧场.jpg"),
     imageAlt: {
-      zh: "明亮的现代办公室室内",
-      en: "Bright modern office interior"
+      zh: "梦工场青年实验剧场外观",
+      en: "Dream Factory Experimental Theater exterior"
     },
     credit: "MIST Architects Archive",
     facts: projectFacts(
       {
-        zh: "约 960 平方米",
-        en: "Approx. 960 sqm"
+        zh: "约 1,260 平方米",
+        en: "Approx. 1,260 sqm"
       },
       {
-        zh: "创意办公团队",
-        en: "Creative Workplace Team"
+        zh: "文化机构 / 青年剧场计划",
+        en: "Cultural Institution / Youth Theater Program"
       }
     ),
     gallery: [
       {
-        src: "/images/home/home-10.jpeg",
+        src: heroAsset("home/horizontal/01 深圳·梦工场·青年实验剧场.jpg"),
         alt: {
-          zh: "带长桌的共享工作室",
-          en: "Shared studio with long worktables"
+          zh: "剧场与前厅之间的过渡空间",
+          en: "Threshold between theater and foyer"
         },
         credit: "MIST Architects Archive"
       },
       {
-        src: "/images/home/home-01.jpeg",
+        src: featureAsset("home/feature/01 2023·深圳·梦工场·青年实验剧场.jpg"),
         alt: {
-          zh: "带自然光的室内空间",
-          en: "Interior space with natural light"
+          zh: "青年实验剧场的主要观演空间",
+          en: "Main audience and performance space of the youth theater"
         },
         credit: "MIST Architects Archive"
       }
     ]
   },
   {
-    slug: "pine-shadow-library",
-    code: "MST-016",
+    slug: "wanzhi-natural-history-park",
+    code: "MST-024",
     year: "2024",
     location: {
-      zh: "成都，中国",
-      en: "Chengdu, China"
+      zh: "深圳，中国",
+      en: "Shenzhen, China"
+    },
+    status: {
+      zh: "建成",
+      en: "Completed"
+    },
+    typology: {
+      zh: "文化 / 展陈",
+      en: "Culture / Exhibition"
+    },
+    title: {
+      zh: "万致天地 · 自然博物园",
+      en: "Wanzhi Tiandi · Natural History Park"
+    },
+    dek: {
+      zh: "围绕城市自然教育与沉浸式展陈组织的一座复合型博物园空间。",
+      en: "A hybrid museum environment organized around urban nature education and immersive exhibition."
+    },
+    body: {
+      zh: [
+        "项目通过一组相互穿插的展厅、教育空间和休憩界面，把城市商业综合体内部的行走经验重新组织为一段缓慢展开的自然叙事。",
+        "界面并不追求拟态景观，而是利用尺度、光影与材料反射，让观众在连续转折中感知自然标本与环境图像之间的层次。",
+        "建筑与展陈共同工作：结构边界被弱化，路径、视线与停留点被当作同一个空间系统来设计。"
+      ],
+      en: [
+        "A series of interlocked galleries, education rooms, and pause points reorganize movement inside the commercial complex into a slower narrative about nature.",
+        "Rather than mimicking scenery, the project relies on scale, shadow, and material reflection so visitors read subtle differences between specimen, image, and room.",
+        "Architecture and exhibition operate together: structural boundaries are softened and path, sightline, and dwell point are treated as one spatial system."
+      ]
+    },
+    image: featureAsset("home/feature/02 2024·深圳 · 深圳 ·万致天地·自然博物园.jpg"),
+    heroImage: heroAsset("home/feature/02 2024·深圳 · 深圳 ·万致天地·自然博物园.jpg"),
+    imageAlt: {
+      zh: "万致天地自然博物园的主要展陈空间",
+      en: "Primary exhibition space inside Wanzhi Tiandi Natural History Park"
+    },
+    credit: "MIST Architects Archive",
+    facts: projectFacts(
+      {
+        zh: "约 3,200 平方米",
+        en: "Approx. 3,200 sqm"
+      },
+      {
+        zh: "万致天地",
+        en: "Wanzhi Tiandi"
+      }
+    ),
+    gallery: [
+      {
+        src: heroAsset("home/horizontal/12_4:3 深圳 ·万致天地·自然博物园.jpg"),
+        alt: {
+          zh: "自然博物园的展厅界面",
+          en: "Gallery interface inside the natural museum"
+        },
+        credit: "MIST Architects Archive"
+      },
+      {
+        src: heroAsset("home/horizontal/12.1_4:3_深圳 ·万致天地·自然博物园.jpg"),
+        alt: {
+          zh: "展厅中段与沉浸式观展路径",
+          en: "Mid-gallery view and immersive circulation path"
+        },
+        credit: "MIST Architects Archive"
+      }
+    ]
+  },
+  {
+    slug: "wujingkui-ruins-garden",
+    code: "MST-025",
+    year: "2025",
+    location: {
+      zh: "惠州，中国",
+      en: "Huizhou, China"
     },
     status: {
       zh: "方案设计",
       en: "Concept Design"
     },
     typology: {
-      zh: "文化 / 图书馆",
-      en: "Cultural / Library"
+      zh: "遗址 / 景观",
+      en: "Heritage / Landscape"
     },
     title: {
-      zh: "松影图书馆",
-      en: "Pine Shadow Library"
+      zh: "五经魁废墟花园",
+      en: "Wujingkui Ruins Garden"
     },
     dek: {
-      zh: "一座以屋檐、树影和低照度阅读空间组织的社区图书馆。",
-      en: "A community library shaped by deep eaves, pine shadows, and low-lit reading rooms."
+      zh: "在遗址、植被与慢速游园路径之间建立新的公共花园秩序。",
+      en: "A new public garden order set between ruins, vegetation, and a deliberately slow walking route."
     },
     body: {
       zh: [
-        "图书馆被放置在旧街区与新公园之间，建筑以连续檐下空间连接阅读、等候和日常穿行。",
-        "室内空间尽量降低视觉噪音，书架、长凳和窗洞被组织成缓慢展开的路径。",
-        "项目关注光线进入建筑后的衰减过程，让安静成为公共建筑真正的使用功能。"
+        "项目首先把遗址视作时间的容器，而非等待被完全修复的对象，因此新的介入尽量采用低姿态的路径、平台与植被组织。",
+        "游园路线在碎片化墙体之间穿行，让停留、回望与穿越成为同样重要的空间行为。",
+        "设计试图保留废墟的粗粝尺度，同时以轻微的边界整理和地面回应，让场地重新进入公共日常。"
       ],
       en: [
-        "The library sits between an old neighborhood and a new park, using continuous eaves to connect reading, waiting, and daily movement.",
-        "Interior spaces reduce visual noise, arranging shelves, benches, and window openings as a slow sequence.",
-        "The project studies how daylight softens inside the building, treating silence as an active civic program."
+        "The project treats the ruins as a container of time rather than an object awaiting full restoration, so new work stays low and precise through paths, platforms, and planting.",
+        "Circulation moves between fragmented walls so pausing, looking back, and crossing through carry equal spatial weight.",
+        "The design keeps the rough scale of the ruin while using minimal ground and edge adjustments to bring the site back into public daily life."
       ]
     },
-    image: "/images/home/home-04.jpeg",
-    heroImage: "/images/home/home-04.jpeg",
+    image: featureAsset("home/feature/03 2025·惠州 · 五经魁废墟花园.jpg"),
+    heroImage: heroAsset("home/feature/03 2025·惠州 · 五经魁废墟花园.jpg"),
     imageAlt: {
-      zh: "低矮建筑与树影",
-      en: "Low building with tree shadows"
+      zh: "五经魁废墟花园中的遗址与植被",
+      en: "Ruins and vegetation inside Wujingkui Ruins Garden"
     },
     credit: "MIST Architects Archive",
     facts: projectFacts(
       {
-        zh: "约 2,400 平方米",
-        en: "Approx. 2,400 sqm"
+        zh: "约 6,800 平方米",
+        en: "Approx. 6,800 sqm"
       },
       {
-        zh: "社区公共机构",
-        en: "Community Public Institution"
+        zh: "文保更新计划",
+        en: "Heritage Renewal Program"
       }
     ),
     gallery: [
       {
-        src: "/images/home/home-02.jpeg",
+        src: heroAsset("home/horizontal/03 惠州 · 五经魁废墟花园.jpg"),
         alt: {
-          zh: "社区图书馆的外部界面",
-          en: "Exterior edge of a community library"
+          zh: "废墟花园中的路径与围墙",
+          en: "Path and remnant wall inside the ruins garden"
         },
         credit: "MIST Architects Archive"
       },
       {
-        src: "/images/home/home-05.jpeg",
+        src: featureAsset("home/feature/03 2025·惠州 · 五经魁废墟花园.jpg"),
         alt: {
-          zh: "阅读空间与自然光",
-          en: "Reading space with natural light"
+          zh: "遗址与植物共同形成的公共花园空间",
+          en: "Public garden space formed by ruin fragments and planting"
         },
         credit: "MIST Architects Archive"
       }
     ]
   },
   {
-    slug: "salt-field-guesthouse",
-    code: "MST-014",
-    year: "2023",
+    slug: "pavilion-of-light",
+    code: "MST-017",
+    year: "2021",
     location: {
-      zh: "厦门，中国",
-      en: "Xiamen, China"
+      zh: "深圳，中国",
+      en: "Shenzhen, China"
     },
     status: {
       zh: "建成",
       en: "Completed"
     },
     typology: {
-      zh: "旅宿 / 更新",
-      en: "Hospitality / Renewal"
+      zh: "展亭 / 装置",
+      en: "Pavilion / Installation"
     },
     title: {
-      zh: "盐田客舍",
-      en: "Salt Field Guesthouse"
+      zh: "光之展亭 · 光影艺术季主展场",
+      en: "Pavilion of Light · Main Hall, Light & Shadow Art Season"
     },
     dek: {
-      zh: "由旧民居改造而来的小型客舍，以院墙、潮湿空气和浅色材料建立慢节奏体验。",
-      en: "A small guesthouse converted from an old dwelling, shaped by courtyard walls, humid air, and pale materials."
+      zh: "为城市光影艺术季构建的一座临时主展场，强调行走中的光感与结构层次。",
+      en: "A temporary main venue for the city's light-and-shadow art season, shaped around luminous movement and layered structure."
     },
     body: {
       zh: [
-        "项目保留原有院墙和屋顶轮廓，在内部重新组织客房、公共厨房和半室外休息平台。",
-        "浅色抹灰、木作和局部石材共同建立克制的材料层次，让光线在一天中呈现细微变化。",
-        "客舍不追求强烈的地标性，而是把海风、湿度和邻里声音纳入居住经验。"
+        "展亭以半透明围护和连续桁架组织临时性的公共聚集，让白天与夜晚都形成不同强度的空间表情。",
+        "参观路径并不是简单地穿过一个展棚，而是在光的密度、反射和阴影之间不断切换观看关系。",
+        "临时结构被尽量做得清晰而轻，既承载展览和活动，也保留城市公共空间的开放感。"
       ],
       en: [
-        "The project keeps the original courtyard walls and roof outline while reorganizing rooms, a shared kitchen, and semi-outdoor terraces.",
-        "Pale plaster, timber, and selected stone create a restrained material register, allowing light to shift quietly through the day.",
-        "Rather than seeking landmark presence, the guesthouse folds sea wind, humidity, and neighborhood sound into the stay."
+        "The pavilion uses translucent enclosure and a continuous truss system to create temporary public gathering with different spatial intensities across day and night.",
+        "Movement is not a simple pass through a shed but a sequence of changing relations between light density, reflection, and shadow.",
+        "The temporary structure stays clear and lightweight so it can host exhibitions and events without losing the openness of the civic ground."
       ]
     },
-    image: "/images/home/home-05.jpeg",
-    heroImage: "/images/home/home-05.jpeg",
+    image: featureAsset("home/feature/04 2021·深圳 · 光之展亭·光影艺术季主展场.jpeg"),
+    heroImage: heroAsset("home/feature/04 2021·深圳 · 光之展亭·光影艺术季主展场.jpeg"),
     imageAlt: {
-      zh: "浅色材料构成的庭院空间",
-      en: "Courtyard space formed by pale materials"
+      zh: "光之展亭主展场外观",
+      en: "Main venue view of the Pavilion of Light"
     },
     credit: "MIST Architects Archive",
     facts: projectFacts(
       {
-        zh: "约 780 平方米",
-        en: "Approx. 780 sqm"
+        zh: "约 1,980 平方米",
+        en: "Approx. 1,980 sqm"
       },
       {
-        zh: "在地旅宿品牌",
-        en: "Local Hospitality Brand"
+        zh: "深圳光影艺术季",
+        en: "Shenzhen Light and Shadow Art Season"
       }
     ),
     gallery: [
       {
-        src: "/images/home/home-03.jpg",
+        src: heroAsset("home/horizontal/04 深圳 · 光之展亭.jpeg"),
         alt: {
-          zh: "改造客舍的院落视角",
-          en: "Courtyard view of the renewed guesthouse"
+          zh: "展亭中的结构与光线层次",
+          en: "Structure and luminous layers inside the pavilion"
         },
         credit: "MIST Architects Archive"
       },
       {
-        src: "/images/home/home-06.jpeg",
+        src: featureAsset("home/feature/04 2021·深圳 · 光之展亭·光影艺术季主展场.jpeg"),
         alt: {
-          zh: "客房与半室外平台",
-          en: "Guest room and semi-outdoor terrace"
+          zh: "光影艺术季主展场入口",
+          en: "Entry condition to the main hall of the art season"
+        },
+        credit: "MIST Architects Archive"
+      }
+    ]
+  },
+  {
+    slug: "bambu-lab-first-store",
+    code: "MST-026",
+    year: "2025",
+    location: {
+      zh: "深圳，中国",
+      en: "Shenzhen, China"
+    },
+    status: {
+      zh: "建成",
+      en: "Completed"
+    },
+    typology: {
+      zh: "零售 / 科技展示",
+      en: "Retail / Tech Showroom"
+    },
+    title: {
+      zh: "拓竹科技首店",
+      en: "Bambu Lab First Store"
+    },
+    dek: {
+      zh: "把产品体验、社群活动和技术演示组织进同一条清晰可读的首店空间。",
+      en: "A first store that organizes product experience, community events, and technical demonstration within one readable retail space."
+    },
+    body: {
+      zh: [
+        "项目把品牌首店理解成一个持续运转的展示工坊，而不是单纯的商品陈列场，因此所有体验都围绕真实工作流程展开。",
+        "动线清晰但并不生硬：演示区、配件墙、活动台与驻留交流区被组织为一系列逐步开放的界面。",
+        "材料选择尽量降低背景噪音，让机器、模型与操作过程本身成为空间的视觉重心。"
+      ],
+      en: [
+        "The first store is conceived as an operating workshop rather than a pure display room, so the experience is built around actual workflows and demonstrations.",
+        "Circulation stays clear without becoming rigid: demo zones, accessory walls, event tables, and dwell areas open one after another.",
+        "Material choices reduce background noise so the machines, prototypes, and the act of use become the visual center of the room."
+      ]
+    },
+    image: featureAsset("home/feature/05 2025·深圳 · 拓竹科技首店.jpeg"),
+    heroImage: heroAsset("home/feature/05 2025·深圳 · 拓竹科技首店.jpeg"),
+    imageAlt: {
+      zh: "拓竹科技首店内部展示空间",
+      en: "Interior display space of the Bambu Lab first store"
+    },
+    credit: "MIST Architects Archive",
+    facts: projectFacts(
+      {
+        zh: "约 540 平方米",
+        en: "Approx. 540 sqm"
+      },
+      {
+        zh: "拓竹科技",
+        en: "Bambu Lab"
+      }
+    ),
+    gallery: [
+      {
+        src: heroAsset("home/horizontal/07 深圳 · 拓竹科技首店.jpeg"),
+        alt: {
+          zh: "首店内的产品演示区",
+          en: "Product demonstration zone inside the first store"
+        },
+        credit: "MIST Architects Archive"
+      },
+      {
+        src: featureAsset("home/feature/05 2025·深圳 · 拓竹科技首店.jpeg"),
+        alt: {
+          zh: "拓竹科技首店的陈列与活动界面",
+          en: "Retail display and event interface inside the Bambu Lab store"
+        },
+        credit: "MIST Architects Archive"
+      }
+    ]
+  },
+  {
+    slug: "light-encounter-theater",
+    code: "MST-021",
+    year: "2024",
+    location: {
+      zh: "深圳，中国",
+      en: "Shenzhen, China"
+    },
+    status: {
+      zh: "建成",
+      en: "Completed"
+    },
+    typology: {
+      zh: "文化 / 沉浸式剧场",
+      en: "Culture / Immersive Theater"
+    },
+    title: {
+      zh: "光遇剧场",
+      en: "Light Encounter Theater"
+    },
+    dek: {
+      zh: "以光、动线和观演距离重组商业空间中的沉浸式剧场体验。",
+      en: "An immersive theater experience in a commercial setting, organized through light, circulation, and viewing distance."
+    },
+    body: {
+      zh: [
+        "项目在既有商业界面中植入一组连续的观演空间，让等待、聚集、进入与观看成为一段完整的空间叙事。",
+        "光线被处理成引导路径的主要媒介：局部的暗度、反射与高亮共同建立观众对方向和场景的感知。",
+        "界面材料保持轻和克制，重点放在人的移动、光的变化以及舞台事件之间的关系。"
+      ],
+      en: [
+        "The project inserts a sequence of performance rooms into an existing commercial interface so waiting, gathering, entering, and watching become one spatial narrative.",
+        "Light becomes the primary guide: local darkness, reflection, and highlights help visitors understand direction and scene.",
+        "Material treatment stays light and restrained, keeping attention on movement, changing illumination, and the relation between audience and event."
+      ]
+    },
+    image: featureAsset("home/horizontal/05 深圳 · 光遇剧场.jpeg"),
+    heroImage: heroAsset("home/horizontal/05 深圳 · 光遇剧场.jpeg"),
+    imageAlt: {
+      zh: "光遇剧场的观演空间",
+      en: "Performance space inside Light Encounter Theater"
+    },
+    credit: "MIST Architects Archive",
+    facts: projectFacts(
+      {
+        zh: "约 1,120 平方米",
+        en: "Approx. 1,120 sqm"
+      },
+      {
+        zh: "商业文化空间业主",
+        en: "Commercial Cultural Space Client"
+      }
+    ),
+    gallery: [
+      {
+        src: heroAsset("home/horizontal/05 深圳 · 光遇剧场.jpeg"),
+        alt: {
+          zh: "剧场中的光线与观演界面",
+          en: "Light and audience interface inside the theater"
+        },
+        credit: "MIST Architects Archive"
+      },
+      {
+        src: featureAsset("home/vertical/05 深圳 · 光遇剧场.jpeg"),
+        alt: {
+          zh: "剧场入口与过渡空间",
+          en: "Theater entry and threshold space"
+        },
+        credit: "MIST Architects Archive"
+      }
+    ]
+  },
+  {
+    slug: "teastone-mixc",
+    code: "MST-022",
+    year: "2024",
+    location: {
+      zh: "杭州，中国",
+      en: "Hangzhou, China"
+    },
+    status: {
+      zh: "建成",
+      en: "Completed"
+    },
+    typology: {
+      zh: "零售 / 茶饮空间",
+      en: "Retail / Tea Space"
+    },
+    title: {
+      zh: "万象城 tea’stone",
+      en: "MixC tea’stone"
+    },
+    dek: {
+      zh: "在高密度商业场景中建立一处低声量的茶饮、停留与展示空间。",
+      en: "A quiet tea, display, and pause space set within a dense commercial environment."
+    },
+    body: {
+      zh: [
+        "项目把茶饮消费从快速通过的商业动线中抽离出来，以连续的台面、低饱和材料和明确的边界组织停留。",
+        "空间的核心不是装饰性符号，而是操作、展示和坐席之间的节奏，让顾客能清晰感知制茶过程。",
+        "材料细部控制在温和的反射和触感之内，使店铺在商场环境中保持安静但可识别的存在。"
+      ],
+      en: [
+        "The project pulls tea consumption away from fast retail circulation, using continuous counters, desaturated materials, and precise edges to organize pause.",
+        "The spatial focus is not decorative symbolism but the rhythm between preparation, display, and seating, making the tea-making process legible.",
+        "Details stay within gentle reflection and tactility, giving the shop a quiet but recognizable presence inside the mall."
+      ]
+    },
+    image: featureAsset("home/horizontal/06 杭州 · 万象城 tea’stone.jpeg"),
+    heroImage: heroAsset("home/horizontal/06 杭州 · 万象城 tea’stone.jpeg"),
+    imageAlt: {
+      zh: "万象城 tea’stone 的室内空间",
+      en: "Interior of MixC tea’stone"
+    },
+    credit: "MIST Architects Archive",
+    facts: projectFacts(
+      {
+        zh: "约 420 平方米",
+        en: "Approx. 420 sqm"
+      },
+      {
+        zh: "tea’stone",
+        en: "tea’stone"
+      }
+    ),
+    gallery: [
+      {
+        src: heroAsset("home/horizontal/06 杭州 · 万象城 tea’stone.jpeg"),
+        alt: {
+          zh: "茶饮空间的吧台与客席",
+          en: "Counter and seating in the tea space"
+        },
+        credit: "MIST Architects Archive"
+      },
+      {
+        src: featureAsset("home/vertical/06 杭州 · 万象城 tea’stone.jpeg"),
+        alt: {
+          zh: "店铺界面与材料细部",
+          en: "Shop interface and material detail"
+        },
+        credit: "MIST Architects Archive"
+      }
+    ]
+  },
+  {
+    slug: "meditation-hall-by-the-wetland",
+    code: "MST-020",
+    year: "2023",
+    location: {
+      zh: "北京，中国",
+      en: "Beijing, China"
+    },
+    status: {
+      zh: "建成",
+      en: "Completed"
+    },
+    typology: {
+      zh: "文化 / 静修空间",
+      en: "Culture / Meditation Space"
+    },
+    title: {
+      zh: "湿地旁的禅修馆",
+      en: "Meditation Hall by the Wetland"
+    },
+    dek: {
+      zh: "面向湿地边缘的一处安静修习空间，以木、暗色界面和细窄光线组织身体尺度。",
+      en: "A quiet practice hall beside the wetland, shaping bodily scale through timber, dark surfaces, and narrow light."
+    },
+    body: {
+      zh: [
+        "项目把外部湿地的开阔感转译为内部收束的行走体验，入口、廊道与主厅之间形成由暗到明的连续过渡。",
+        "木质界面控制声音和触感，深色顶面压低视觉重心，让人的注意力回到步伐、呼吸和光线。",
+        "建筑并不试图复制自然，而是在湿地边缘提供一段可被安静使用的边界。"
+      ],
+      en: [
+        "The project translates the openness of the wetland into a compressed interior route, moving from entry to corridor to hall through a gradual shift from dark to light.",
+        "Timber surfaces manage sound and tactility while the dark ceiling lowers visual weight, returning attention to pace, breath, and light.",
+        "Rather than reproducing nature, the architecture offers a quiet usable boundary at the edge of the wetland."
+      ]
+    },
+    image: featureAsset("home/horizontal/08 北京 · 湿地旁的禅修馆.jpeg"),
+    heroImage: heroAsset("home/horizontal/08 北京 · 湿地旁的禅修馆.jpeg"),
+    imageAlt: {
+      zh: "湿地旁的禅修馆室内廊道",
+      en: "Interior corridor of the Meditation Hall by the Wetland"
+    },
+    credit: "MIST Architects Archive",
+    facts: projectFacts(
+      {
+        zh: "约 760 平方米",
+        en: "Approx. 760 sqm"
+      },
+      {
+        zh: "静修与文化空间业主",
+        en: "Meditation and Cultural Space Client"
+      }
+    ),
+    gallery: [
+      {
+        src: heroAsset("home/horizontal/08 北京 · 湿地旁的禅修馆.jpeg"),
+        alt: {
+          zh: "禅修馆的木质廊道与暗色顶面",
+          en: "Timber corridor and dark ceiling inside the meditation hall"
+        },
+        credit: "MIST Architects Archive"
+      },
+      {
+        src: featureAsset("home/vertical/08 北京 · 湿地旁的禅修馆.jpeg"),
+        alt: {
+          zh: "静修空间中的光线与材料",
+          en: "Light and material inside the meditation space"
         },
         credit: "MIST Architects Archive"
       }

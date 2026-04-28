@@ -5,6 +5,9 @@ live, how they are processed, what the page actually requests, and the
 guard rails that keep file weight predictable.
 
 Last reviewed: 2026-04-22 — OSS Referer protection + versioning enabled.
+Local dev note added 2026-04-24 — `mediaUrl()` uses a Next.js dev proxy
+for the default OSS origin so non-whitelisted local ports such as `3001`
+do not break browser image loading.
 
 ---
 
@@ -233,6 +236,14 @@ selectors like `.story-tile img { aspect-ratio: 4/3 }` still apply.
 
 For non-IMG cases (logos, raw passthrough), `mediaUrl(path)` with no
 options returns the unprocessed URL.
+
+In `NODE_ENV=development`, when `NEXT_PUBLIC_MEDIA_BASE` is not set and
+the default OSS origin is used, `mediaUrl()` returns `/api/media?...`
+instead of a direct OSS URL. The route fetches OSS server-side with a
+whitelisted local Referer. This is only a local development workaround;
+production builds still emit direct OSS/CDN URLs. Set
+`NEXT_PUBLIC_DISABLE_MEDIA_PROXY=1` to bypass the local proxy when
+testing bucket Referer behavior directly.
 
 ---
 

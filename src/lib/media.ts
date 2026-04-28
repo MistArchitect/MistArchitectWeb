@@ -28,6 +28,10 @@ const DEFAULT_MEDIA_BASE = "https://mist-architects-media.oss-cn-shenzhen.aliyun
 
 const rawBase = process.env.NEXT_PUBLIC_MEDIA_BASE ?? DEFAULT_MEDIA_BASE;
 const MEDIA_BASE = rawBase.replace(/\/+$/, "");
+const USE_DEV_MEDIA_PROXY =
+  process.env.NODE_ENV === "development" &&
+  MEDIA_BASE === DEFAULT_MEDIA_BASE &&
+  process.env.NEXT_PUBLIC_DISABLE_MEDIA_PROXY !== "1";
 
 /**
  * Output formats supported by the OSS IMG service. `jpg` is the
@@ -247,9 +251,16 @@ export function mediaUrl(path: string, opts: ProcessOptions = {}): string {
     return path;
   }
 
-  const url = `${MEDIA_BASE}/${encodePath(path)}`;
   const process = buildOssProcess(opts);
+  if (USE_DEV_MEDIA_PROXY) {
+    const params = new URLSearchParams({ path });
+    if (process) {
+      params.set("process", process);
+    }
+    return `/api/media?${params.toString()}`;
+  }
 
+  const url = `${MEDIA_BASE}/${encodePath(path)}`;
   return process ? `${url}?x-oss-process=${process}` : url;
 }
 

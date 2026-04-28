@@ -50,21 +50,6 @@ function setupHomeMotion() {
       }
     });
   }
-
-  const featuredTiles = gsap.utils.toArray<HTMLElement>(".featured-project-reactive-tile");
-  if (featuredTiles.length > 0) {
-    gsap.from(featuredTiles, {
-      autoAlpha: 0,
-      y: 56,
-      duration: 1.15,
-      ease: "power3.out",
-      stagger: 0.1,
-      scrollTrigger: {
-        trigger: ".recommended-grid",
-        start: "top 82%"
-      }
-    });
-  }
 }
 
 function setupAboutMotion() {

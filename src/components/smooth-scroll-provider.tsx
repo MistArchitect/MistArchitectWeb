@@ -22,9 +22,10 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
 
     const lenis = new Lenis({
       anchors: true,
-      duration: 1.25,
-      lerp: 0.075,
-      smoothWheel: true
+      duration: 0.9,
+      lerp: 0.14,
+      smoothWheel: true,
+      wheelMultiplier: 0.95
     });
 
     const updateScrollTrigger = () => ScrollTrigger.update();

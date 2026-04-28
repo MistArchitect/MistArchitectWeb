@@ -1,11 +1,12 @@
+/* eslint-disable @next/next/no-img-element */
 import type { Metadata } from "next";
-import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { CSSProperties } from "react";
 
 import { GsapPageMotion } from "@/components/gsap-page-motion";
 import { getProjectBySlug, getProjectSlugs } from "@/lib/content";
-import { isLocale, locales, type Locale } from "@/lib/i18n";
+import { isLocale, locales, type Locale, withLocale } from "@/lib/i18n";
 import type { Project, ProjectFact, ProjectSection } from "@/content/site";
 
 export const revalidate = 60;
@@ -75,6 +76,9 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   return (
     <main className="project-detail">
       <GsapPageMotion page="project" />
+      <Link className="project-return-link" href={withLocale(locale, "/")}>
+        {locale === "zh" ? "返回项目索引" : "Back to project index"}
+      </Link>
       <section className="project-immersive" aria-labelledby="project-title">
         <div className="project-immersive-sticky" aria-hidden="true">
           <div
@@ -82,13 +86,11 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             style={{ "--project-slide-count": heroSlides.length } as CSSProperties}
           >
             {heroSlides.map((slide, index) => (
-              <Image
+              <img
                 alt=""
                 className="project-immersive-slide"
-                fill
                 key={`${slide.src}-${index}`}
-                priority={index === 0}
-                sizes="100vw"
+                loading={index === 0 ? "eager" : "lazy"}
                 src={slide.src}
                 style={{ "--project-slide-index": index } as CSSProperties}
               />
@@ -145,12 +147,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               <div className="project-story-media" data-count={section.media.length}>
                 {section.media.map((media) => (
                   <figure key={media.src}>
-                    <Image
-                      src={media.src}
+                    <img
                       alt={media.alt[locale]}
-                      width={1800}
-                      height={1200}
-                      sizes="(min-width: 980px) 58vw, 100vw"
+                      loading="lazy"
+                      src={media.src}
                     />
                     {media.credit ? (
                       <figcaption>

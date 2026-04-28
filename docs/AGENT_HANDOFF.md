@@ -427,6 +427,10 @@ Completed on 2026-04-22:
    The IP Referer is a temporary preview allowance while
    `mist-arch.com` is not ICP-filed; remove it after the domain entry
    is restored.
+   Local dev ports outside this list, such as `127.0.0.1:3001`, are
+   expected to 403 on direct OSS media requests. In development,
+   `mediaUrl()` routes the default OSS origin through `/api/media` so
+   the Next.js dev server can fetch with a whitelisted Referer.
 2. **No CORS rule.** Deliberately unset. Plain `<img>` / `<picture>`
    loading does not need cross-origin XHR permissions.
 3. **Bucket versioning.** Enabled so accidental overwrites can be

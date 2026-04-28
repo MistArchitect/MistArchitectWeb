@@ -4,6 +4,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { MouseEvent, ReactNode } from "react";
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 type ProjectTransitionLinkProps = {
   href: string;
@@ -43,12 +46,15 @@ export function ProjectTransitionLink({
   function handleClick(event: MouseEvent<HTMLAnchorElement>) {
     if (shouldUseNativeNavigation(event) || prefersReducedMotion()) return;
 
-    const image = document.querySelector<HTMLImageElement>(
-      `[data-project-transition-source="${transitionId}"] img`
+    const source = document.querySelector<HTMLElement>(
+      `[data-project-transition-source="${transitionId}"]`
     );
-    if (!image) return;
+    if (!source) return;
 
-    const rect = image.getBoundingClientRect();
+    const snapshot = source.querySelector<HTMLElement>("img");
+    if (!snapshot) return;
+
+    const rect = snapshot.getBoundingClientRect();
     if (rect.width <= 0 || rect.height <= 0) return;
 
     event.preventDefault();
@@ -56,31 +62,32 @@ export function ProjectTransitionLink({
     const layer = document.createElement("div");
     layer.className = "project-route-transition";
     layer.setAttribute("aria-hidden", "true");
-
-    const clone = document.createElement("img");
-    clone.src = image.currentSrc || image.src;
-    clone.alt = "";
-    clone.decoding = "async";
-    clone.style.objectPosition = getComputedStyle(image).objectPosition;
-    layer.appendChild(clone);
     document.body.appendChild(layer);
 
+    const clone = snapshot.cloneNode(true) as HTMLElement;
+    if (clone instanceof HTMLImageElement) {
+      clone.alt = "";
+      clone.decoding = "async";
+      clone.style.objectPosition = getComputedStyle(snapshot).objectPosition;
+    }
+
+    clone.classList.add("project-route-transition-content");
+    layer.appendChild(clone);
+
     gsap.set(layer, {
-      left: rect.left,
-      top: rect.top,
-      width: rect.width,
-      height: rect.height,
       opacity: 1
     });
 
-    gsap.to(layer, {
-      left: 0,
-      top: 0,
-      width: window.innerWidth,
-      height: window.innerHeight,
-      duration: 0.62,
-      ease: "power3.inOut",
+    gsap.set(clone, {
+      left: rect.left,
+      top: rect.top,
+      width: rect.width,
+      height: rect.height
+    });
+
+    const timeline = gsap.timeline({
       onComplete: () => {
+        ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
         router.push(href);
         gsap.to(layer, {
           opacity: 0,
@@ -91,6 +98,21 @@ export function ProjectTransitionLink({
         });
       }
     });
+
+    timeline.to(clone, {
+      left: 0,
+      top: 0,
+      width: window.innerWidth,
+      height: window.innerHeight,
+      duration: 0.62,
+      ease: "power3.inOut"
+    }, 0);
+
+    timeline.to(clone, {
+      scale: 1,
+      duration: 0.62,
+      ease: "power2.inOut"
+    }, 0);
   }
 
   return (
