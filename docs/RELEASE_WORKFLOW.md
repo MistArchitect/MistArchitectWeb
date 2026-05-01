@@ -137,8 +137,8 @@ As of 2026-04-22:
 
 ```text
 Branch: preview/home-featured-projects
-Preview release: 20260501111326-c3d49c3
-Production release: 20260501111326-c3d49c3
+Preview release: 20260501112459-1dc4c20
+Production release: 20260501112459-1dc4c20
 Preview URL: https://preview.mist-arch.com
 Production URL: https://mist-arch.com
 ```
