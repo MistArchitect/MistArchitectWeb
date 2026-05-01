@@ -129,20 +129,20 @@ Directory layout:
   shared/
     current-preview-release.txt
     current-production-release.txt
-  current-preview -> /srv/mist-architect/releases/20260428174855-6ca9d60
-  current-production -> /srv/mist-architect/releases/20260428174855-6ca9d60
+  current-preview -> /srv/mist-architect/releases/20260501111326-c3d49c3
+  current-production -> /srv/mist-architect/releases/20260501111326-c3d49c3
 ```
 
 Latest preview release:
 
 ```text
-20260428174855-6ca9d60
+20260501111326-c3d49c3
 ```
 
 Recent release folders on ECS:
 
 ```text
-20260428174855-6ca9d60
+20260501111326-c3d49c3
 20260421180550-b84b20a
 20260421161312-3217212
 20260420194149-f176d9d
@@ -184,7 +184,7 @@ Production is online.
 The latest checked PM2 process path on 2026-04-22 was:
 
 ```text
-/srv/mist-architect/releases/20260428174855-6ca9d60/server.js
+/srv/mist-architect/releases/20260501111326-c3d49c3/server.js
 ```
 
 ## 5. Current Nginx Routing
@@ -393,7 +393,7 @@ Production is active.
 Current production-related state:
 
 - `mist-production` PM2 process is online.
-- `/srv/mist-architect/current-production` points to `20260428174855-6ca9d60`.
+- `/srv/mist-architect/current-production` points to `20260501111326-c3d49c3`.
 - Canonical production domain is `https://mist-arch.com`.
 - User confirmed ICP filing is complete.
 - DNS is managed in Alibaba Cloud DNS.
