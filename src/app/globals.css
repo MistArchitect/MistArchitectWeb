@@ -914,8 +914,7 @@ button {
   width: 100%;
 }
 
-.site-footer-meta span:not(:last-child)::after,
-.site-footer-meta a::before {
+.site-footer-meta > *:not(:last-child)::after {
   content: "|";
   margin-left: 8px;
 }
