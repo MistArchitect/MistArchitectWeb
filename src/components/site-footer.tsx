@@ -19,7 +19,8 @@ const footerCopy = {
 
 export function SiteFooter({ locale }: SiteFooterProps) {
   const copy = footerCopy[locale];
-  const icpLicense = process.env.NEXT_PUBLIC_ICP_LICENSE?.trim();
+  const icpLicense =
+    process.env.NEXT_PUBLIC_ICP_LICENSE?.trim() || "粤ICP备2026051307号-1";
 
   return (
     <footer className="site-footer" aria-label={locale === "zh" ? "网站信息" : "Site information"}>
