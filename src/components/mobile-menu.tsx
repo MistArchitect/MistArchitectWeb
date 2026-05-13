@@ -20,7 +20,7 @@ export function MobileMenu({ locale }: MobileMenuProps) {
   const closeText = locale === "zh" ? "关闭" : "Close";
   const menuText = locale === "zh" ? "菜单" : "Menu";
 
-  if (links.length <= 1) {
+  if (links.length <= 2) {
     return (
       <nav
         aria-label={locale === "zh" ? "主导航" : "Primary navigation"}

@@ -4,6 +4,103 @@ This log is written for both human developers and future coding agents. Keep ent
 short, dated, and implementation-oriented so the next contributor can understand what
 changed, why it changed, how it was checked, and what remains open.
 
+## 2026-05-13 / About Contact + Services
+
+### Goals
+
+- Add phone and office address to the About page contact area.
+- Add a company services section below the existing About content with a calm
+  editorial layout.
+
+### Changes
+
+- Added localized services content for planning, renewal, commercial, cultural,
+  exhibition, retail, brand, office, and product work.
+- Inserted a dedicated `公司业务 / Services` About page section between media
+  and contact.
+- Rebuilt contact details as labeled rows for email, phone, and office address.
+
+### Verification
+
+- `npm run typecheck`
+- `npm run lint`
+- `git diff --check`
+- `npm run build`
+- Browser check for `/zh/about`, `#services`, and `#contact` confirmed the
+  services section, contact rows, subnav links, and console health.
+
+## 2026-05-09 / Header Project Anchor Link
+
+### Goals
+
+- Add a right-side header link that scrolls visitors to the homepage project
+  index.
+- Reduce the visual weight of the `项目索引 / Project Index` label.
+
+### Changes
+
+- Added localized `项目 / Projects` navigation items pointing to the homepage
+  `#projects` anchor.
+- Added the `projects` anchor to the homepage project-index section and a
+  header-aware scroll margin.
+- Kept two-link navigation expanded inline instead of collapsing into the
+  menu button.
+- Reduced the project-index label font size.
+
+### Verification
+
+- `npm run typecheck`
+- `npm run lint`
+- `git diff --check`
+- Local dev render check for `/zh` confirmed the header link points to
+  `/zh#projects` and the project-index section renders with `id="projects"`.
+
+### Follow-Up Refinement
+
+- Tightened the project anchor offset to the sticky header height so clicking
+  `项目 / Projects` does not leave a visible strip of the hero above the
+  project-index surface.
+- Pointed the header brand link to the localized homepage `#site-header`
+  anchor so it targets the real page top from both home and inner pages.
+- Increased the project-index top spacing to match the larger heading size
+  without changing the project anchor in a way that exposes the hero edge.
+
+### Top Navigation Follow-Up
+
+- Replaced the brand hash-anchor behavior with a client-side brand home link:
+  on the homepage it removes any hash and smoothly scrolls to `top: 0`; from
+  inner pages it routes to the localized homepage.
+- Added a small semi-transparent fixed scroll-to-top icon button in the lower
+  right corner.
+- Verified the interaction in the in-app browser from `/zh#projects`,
+  `/zh/about`, and the fixed scroll-to-top button, then ran `tsc --noEmit`,
+  `npm run lint`, `git diff --check`, and `npm run build`.
+
+## 2026-05-07 / Branch + Worktree Cleanup Rules
+
+### Goals
+
+- Clean up stale local worktrees and merged agent branches after confirming
+  `main` is the latest approved source state.
+- Keep the repository branch model focused on local review, GitHub Actions
+  preview deployment, and exact preview-to-production promotion.
+
+### Changes
+
+- Removed stale local agent worktrees and deleted merged local agent branches.
+- Deleted the obsolete GitHub branch `codex/gsap-deep-motion`.
+- Documented that the only persistent branches should be `main` and
+  `preview/home-featured-projects`.
+- Updated `AGENTS.md`, `docs/RELEASE_WORKFLOW.md`, `docs/CICD.md`, and
+  `docs/AGENT_HANDOFF.md` so future agents follow the local -> preview ->
+  production release flow.
+
+### Verification
+
+- `git worktree list --porcelain`
+- `git branch --format='%(refname:short) %(upstream:short)'`
+- `git ls-remote --heads origin`
+
 ## 2026-04-24 / Homepage Feature Rollback + React Bits Cards
 
 ### Goals

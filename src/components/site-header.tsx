@@ -1,6 +1,5 @@
-import Link from "next/link";
-
-import { type Locale, withLocale } from "@/lib/i18n";
+import { type Locale } from "@/lib/i18n";
+import { BrandHomeLink } from "./brand-home-link";
 import { LanguageSwitch } from "./language-switch";
 import { MobileMenu } from "./mobile-menu";
 
@@ -13,11 +12,11 @@ export function SiteHeader({ locale }: SiteHeaderProps) {
   const homeLabel = locale === "zh" ? "岚·建筑设计首页" : "MIST Architects home";
 
   return (
-    <header className="site-header" aria-label="MIST Architects">
+    <header className="site-header" id="site-header" aria-label="MIST Architects">
       <div className="main-nav">
-        <Link className="brand-mark" href={withLocale(locale, "/")} aria-label={homeLabel}>
+        <BrandHomeLink className="brand-mark" locale={locale} homeLabel={homeLabel}>
           <span className="brand-wordmark">{brandLabel}</span>
-        </Link>
+        </BrandHomeLink>
         <div className="header-actions">
           <LanguageSwitch locale={locale} />
           <MobileMenu locale={locale} />

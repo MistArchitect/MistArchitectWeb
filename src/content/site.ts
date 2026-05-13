@@ -71,9 +71,11 @@ export type ProjectSection = {
 
 export const navigation: Record<Locale, { label: string; href: string }[]> = {
   zh: [
+    { label: "项目", href: "/#projects" },
     { label: "关于", href: "/about" }
   ],
   en: [
+    { label: "Projects", href: "/#projects" },
     { label: "About", href: "/about" }
   ]
 };
@@ -615,6 +617,13 @@ export const about = {
       }
     },
     {
+      id: "services",
+      label: {
+        zh: "业务",
+        en: "Services"
+      }
+    },
+    {
       id: "contact",
       label: {
         zh: "联系方式",
@@ -712,15 +721,75 @@ export const about = {
       ]
     }
   },
+  services: {
+    label: {
+      zh: "公司业务",
+      en: "Services"
+    },
+    body: {
+      zh: [
+        "城市与规划设计",
+        "城市更新与旧区改造（旧改）",
+        "商业建筑",
+        "公共与文化建筑",
+        "艺术与展览空间设计",
+        "商业零售与体验空间",
+        "品牌视觉系统设计",
+        "办公及总部空间",
+        "产品开发"
+      ],
+      en: [
+        "Urban and planning design",
+        "Urban renewal and old district regeneration",
+        "Commercial architecture",
+        "Public and cultural architecture",
+        "Art and exhibition space design",
+        "Commercial retail and experience spaces",
+        "Brand visual system design",
+        "Office and headquarters spaces",
+        "Product development"
+      ]
+    }
+  },
   contact: {
     label: {
       zh: "联系方式",
       en: "Contact"
     },
-    body: {
-      zh: ["info@mist-arch.com"],
-      en: ["info@mist-arch.com"]
-    }
+    items: [
+      {
+        label: {
+          zh: "邮箱",
+          en: "Email"
+        },
+        value: {
+          zh: "info@mist-arch.com",
+          en: "info@mist-arch.com"
+        },
+        href: "mailto:info@mist-arch.com"
+      },
+      {
+        label: {
+          zh: "电话",
+          en: "Phone"
+        },
+        value: {
+          zh: "18613033310",
+          en: "+86 186 1303 3310"
+        },
+        href: "tel:+8618613033310"
+      },
+      {
+        label: {
+          zh: "办公地点",
+          en: "Office"
+        },
+        value: {
+          zh: "深圳市福田区福保街道福保社区槟榔道1号吉虹研发大厦B栋7层702",
+          en: "Room 702, Building B, Jihong R&D Building, No. 1 Binlang Road, Fubao Community, Fubao Subdistrict, Futian District, Shenzhen"
+        }
+      }
+    ]
   },
   founders: [
     {

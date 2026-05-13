@@ -157,6 +157,17 @@ export default async function AboutPage({ params }: AboutPageProps) {
                 </section>
               </MotionReveal>
 
+              <MotionReveal className="about-office-section about-services-section" delay={0.05}>
+                <section id="services">
+                  <h2>{about.services.label[locale]}</h2>
+                  <ul className="about-services-list">
+                    {about.services.body[locale].map((service) => (
+                      <li key={service}>{service}</li>
+                    ))}
+                  </ul>
+                </section>
+              </MotionReveal>
+
               <MotionReveal
                 className="about-office-section about-contact-section"
                 delay={0.05}
@@ -164,8 +175,17 @@ export default async function AboutPage({ params }: AboutPageProps) {
                 <section id="contact">
                   <h2>{about.contact.label[locale]}</h2>
                   <div className="about-contact-lines">
-                    {about.contact.body[locale].map((line) => (
-                      <p key={line}>{line}</p>
+                    {about.contact.items.map((item) => (
+                      <div className="about-contact-line" key={item.label[locale]}>
+                        <span className="about-contact-label">{item.label[locale]}</span>
+                        {item.href ? (
+                          <a className="about-contact-value" href={item.href}>
+                            {item.value[locale]}
+                          </a>
+                        ) : (
+                          <span className="about-contact-value">{item.value[locale]}</span>
+                        )}
+                      </div>
                     ))}
                   </div>
                 </section>

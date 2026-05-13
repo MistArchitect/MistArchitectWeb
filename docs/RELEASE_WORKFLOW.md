@@ -1,6 +1,6 @@
 # Release Workflow
 
-Last updated: 2026-04-22, Asia/Shanghai.
+Last updated: 2026-05-07, Asia/Shanghai.
 
 This is the operating workflow for Mist Architect website changes.
 
@@ -42,6 +42,14 @@ git diff --check
 Use `npm run build` when the change touches routing, Next.js config,
 image handling, environment variables, or deployment behavior.
 
+Branch hygiene:
+
+- `main` is the canonical latest approved source branch.
+- `preview/home-featured-projects` is reserved for GitHub Actions preview
+  deployment.
+- Short-lived agent/worktree branches are temporary. Delete them after merge,
+  abandonment, or replacement.
+
 ## 2. Preview Review
 
 Goal: client/internal review of a committed version.
@@ -49,7 +57,8 @@ Goal: client/internal review of a committed version.
 Process:
 
 1. Commit the local changes.
-2. Push to `origin/preview/home-featured-projects`.
+2. Update `origin/preview/home-featured-projects` to the exact commit reviewed
+   locally and push it.
 3. GitHub Actions workflow `Deploy Preview` runs automatically from that push.
 4. Share the protected preview URL after the workflow succeeds.
 
@@ -67,6 +76,7 @@ Rules:
 - Do not use GitHub Actions `Re-run all jobs` when the goal is to
   deploy a newer commit. Start a new `Run workflow` run so GitHub uses
   the latest branch HEAD.
+- Avoid force-pushing the preview branch unless the project owner approves it.
 
 ## 3. Production Release
 
@@ -133,10 +143,11 @@ Rules:
 
 ## 4. Current Baseline
 
-As of 2026-04-22:
+As of 2026-05-07:
 
 ```text
-Branch: preview/home-featured-projects
+Canonical source branch: main
+Preview deployment branch: preview/home-featured-projects
 Preview release: 20260501112459-1dc4c20
 Production release: 20260501112459-1dc4c20
 Preview URL: https://preview.mist-arch.com

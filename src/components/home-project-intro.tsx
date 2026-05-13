@@ -11,7 +11,7 @@ export function HomeProjectIntro({ children, locale }: HomeProjectIntroProps) {
   const label = locale === "zh" ? "项目索引" : "Project Index";
 
   return (
-    <section className="home-project-intro" aria-label={label}>
+    <section className="home-project-intro" id="projects" aria-label={label}>
       <header className="home-project-intro-header">
         <strong>{label}</strong>
       </header>

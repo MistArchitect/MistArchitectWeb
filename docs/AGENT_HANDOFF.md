@@ -1,6 +1,6 @@
 # Mist Architect Agent Handoff
 
-Last updated: 2026-04-22, Asia/Shanghai (OSS security + CDN readiness refresh)
+Last updated: 2026-05-07, Asia/Shanghai (branch hygiene refresh)
 
 This document is for another coding agent or developer taking over the current prototype work. It summarizes the local repository state, the active Alibaba Cloud deployment, and the operational commands needed to continue safely.
 
@@ -9,10 +9,17 @@ This document is for another coding agent or developer taking over the current p
 - Project: Mist Architect / 岚·建筑设计 website.
 - Framework: Next.js App Router, React, TypeScript.
 - Build mode: Next.js standalone output via `output: "standalone"` in `next.config.ts`.
-- Current local branch: `preview/home-featured-projects`.
+- Current local branch: `main`.
+- Persistent branch model:
+  - `main`: canonical latest approved source branch.
+  - `preview/home-featured-projects`: GitHub Actions preview deployment branch.
+  - Temporary agent/worktree branches should be deleted after merge,
+    abandonment, or replacement.
 - GitHub remote:
   - `origin`: `https://github.com/MistArchitect/MistArchitectWeb.git`
-- Important: branch is clean and up to date with `origin/preview/home-featured-projects` as of 2026-04-20. GitHub now matches the current preview source state.
+- Important: as of 2026-05-07, local and GitHub branch cleanup left only
+  `main` and `preview/home-featured-projects` as persistent branches. `main`
+  is the latest approved source state.
 
 Current focus:
 

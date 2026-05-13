@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { IntroSplash } from "@/components/intro-splash";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { ScrollToTopButton } from "@/components/scroll-to-top-button";
 import { SmoothScrollProvider } from "@/components/smooth-scroll-provider";
 import { isLocale, locales, type Locale } from "@/lib/i18n";
 
@@ -48,6 +49,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
           <SiteHeader locale={locale} />
           {children}
           <SiteFooter locale={locale} />
+          <ScrollToTopButton locale={locale} />
         </SmoothScrollProvider>
       </body>
     </html>

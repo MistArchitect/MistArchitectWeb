@@ -19,13 +19,29 @@ Read these files in order before making changes:
 
 ## 2. Current Operating Model
 
+Keep only these persistent Git branches unless the project owner explicitly
+asks for a temporary branch:
+
+```text
+main
+preview/home-featured-projects
+```
+
+- `main` is the canonical latest approved source branch.
+- `preview/home-featured-projects` is the GitHub Actions preview deployment
+  branch.
+- Temporary agent/worktree branches must be deleted after they are merged,
+  abandoned, or superseded.
+
 Use this release flow:
 
 1. Develop locally and let the project owner review the local result.
-2. Commit and push to `preview/home-featured-projects`.
-3. Manually run GitHub Actions `Deploy Preview`.
+2. Update `preview/home-featured-projects` to the reviewed commit and push it.
+3. Let GitHub Actions `Deploy Preview` deploy the preview branch. Use a manual
+   `workflow_dispatch` run only when redeploying the same selected commit.
 4. Share `https://preview.mist-arch.com` for client/internal review.
 5. After approval, promote the exact approved preview release to production.
+6. Keep `main` aligned with the approved production source and release notes.
 
 Production URL:
 
@@ -50,6 +66,9 @@ https://preview.mist-arch.com
 - Keep public `8080/tcp` closed.
 - Do not revert user or other-agent changes unless explicitly asked.
 - Prefer scoped changes over broad refactors.
+- Keep branch/worktree hygiene: persistent branches are `main` and
+  `preview/home-featured-projects`; remove stale agent branches and unused
+  worktrees after confirming they contain no work to preserve.
 - Update `docs/DEVELOPMENT_LOG.md` for meaningful implementation,
   deployment, infrastructure, or workflow changes.
 - If production or preview release ids change, update
@@ -77,12 +96,13 @@ pipeline, environment variables, or deployment behavior.
 
 ## 5. Current Baseline
 
-As of 2026-04-22:
+As of 2026-05-07:
 
 ```text
-Branch: preview/home-featured-projects
-Preview release: 20260421182320-2e8474c
-Production release: 20260421182320-2e8474c
+Canonical source branch: main
+Preview deployment branch: preview/home-featured-projects
+Preview release: 20260501112459-1dc4c20
+Production release: 20260501112459-1dc4c20
 Production host: https://mist-arch.com
 Protected preview host: https://preview.mist-arch.com
 ```

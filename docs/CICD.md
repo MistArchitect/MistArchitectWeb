@@ -1,6 +1,6 @@
 # Mist Architect CI/CD Notes
 
-Last updated: 2026-04-22, Asia/Shanghai.
+Last updated: 2026-05-07, Asia/Shanghai.
 
 This document explains the current GitHub Actions CI/CD setup for the Mist
 Architect website. It is intended for the project owner and future coding
@@ -17,12 +17,12 @@ docs/RELEASE_WORKFLOW.md
 ```text
 main
   Default GitHub branch.
+  Canonical latest approved source branch.
   Registers workflows so they appear in GitHub Actions UI.
-  Does not currently contain the latest preview application code.
 
 preview/home-featured-projects
-  Active prototype branch.
-  Source branch for the current Alibaba Cloud ECS preview deployment.
+  Preview deployment branch.
+  Source branch for the Alibaba Cloud ECS preview deployment.
 ```
 
 Important GitHub UI behavior:
@@ -31,8 +31,9 @@ Important GitHub UI behavior:
   workflow file exists on the repository default branch (`main`).
 - For that reason, `.github/workflows/deploy-preview.yml` is intentionally
   present on both `main` and `preview/home-featured-projects`.
-- Registering the workflow on `main` does not mean preview application code has
-  been merged into `main`.
+- Do not keep long-lived feature or agent branches around after merge,
+  abandonment, or replacement. The persistent GitHub branches are `main` and
+  `preview/home-featured-projects`.
 
 ## 2. Workflows
 
