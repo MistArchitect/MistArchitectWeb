@@ -1,6 +1,6 @@
 # Mist Architect Agent Handoff
 
-Last updated: 2026-05-07, Asia/Shanghai (branch hygiene refresh)
+Last updated: 2026-05-13, Asia/Shanghai (about/contact production release)
 
 This document is for another coding agent or developer taking over the current prototype work. It summarizes the local repository state, the active Alibaba Cloud deployment, and the operational commands needed to continue safely.
 
@@ -52,7 +52,7 @@ project name
 
 About page:
 
-- Primary navigation currently only exposes `关于`.
+- Primary navigation exposes `项目 / Projects` and `关于 / About`.
 - About page internal intro section is labeled `岚` in Chinese and `Mist` in English.
 - About page hero is a 4-slide full-bleed crossfade carousel rendered by `src/components/about-hero-carousel.tsx`. It renders plain `<img>` tags against raw OSS origin URLs (no `x-oss-process`, no `<picture>` srcset) because the master files are already <400KB each. CSS cycle is 20s with a 5s stagger; slide lifetime 6s produces a 1s crossfade overlap between adjacent slides. Viewport aspect <= 3/4 swaps to the vertical image set (`about/vertical/about-v*.jpeg`); wider viewports use the horizontal set (`about/horizontal/about-h*.jpeg`).
 - Founder image and founder metadata are rendered from `src/content/site.ts`.
@@ -136,19 +136,20 @@ Directory layout:
   shared/
     current-preview-release.txt
     current-production-release.txt
-  current-preview -> /srv/mist-architect/releases/20260501112459-1dc4c20
-  current-production -> /srv/mist-architect/releases/20260501112459-1dc4c20
+  current-preview -> /srv/mist-architect/releases/20260513073020-73c8ce2
+  current-production -> /srv/mist-architect/releases/20260513073020-73c8ce2
 ```
 
 Latest preview release:
 
 ```text
-20260501112459-1dc4c20
+20260513073020-73c8ce2
 ```
 
 Recent release folders on ECS:
 
 ```text
+20260513073020-73c8ce2
 20260501112459-1dc4c20
 20260421180550-b84b20a
 20260421161312-3217212
@@ -191,7 +192,7 @@ Production is online.
 The latest checked PM2 process path on 2026-04-22 was:
 
 ```text
-/srv/mist-architect/releases/20260501112459-1dc4c20/server.js
+/srv/mist-architect/releases/20260513073020-73c8ce2/server.js
 ```
 
 ## 5. Current Nginx Routing
@@ -400,7 +401,7 @@ Production is active.
 Current production-related state:
 
 - `mist-production` PM2 process is online.
-- `/srv/mist-architect/current-production` points to `20260501112459-1dc4c20`.
+- `/srv/mist-architect/current-production` points to `20260513073020-73c8ce2`.
 - Canonical production domain is `https://mist-arch.com`.
 - User confirmed ICP filing is complete.
 - DNS is managed in Alibaba Cloud DNS.

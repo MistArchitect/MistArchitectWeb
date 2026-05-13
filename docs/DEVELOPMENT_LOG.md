@@ -29,6 +29,14 @@ changed, why it changed, how it was checked, and what remains open.
 - Browser check for `/zh/about`, `#services`, and `#contact` confirmed the
   services section, contact rows, subnav links, and console health.
 
+### Deployment
+
+- Commit `73c8ce2` was pushed to `main` and `preview/home-featured-projects`.
+- GitHub Actions `Deploy Preview` run `25784896801` succeeded.
+- Preview and production both point to release `20260513073020-73c8ce2`.
+- Production smoke checks passed for `https://mist-arch.com/zh`,
+  `https://mist-arch.com/en`, and `https://mist-arch.com/zh/about`.
+
 ## 2026-05-09 / Header Project Anchor Link
 
 ### Goals

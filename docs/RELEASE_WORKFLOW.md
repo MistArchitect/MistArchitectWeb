@@ -1,6 +1,6 @@
 # Release Workflow
 
-Last updated: 2026-05-07, Asia/Shanghai.
+Last updated: 2026-05-13, Asia/Shanghai.
 
 This is the operating workflow for Mist Architect website changes.
 
@@ -143,13 +143,13 @@ Rules:
 
 ## 4. Current Baseline
 
-As of 2026-05-07:
+As of 2026-05-13:
 
 ```text
 Canonical source branch: main
 Preview deployment branch: preview/home-featured-projects
-Preview release: 20260501112459-1dc4c20
-Production release: 20260501112459-1dc4c20
+Preview release: 20260513073020-73c8ce2
+Production release: 20260513073020-73c8ce2
 Preview URL: https://preview.mist-arch.com
 Production URL: https://mist-arch.com
 ```
