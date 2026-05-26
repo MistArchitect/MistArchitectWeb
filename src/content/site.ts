@@ -5,6 +5,9 @@ type Localized<T = string> = Record<Locale, T>;
 
 const featureAsset = (path: string) => mediaUrl(path, { width: 1920, quality: "std" });
 const heroAsset = (path: string) => mediaUrl(path, { width: 2560, quality: "high" });
+const projectPhotoAsset = (path: string) => mediaUrl(path, { width: 1920, quality: "std" });
+const projectHeroAsset = (path: string) => mediaUrl(path, { width: 2560, quality: "high" });
+const projectDrawingAsset = (path: string) => mediaUrl(path, { width: 2560, quality: "high" });
 
 export type Project = {
   slug: string;
@@ -53,6 +56,8 @@ export type ProjectMedia = {
   src: string;
   alt: Localized;
   credit?: string;
+  kind?: "photo" | "drawing";
+  aspect?: "landscape" | "portrait" | "square";
 };
 
 export type ProjectFact = {
@@ -551,8 +556,8 @@ export const home = {
       en: "Construction, models, light, and daily scale."
     },
     copy: {
-      zh: "影像栏目为项目短片、现场记录和访谈预留结构，后续可由 CMS 持续更新。",
-      en: "The films section is prepared for project shorts, site records, and conversations that can be updated through the CMS later."
+      zh: "影像栏目将收录项目短片、现场记录与访谈，呈现建筑从设计到使用的连续过程。",
+      en: "The films section gathers project shorts, site records, and conversations, tracing architecture from design process to everyday use."
     }
   },
   contact: {
@@ -892,6 +897,13 @@ function projectFacts(area: Localized, client: Localized): ProjectFact[] {
   ];
 }
 
+const fieldAcademyPhoto = (filename: string) =>
+  projectPhotoAsset(`projects/field-academy/photos/${filename}`);
+const fieldAcademyHero = (filename: string) =>
+  projectHeroAsset(`projects/field-academy/photos/${filename}`);
+const fieldAcademyDrawing = (filename: string) =>
+  projectDrawingAsset(`projects/field-academy/drawings/${filename}`);
+
 export const projects: Project[] = [
   {
     slug: "dream-factory-experimental-theater",
@@ -962,6 +974,390 @@ export const projects: Project[] = [
           en: "Main audience and performance space of the youth theater"
         },
         credit: "MIST Architects Archive"
+      }
+    ]
+  },
+  {
+    slug: "field-academy",
+    code: "",
+    year: "",
+    location: {
+      zh: "苏州吴江，中国",
+      en: "Wujiang, Suzhou, China"
+    },
+    status: {
+      zh: "建成",
+      en: "Completed"
+    },
+    typology: {
+      zh: "文化 / 乡村公共建筑",
+      en: "Culture / Rural Public Architecture"
+    },
+    title: {
+      zh: "苏州钟家荡原野学社",
+      en: "WILD WORKSHOP"
+    },
+    dek: {
+      zh: "在钟家荡水边重构一组由图书馆、小礼堂、茶阁与研学工作室组成的乡村公共建筑群。",
+      en: "A rural public cluster by Zhongjiadang, bringing together a library, small auditorium, tea pavilion, and research studio."
+    },
+    body: {
+      zh: [
+        "原野学社位于苏州吴江区善湾村。场地由三块彼此分离的宅基地构成，面向水系、稻田与村落入口，承担着文旅片区中最具公共属性的空间角色。",
+        "设计把普通民居的体量、尺度和材料纳入当代建造体系，以分散的建筑群回应原有水边村落的生活秩序。",
+        "三栋建筑分别容纳图书馆与小礼堂、宴饮茶阁、研学工作室，在统一的坡屋顶、山墙序列与立面虚实关系中形成各自的公共性。"
+      ],
+      en: [
+        "WILD WORKSHOP is located in Shanwan Village, Wujiang District, Suzhou. The site consists of three disconnected homestead plots facing water, rice fields, and the village entrance, making it the most public space within the cultural-tourism area.",
+        "The design brings the form, scale, and material atmosphere of ordinary vernacular dwellings into a contemporary construction system, using a dispersed building cluster to respond to the waterside village order.",
+        "The three buildings accommodate the library and small auditorium, the banquet and tea pavilion, and the research studio, each developing its own public character through pitched roofs, gable sequences, and a shared solid-void facade logic."
+      ]
+    },
+    image: fieldAcademyPhoto("01-overview-panorama.jpg"),
+    heroImage: fieldAcademyHero("01-overview-panorama.jpg"),
+    imageAlt: {
+      zh: "原野学社建筑群与水边场地",
+      en: "WILD WORKSHOP cluster beside the waterside site"
+    },
+    credit: "杨昊天 / 程博 / 吃橙的人",
+    facts: [
+      ...projectFacts(
+        {
+          zh: "2,000 平方米",
+          en: "2,000 sqm"
+        },
+        {
+          zh: "兴野文旅",
+          en: "Xingye Cultural Tourism"
+        }
+      ),
+      {
+        label: {
+          zh: "合作设计",
+          en: "Collaborating Design"
+        },
+        value: {
+          zh: "于岛",
+          en: "Yu Dao"
+        }
+      },
+      {
+        label: {
+          zh: "结构设计",
+          en: "Structure"
+        },
+        value: {
+          zh: "缪建波、陈通、王罕",
+          en: "Miao Jianbo, Chen Tong, Wang Han"
+        }
+      },
+      {
+        label: {
+          zh: "景观设计",
+          en: "Landscape"
+        },
+        value: {
+          zh: "徐驰、孙嬿、余传文、殷睿",
+          en: "Xu Chi, Sun Yan, Yu Chuanwen, Yin Rui"
+        }
+      }
+    ],
+    gallery: [
+      {
+        src: fieldAcademyHero("02-east-elevation.jpg"),
+        alt: {
+          zh: "原野学社东侧立面与农田入口",
+          en: "East elevation of WILD WORKSHOP facing the field entrance"
+        },
+        credit: "杨昊天"
+      },
+      {
+        src: fieldAcademyHero("03-west-elevation.jpg"),
+        alt: {
+          zh: "图书馆和茶阁西侧立面",
+          en: "West elevation of the library and tea pavilion"
+        },
+        credit: "杨昊天"
+      },
+      {
+        src: fieldAcademyHero("08-auditorium-in-field.jpg"),
+        alt: {
+          zh: "原野中的报告厅",
+          en: "The auditorium opening toward the field"
+        },
+        credit: "杨昊天"
+      }
+    ],
+    sections: [
+      {
+        id: "overview",
+        navLabel: {
+          zh: "概览",
+          en: "Overview"
+        },
+        heading: {
+          zh: "建筑群如何在场地中自洽",
+          en: "The logic of coherence"
+        },
+        body: {
+          zh: [
+            "2021 年初，场地周边的民宅正陆续拆除，村落“向水而居”的空间秩序仍然清晰。略高于身高的屋檐、刚好够用的小门窗、仅 10cm 厚的混凝土挑板，让项目从一开始就关注身体尺度与日常生活之间的关系。",
+            "设计的问题不是复制传统民居，而是重构一种新的水边生活场景：把普通民居的建筑形制、尺度、材料与村落氛围纳入当代公共功能。"
+          ],
+          en: [
+            "When the architects first visited the site in early 2021, surrounding dwellings were being demolished, yet the village order of living by the water remained legible. Eaves slightly above head height, just-enough windows, and thin concrete cantilevers directed attention to the relationship between bodily scale and everyday life.",
+            "The project does not reproduce vernacular houses. It reconstructs a new waterside scene by translating their form, scale, material logic, and village atmosphere into contemporary public programs."
+          ]
+        },
+        media: [
+          {
+            src: fieldAcademyPhoto("01-overview-panorama.jpg"),
+            alt: {
+              zh: "三栋建筑与水边场地的整体关系",
+              en: "Overall relationship between the three buildings and the waterside site"
+            },
+            credit: "杨昊天"
+          }
+        ]
+      },
+      {
+        id: "site",
+        navLabel: {
+          zh: "场地",
+          en: "Site"
+        },
+        heading: {
+          zh: "从村落背面到新的入口风貌区",
+          en: "From village rear to new gateway"
+        },
+        body: {
+          zh: [
+            "善湾村周边水系丰沛，水网曾经是区域交通网络，村落因此紧临水边而建。公路交通兴起后，村落的空间等级被逆转，项目所在的地块也从农田腹地的背面转变为新的入口区域。",
+            "三块宅基地分别对应不同公共强度：居中地块面向水域与稻田，容纳图书馆和小礼堂；南侧地块较小但视野开阔，设置宴饮与茶歇；北侧地块位于道路尽端，容纳工作室和研学住宿。"
+          ],
+          en: [
+            "The abundant water network around Shanwan Village once formed the area's primary transportation system, so settlements were built immediately along the banks. With road traffic, the hierarchy reversed, and this former rear edge facing farmland became a new gateway zone.",
+            "The three homestead plots carry different degrees of publicness: the central plot faces water and rice fields and hosts the library and auditorium; the compact southern plot takes in open views for dining and tea; the quiet northern plot holds the studio and research accommodation."
+          ]
+        },
+        media: [
+          {
+            src: fieldAcademyPhoto("02-east-elevation.jpg"),
+            alt: {
+              zh: "场地东侧进入村落的道路与建筑立面",
+              en: "Road into the village and the east-facing facade"
+            },
+            credit: "杨昊天"
+          }
+        ]
+      },
+      {
+        id: "cluster",
+        navLabel: {
+          zh: "群落",
+          en: "Cluster"
+        },
+        heading: {
+          zh: "坡屋顶、山墙与公共尺度",
+          en: "Pitched roofs, gables, and public scale"
+        },
+        body: {
+          zh: [
+            "地方风貌控制要求双坡屋顶、不超过两层，并限定屋檐和屋脊高度。新建筑在类型上天然接近原有民宅，设计顺势接受这一传统类型，并把问题转向如何在民居尺度中塑造公共建筑的品质。",
+            "面向开阔稻田与水面的立面水平舒展，定义远景中的公共性；沿河与村落隔水相望的界面则通过有节奏的山墙序列回应村落肌理。"
+          ],
+          en: [
+            "Local appearance controls required double-pitched roofs, no more than two stories, and fixed limits for eave and ridge heights. Rather than resisting this traditional type, the project asks how a public building can be shaped from a residential scale.",
+            "Facades facing open fields and water extend horizontally to define a public presence at distance, while the riverside interface uses rhythmic gables to echo the village fabric across the water."
+          ]
+        },
+        media: [
+          {
+            src: fieldAcademyPhoto("03-west-elevation.jpg"),
+            alt: {
+              zh: "沿河界面的山墙序列",
+              en: "Rhythmic gable sequence along the river interface"
+            },
+            credit: "杨昊天"
+          },
+          {
+            src: fieldAcademyPhoto("04-viewfinder-facade.jpg"),
+            alt: {
+              zh: "水平挑檐与扁柱构成取景框",
+              en: "Horizontal eaves and flat columns forming a spatial viewfinder"
+            },
+            credit: "杨昊天"
+          }
+        ]
+      },
+      {
+        id: "library",
+        navLabel: {
+          zh: "图书馆",
+          en: "Library"
+        },
+        heading: {
+          zh: "图书馆与小礼堂",
+          en: "Library and small auditorium"
+        },
+        body: {
+          zh: [
+            "图书馆建筑位于组团中心最开阔的地块上，北望农田，南眺水面，并坐落在进入村庄东入口的必经之路上，自然成为入口风貌区的地标。",
+            "内部空间沿东西向主动线展开：入口、低矮吧台、通高台地式书架、隐蔽服务空间和小剧场逐步串联。临水折叠门完全打开时，室内外边界消隐，湖景、书架台地与户外坡地共同形成连续的“人造地形”。",
+            "报告厅东北角立面可完全开启，室内舞台向外延伸并与高大的敞廊连为一体，远处稻田成为新的舞台背景。"
+          ],
+          en: [
+            "The library sits on the most open central plot, facing farmland to the north and broad water to the south, along the necessary route into the eastern village entrance. It naturally becomes the landmark of the gateway area.",
+            "Inside, an east-west route links the entrance, compressed service counter, double-height terraced bookshelves, concealed service spaces, and small theater. When the folding doors by the water open, the boundary between interior and exterior disappears, and the lake view, bookshelf terraces, and outdoor slope become a continuous artificial topography.",
+            "At the northeast corner of the auditorium, two facades can open fully. The indoor stage extends outward into the tall gallery, turning the distant rice fields into a stage backdrop."
+          ]
+        },
+        media: [
+          {
+            src: fieldAcademyPhoto("05-library-mezzanine.jpg"),
+            alt: {
+              zh: "图书馆夹层与通高空间",
+              en: "Library mezzanine and double-height space"
+            },
+            credit: "杨昊天"
+          },
+          {
+            src: fieldAcademyPhoto("08-auditorium-in-field.jpg"),
+            alt: {
+              zh: "报告厅与原野之间的开启关系",
+              en: "Opening relationship between the auditorium and the field"
+            },
+            credit: "杨昊天"
+          }
+        ]
+      },
+      {
+        id: "tea-pavilion",
+        navLabel: {
+          zh: "茶阁",
+          en: "Tea Pavilion"
+        },
+        heading: {
+          zh: "宴饮茶阁",
+          en: "Banquet and tea pavilion"
+        },
+        body: {
+          zh: [
+            "南端茶阁规模最小，却面对最复杂的边界关系。基地天然轴线垂直于水岸、指向村落，而宴会厅最好的朝向却是钟家荡湖面的纵深远景。",
+            "方案以两个交叠矩形组织平面，高效利用狭小地块，并在立面上重塑更窄高、轻盈的比例。楼梯、电梯、餐梯与卫生间被收纳进核心筒，两层空间围绕核心形成接近环形的动线，并尽可能向四周景观打开。"
+          ],
+          en: [
+            "The southern tea pavilion is the smallest building but has the most difficult relationship with its site boundary. The plot's natural axis points toward the village, perpendicular to the waterfront, while the banquet hall wants to face the deep view over Zhongjiadang.",
+            "Two overlapping rectangles organize the plan, using the compact site efficiently while reshaping the facade into a narrower and lighter proportion. A core holds stairs, lift, dumbwaiter, and restrooms, while circulation loops around it on both floors and opens toward surrounding views."
+          ]
+        },
+        media: [
+          {
+            src: fieldAcademyPhoto("09-banquet-room.jpg"),
+            alt: {
+              zh: "宴饮空间与包间",
+              en: "Banquet room and private dining space"
+            },
+            credit: "杨昊天"
+          },
+          {
+            src: fieldAcademyPhoto("10-tea-room.jpg"),
+            alt: {
+              zh: "二层茶室面向景观",
+              en: "Second-floor tea room facing the landscape"
+            },
+            credit: "杨昊天"
+          }
+        ]
+      },
+      {
+        id: "studio",
+        navLabel: {
+          zh: "工作室",
+          en: "Studio"
+        },
+        heading: {
+          zh: "研学工作室",
+          en: "Research studio"
+        },
+        body: {
+          zh: [
+            "北侧研学工作室以“品”字形布局围合成半开放合院，开口正对河道。两翼山墙临河而立，与对岸村落民居的排布方式相互呼应；面向农田一侧则呈现舒展的横向体量。",
+            "底层架空檐廊限定出半开放庭院，并串联滨水院落与开阔稻田。刻意压低的廊道顶板带来亲密尺度，也为进入挑高室内空间时的豁然开朗做出铺垫。"
+          ],
+          en: [
+            "The northern research studio uses a triadic layout to form a U-shaped semi-open courtyard facing the river. Its two flanking gables stand along the bank and echo the houses across the water, while the field-facing side stretches horizontally.",
+            "A ground-floor sheltered corridor defines the courtyard and links the waterfront court with the open rice fields. The deliberately lowered ceiling creates intimacy and prepares the sudden openness of the taller interior space."
+          ]
+        },
+        media: [
+          {
+            src: fieldAcademyPhoto("11-studio-east-elevation.jpg"),
+            alt: {
+              zh: "研学工作室东侧立面",
+              en: "East elevation of the research studio"
+            },
+            credit: "杨昊天",
+            aspect: "square"
+          },
+          {
+            src: fieldAcademyPhoto("12-studio-interior.png"),
+            alt: {
+              zh: "工作室室内空间",
+              en: "Interior of the research studio"
+            },
+            credit: "吃橙的人",
+            aspect: "square"
+          }
+        ]
+      },
+      {
+        id: "drawings",
+        navLabel: {
+          zh: "平面关系",
+          en: "Plan relationships"
+        },
+        heading: {
+          zh: "平面关系",
+          en: "Plan relationships"
+        },
+        body: {
+          zh: [
+            "三块宅基地、中心图书馆与小礼堂的首层和二层平面，呈现公共活动、室内流线与水边景观如何被组织成一个连续系统。"
+          ],
+          en: [
+            "The plans show how the three plots, the library, and the small auditorium organize public activity, interior circulation, and the waterside landscape into a continuous system."
+          ]
+        },
+        media: [
+          {
+            src: fieldAcademyDrawing("01-site-ground-plan.jpg"),
+            alt: {
+              zh: "首层整体平面图",
+              en: "Overall ground-floor site plan"
+            },
+            credit: "岚·建筑设计",
+            kind: "drawing"
+          },
+          {
+            src: fieldAcademyDrawing("02-library-auditorium-ground-plan.jpg"),
+            alt: {
+              zh: "图书馆和小礼堂首层平面",
+              en: "Library and small auditorium ground-floor plan"
+            },
+            credit: "岚·建筑设计",
+            kind: "drawing"
+          },
+          {
+            src: fieldAcademyDrawing("03-library-auditorium-second-plan.jpg"),
+            alt: {
+              zh: "图书馆和小礼堂二层平面",
+              en: "Library and small auditorium second-floor plan"
+            },
+            credit: "岚·建筑设计",
+            kind: "drawing"
+          }
+        ]
       }
     ]
   },
@@ -1484,8 +1880,8 @@ export const journalEntries: JournalEntry[] = [
       en: "Translating an Editorial Grid into an Architectural Archive"
     },
     dek: {
-      zh: "第一版界面把 WIRED 式出版秩序转化为项目索引、图像叙事和持续更新机制。",
-      en: "The first interface translates WIRED-like publishing discipline into project indexes, image narratives, and updateable content."
+      zh: "以清晰的编辑网格组织项目索引、图像叙事与事务所记录。",
+      en: "A clear editorial grid organizes project indexes, image narratives, and studio records."
     },
     image:
       "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1400&q=85",
@@ -1502,12 +1898,12 @@ export const journalEntries: JournalEntry[] = [
       en: "Content Architecture"
     },
     title: {
-      zh: "为中文、英文和未来语言预留内容结构",
-      en: "Preparing Content for Chinese, English, and Future Locales"
+      zh: "中文与英文之间的建筑记录",
+      en: "Architectural Records across Chinese and English"
     },
     dek: {
-      zh: "项目、日志和影像都会以 locale 前缀进入路由，之后可对接文档级多语言 CMS。",
-      en: "Projects, journal entries, and films live behind locale-prefixed routes and can later connect to a document-level multilingual CMS."
+      zh: "项目、日志与影像以中英文并行呈现，让不同语言的读者进入同一组建筑实践。",
+      en: "Projects, journal entries, and films are presented in Chinese and English so readers can enter the same body of architectural work across languages."
     },
     image:
       "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1400&q=85",

@@ -37,6 +37,8 @@ type SanityMedia = {
   src?: string;
   alt?: LocalizedText;
   credit?: string;
+  kind?: ProjectMedia["kind"];
+  aspect?: ProjectMedia["aspect"];
 };
 
 type SanitySlug = {
@@ -195,7 +197,9 @@ function normalizeGallery(
         zh: "项目图像",
         en: "Project image"
       }),
-      credit: image.credit
+      credit: image.credit,
+      kind: image.kind,
+      aspect: image.aspect
     });
 
     return result;

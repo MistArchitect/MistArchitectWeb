@@ -4,12 +4,13 @@
 import { useMemo, useRef, type PointerEvent as ReactPointerEvent } from "react";
 
 import { MotionReveal } from "@/components/motion-reveal";
-import { featuredTiles } from "@/content/site";
-import type { Locale } from "@/lib/i18n";
-import { mediaUrl } from "@/lib/media";
+import { ProjectTransitionLink } from "@/components/project-transition-link";
+import type { Project } from "@/content/site";
+import { type Locale, withLocale } from "@/lib/i18n";
 
 type FeaturedProjectFieldProps = {
   locale: Locale;
+  projects: Project[];
 };
 
 const PARALLAX_DEPTH = 14;
@@ -19,12 +20,22 @@ const HOVER_SCALE = 1.04;
 type ProjectTileProps = {
   alt: string;
   eyebrow: string;
+  href: string;
   imageSrc: string;
   index: number;
   title: string;
+  transitionId: string;
 };
 
-function ProjectTile({ alt, eyebrow, imageSrc, index, title }: ProjectTileProps) {
+function ProjectTile({
+  alt,
+  eyebrow,
+  href,
+  imageSrc,
+  index,
+  title,
+  transitionId
+}: ProjectTileProps) {
   const tileRef = useRef<HTMLElement | null>(null);
 
   const handlePointerMove = (event: ReactPointerEvent<HTMLElement>) => {
@@ -58,48 +69,57 @@ function ProjectTile({ alt, eyebrow, imageSrc, index, title }: ProjectTileProps)
         onPointerMove={handlePointerMove}
         ref={tileRef}
       >
-        <div aria-label={title} className="project-index-media-link">
-          <div className="project-index-media">
+        <ProjectTransitionLink
+          ariaLabel={title}
+          className="project-index-media-link"
+          href={href}
+          transitionId={transitionId}
+        >
+          <div className="project-index-media" data-project-transition-source={transitionId}>
             <img alt={alt} className="project-index-image" loading="lazy" src={imageSrc} />
           </div>
-        </div>
+        </ProjectTransitionLink>
         <div className="project-index-copy">
           <p className="project-index-eyebrow">{eyebrow}</p>
-          <h2 className="project-index-title">{title}</h2>
+          <h2 className="project-index-title">
+            <ProjectTransitionLink href={href} transitionId={transitionId}>
+              {title}
+            </ProjectTransitionLink>
+          </h2>
         </div>
       </article>
     </MotionReveal>
   );
 }
 
-export function FeaturedProjectField({ locale }: FeaturedProjectFieldProps) {
+export function FeaturedProjectField({ locale, projects }: FeaturedProjectFieldProps) {
   const tiles = useMemo(
     () =>
-      featuredTiles.map((tile) => ({
-        ...tile,
-        imageSrc: mediaUrl(tile.image, { width: 1920, quality: "std" })
+      projects.map((project) => ({
+        id: project.slug,
+        alt: project.imageAlt[locale],
+        eyebrow: [project.year, project.location[locale]].filter(Boolean).join(" · "),
+        href: withLocale(locale, `/projects/${project.slug}`),
+        imageSrc: project.image,
+        title: project.title[locale],
+        transitionId: project.slug
       })),
-    []
+    [locale, projects]
   );
 
   return (
     <div className="project-index-grid">
       {tiles.map((tile, index) => {
-        const eyebrow = `${tile.year} · ${tile.location[locale]}`;
-        const title = tile.title[locale];
-        const alt =
-          locale === "zh"
-            ? `${tile.location.zh} · ${tile.title.zh}`
-            : `${tile.location.en} · ${tile.title.en}`;
-
         return (
           <ProjectTile
-            alt={alt}
-            eyebrow={eyebrow}
+            alt={tile.alt}
+            eyebrow={tile.eyebrow}
+            href={tile.href}
             imageSrc={tile.imageSrc}
             index={index}
             key={tile.id}
-            title={title}
+            title={tile.title}
+            transitionId={tile.transitionId}
           />
         );
       })}

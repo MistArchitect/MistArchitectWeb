@@ -74,6 +74,10 @@ export function ProjectTransitionLink({
     clone.classList.add("project-route-transition-content");
     layer.appendChild(clone);
 
+    const shade = document.createElement("div");
+    shade.className = "project-route-transition-shade";
+    layer.appendChild(shade);
+
     gsap.set(layer, {
       opacity: 1
     });
@@ -85,17 +89,50 @@ export function ProjectTransitionLink({
       height: rect.height
     });
 
+    let didFadeLayer = false;
+
+    const fadeLayer = () => {
+      if (didFadeLayer) return;
+      didFadeLayer = true;
+
+      gsap.to(layer, {
+        opacity: 0,
+        duration: 0.34,
+        delay: 0.08,
+        ease: "power2.out",
+        onComplete: () => layer.remove()
+      });
+    };
+
+    const waitForDestinationHero = (startedAt: number) => {
+      const heroImage = document.querySelector<HTMLImageElement>(".project-immersive-slide");
+      const heroReady =
+        heroImage &&
+        heroImage.complete &&
+        heroImage.naturalWidth > 0;
+
+      if (heroReady) {
+        const decode = heroImage.decode ? heroImage.decode() : Promise.resolve();
+
+        decode
+          .catch(() => undefined)
+          .then(() => requestAnimationFrame(fadeLayer));
+        return;
+      }
+
+      if (performance.now() - startedAt > 1400) {
+        fadeLayer();
+        return;
+      }
+
+      requestAnimationFrame(() => waitForDestinationHero(startedAt));
+    };
+
     const timeline = gsap.timeline({
       onComplete: () => {
         ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
         router.push(href);
-        gsap.to(layer, {
-          opacity: 0,
-          duration: 0.34,
-          delay: 0.18,
-          ease: "power2.out",
-          onComplete: () => layer.remove()
-        });
+        requestAnimationFrame(() => waitForDestinationHero(performance.now()));
       }
     });
 
@@ -113,6 +150,14 @@ export function ProjectTransitionLink({
       duration: 0.62,
       ease: "power2.inOut"
     }, 0);
+
+    timeline.fromTo(shade, {
+      opacity: 0
+    }, {
+      opacity: 0.48,
+      duration: 0.62,
+      ease: "power2.inOut"
+    }, 0.08);
   }
 
   return (

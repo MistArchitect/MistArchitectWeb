@@ -8,6 +8,7 @@ import { OssPicture } from "@/components/oss-picture";
 import { about } from "@/content/site";
 import { isLocale, type Locale } from "@/lib/i18n";
 import { mediaUrl } from "@/lib/media";
+import { buildPageMetadata } from "@/lib/seo";
 
 export const revalidate = 60;
 
@@ -26,15 +27,21 @@ export async function generateMetadata({ params }: AboutPageProps): Promise<Meta
 
   const locale = rawLocale as Locale;
 
-  return {
-    title: about.hero.title[locale],
-    description: about.hero.deck[locale],
-    openGraph: {
-      title: about.hero.title[locale],
-      description: about.hero.deck[locale],
-      images: [mediaUrl(about.heroImage)]
-    }
-  };
+  return buildPageMetadata({
+    title: locale === "zh" ? "关于岚·建筑设计" : "About",
+    description:
+      locale === "zh"
+        ? "了解岚·建筑设计的事务所背景、创始人、获奖出版经历、业务方向与联系方式。"
+        : "Learn about MIST Architects' studio background, founders, awards, publications, services, and contact details.",
+    locale,
+    path: "/about",
+    image: mediaUrl(about.heroImage, { width: 1920, quality: "std" }),
+    imageAlt: about.hero.title[locale],
+    keywords:
+      locale === "zh"
+        ? ["建筑事务所简介", "建筑师程博", "建筑师李博", "联系方式"]
+        : ["architecture studio profile", "Cheng Bo architect", "Li Bo architect", "contact"]
+  });
 }
 
 export default async function AboutPage({ params }: AboutPageProps) {

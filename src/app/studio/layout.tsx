@@ -5,7 +5,11 @@ import "../globals.css";
 
 export const metadata: Metadata = {
   title: "Studio | MIST Architects",
-  description: "Content management backend for MIST Architects."
+  description: "Content management backend for MIST Architects.",
+  robots: {
+    index: false,
+    follow: false
+  }
 };
 
 export default function StudioLayout({ children }: { children: ReactNode }) {

@@ -4,6 +4,101 @@ This log is written for both human developers and future coding agents. Keep ent
 short, dated, and implementation-oriented so the next contributor can understand what
 changed, why it changed, how it was checked, and what remains open.
 
+## 2026-05-26 / Technical SEO Foundation
+
+### Goals
+
+- Add baseline technical SEO for the bilingual production site.
+- Keep preview and Studio surfaces out of search indexes.
+
+### Changes
+
+- Added shared SEO helpers for production canonical URLs, localized
+  `hreflang` alternates, site keywords, social metadata, and JSON-LD output.
+- Added page-specific metadata for the homepage, project index, journal, about
+  page, and project detail pages.
+- Added Organization, WebSite, project, and breadcrumb JSON-LD where relevant.
+- Added `robots.txt` to allow public pages while excluding `/api/` and
+  `/studio/`.
+- Added `sitemap.xml` with localized static pages and project detail URLs.
+- Marked the Sanity Studio layout as `noindex, nofollow`.
+
+### Verification
+
+- `npm run typecheck`
+- `npm run lint`
+- `git diff --check`
+- `npm run build`
+
+## 2026-05-25 / Field Academy Detail Draft
+
+### Goals
+
+- Build the first local project-detail draft for `苏州钟家荡原野学社`.
+- Match the amount of selected material to the existing detail-page rhythm
+  instead of publishing the full source package.
+
+### Changes
+
+- Selected 12 photography assets and 3 drawing assets from the local project
+  material package.
+- Normalized and uploaded the selected assets to OSS under
+  `projects/field-academy/`.
+- Added the `field-academy` project data with bilingual page title
+  `苏州钟家荡原野学社 / WILD WORKSHOP`, blank year handling, facts, hero
+  carousel media, and seven narrative sections.
+- Added optional media `kind` and `aspect` metadata so drawing media can render
+  uncropped and square photos can keep square framing.
+- Updated project cards and detail-page metadata rendering to omit empty code
+  or year fragments.
+- Follow-up: removed visible media credit captions from project detail pages and
+  pinned the local project navigation directly below the global header to avoid
+  overlap while scrolling.
+- Follow-up: changed the homepage project index from the static featured-tile
+  list to the current project list so all local project detail entries,
+  including `field-academy`, appear on `/zh#projects` and `/en#projects`.
+- Follow-up: enabled project-index tile navigation through the existing
+  `ProjectTransitionLink`, adding the image expansion + dark overlay transition
+  into detail pages, and strengthened the project-detail hero carousel fade with
+  brightness transitions.
+- Follow-up: kept the detail hero's first slide visible before carousel
+  animation starts and delayed the route-transition fade until the destination
+  hero image is ready, removing the black flash after entering a project detail.
+- Follow-up: moved the project-detail return link into the sticky local
+  navigation and reduced it to an icon-only arrow that returns to the localized
+  homepage project index.
+- Follow-up: renamed the final Field Academy detail section navigation label to
+  `平面关系 / Plan relationships` and matched the local project navigation
+  background transparency to the global header.
+- Follow-up: changed the Field Academy `平面关系` section to present the three
+  drawings in one horizontal row on desktop, with the section introduction below
+  the drawings.
+- Follow-up: moved the `07 / 平面关系` heading above the drawing row while
+  keeping the introduction text below the drawings.
+- Follow-up: revised internal-facing copy in the Field Academy drawings section,
+  About films copy, project index intro, journal intro/listing copy, and footer
+  progress line so visible language reads as visitor-facing archive content.
+- Follow-up: allowed Next Image to render the local `/api/media` image pipeline
+  with query-string transformations so the standalone project index page can
+  load project cards without image configuration errors.
+
+### Verification
+
+- `npm run typecheck`
+- `npm run lint`
+- `git diff --check`
+- `npm run build`
+- Browser checks for `/zh/projects/field-academy` and
+  `/en/projects/field-academy` confirmed page identity, content rendering,
+  blank-year omission, console health, desktop/mobile layout, and drawing
+  navigation with uncropped plan images.
+
+### Remaining
+
+- Project year is intentionally blank until the owner confirms the final value.
+- The current draft uses selected material only; full image ordering can be
+  tuned after local visual review.
+
 ## 2026-05-13 / About Contact + Services
 
 ### Goals

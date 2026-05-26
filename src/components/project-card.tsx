@@ -26,6 +26,7 @@ export function ProjectCard({
 }: ProjectCardProps) {
   const title = displayTitle || project.title[locale];
   const href = withLocale(locale, `/projects/${project.slug}`);
+  const meta = [project.code, project.year, project.location[locale]].filter(Boolean).join(" / ");
   const image = (
     <Image
       src={project.image}
@@ -61,7 +62,7 @@ export function ProjectCard({
         ) : null}
         {hideMeta ? null : (
           <p className="kicker">
-            {project.code} / {project.year} / {project.location[locale]}
+            {meta}
           </p>
         )}
         <h2 className={hideMeta ? "featured-project-title" : undefined}>

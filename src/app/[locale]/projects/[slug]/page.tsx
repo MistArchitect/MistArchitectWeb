@@ -7,6 +7,12 @@ import type { CSSProperties } from "react";
 import { GsapPageMotion } from "@/components/gsap-page-motion";
 import { getProjectBySlug, getProjectSlugs } from "@/lib/content";
 import { isLocale, locales, type Locale, withLocale } from "@/lib/i18n";
+import {
+  breadcrumbJsonLd,
+  buildPageMetadata,
+  jsonLd,
+  projectJsonLd
+} from "@/lib/seo";
 import type { Project, ProjectFact, ProjectSection } from "@/content/site";
 
 export const revalidate = 60;
@@ -44,15 +50,16 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
 
   const locale = rawLocale as Locale;
 
-  return {
+  return buildPageMetadata({
     title: project.title[locale],
     description: project.dek[locale],
-    openGraph: {
-      title: project.title[locale],
-      description: project.dek[locale],
-      images: [project.heroImage]
-    }
-  };
+    locale,
+    path: `/projects/${project.slug}`,
+    image: project.heroImage,
+    imageAlt: project.imageAlt[locale],
+    keywords: [project.title[locale], project.location[locale], project.typology[locale]],
+    type: "article"
+  });
 }
 
 export default async function ProjectPage({ params }: ProjectPageProps) {
@@ -72,13 +79,34 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   const facts = getProjectFacts(project);
   const sections = getProjectSections(project);
   const heroSlides = getProjectHeroSlides(project);
+  const projectMeta = [project.code, project.year, project.status[locale]].filter(Boolean).join(" / ");
+  const projectIndexHref = `${withLocale(locale, "/")}#projects`;
+  const breadcrumbData = breadcrumbJsonLd(locale, [
+    {
+      name: locale === "zh" ? "首页" : "Home",
+      path: "/"
+    },
+    {
+      name: locale === "zh" ? "项目索引" : "Project Index",
+      path: "/projects"
+    },
+    {
+      name: project.title[locale],
+      path: `/projects/${project.slug}`
+    }
+  ]);
 
   return (
     <main className="project-detail">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLd(projectJsonLd(locale, project)) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLd(breadcrumbData) }}
+      />
       <GsapPageMotion page="project" />
-      <Link className="project-return-link" href={withLocale(locale, "/")}>
-        {locale === "zh" ? "返回项目索引" : "Back to project index"}
-      </Link>
       <section className="project-immersive" aria-labelledby="project-title">
         <div className="project-immersive-sticky" aria-hidden="true">
           <div
@@ -100,9 +128,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         </div>
 
         <div className="project-immersive-panel project-immersive-lockup">
-          <p className="kicker">
-            {project.code} / {project.year} / {project.status[locale]}
-          </p>
+          {projectMeta ? <p className="kicker">{projectMeta}</p> : null}
           <h1 id="project-title">{project.title[locale]}</h1>
           <div className="project-title-rule" />
           <p>{project.location[locale]}</p>
@@ -125,6 +151,13 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
       <div className="project-white-detail" id="project-white-detail">
         <nav className="project-local-nav" aria-label={locale === "zh" ? "项目章节" : "Project sections"}>
+          <Link
+            aria-label={locale === "zh" ? "返回项目索引" : "Back to project index"}
+            className="project-local-back"
+            href={projectIndexHref}
+          >
+            <span aria-hidden="true">←</span>
+          </Link>
           {sections.map((section) => (
             <a href={`#${section.id}`} key={section.id}>
               {section.navLabel[locale]}
@@ -142,45 +175,61 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         </section>
 
         <div className="project-story">
-          {sections.map((section, index) => (
-            <section className="project-story-block" id={section.id} key={section.id}>
-              <div className="project-story-media" data-count={section.media.length}>
-                {section.media.map((media) => (
-                  <figure key={media.src}>
-                    <img
-                      alt={media.alt[locale]}
-                      loading="lazy"
-                      src={media.src}
-                    />
-                    {media.credit ? (
-                      <figcaption>
-                        {locale === "zh" ? "影像" : "Image"} / {media.credit}
-                      </figcaption>
-                    ) : null}
-                  </figure>
-                ))}
-              </div>
-              <div className="project-story-copy">
-                <p className="kicker">
-                  {String(index + 1).padStart(2, "0")} / {section.navLabel[locale]}
-                </p>
-                <h2>{section.heading[locale]}</h2>
-                {section.body[locale].map((paragraph) => (
-                  <p key={paragraph}>{paragraph}</p>
-                ))}
-                {section.facts && section.facts.length > 0 ? (
-                  <dl className="project-section-facts">
-                    {section.facts.map((fact) => (
-                      <div key={`${fact.label.en}-${fact.value.en}`}>
-                        <dt>{fact.label[locale]}</dt>
-                        <dd>{fact.value[locale]}</dd>
-                      </div>
-                    ))}
-                  </dl>
+          {sections.map((section, index) => {
+            const sectionNumber = String(index + 1).padStart(2, "0");
+            const isDrawingsSection = section.id === "drawings";
+
+            return (
+              <section className="project-story-block" id={section.id} key={section.id}>
+                {isDrawingsSection ? (
+                  <div className="project-story-heading">
+                    <p className="kicker">
+                      {sectionNumber} / {section.navLabel[locale]}
+                    </p>
+                    <h2>{section.heading[locale]}</h2>
+                  </div>
                 ) : null}
-              </div>
-            </section>
-          ))}
+                <div className="project-story-media" data-count={section.media.length}>
+                  {section.media.map((media) => (
+                    <figure
+                      data-media-aspect={media.aspect}
+                      data-media-kind={media.kind ?? "photo"}
+                      key={media.src}
+                    >
+                      <img
+                        alt={media.alt[locale]}
+                        loading="lazy"
+                        src={media.src}
+                      />
+                    </figure>
+                  ))}
+                </div>
+                <div className="project-story-copy">
+                  {isDrawingsSection ? null : (
+                    <>
+                      <p className="kicker">
+                        {sectionNumber} / {section.navLabel[locale]}
+                      </p>
+                      <h2>{section.heading[locale]}</h2>
+                    </>
+                  )}
+                  {section.body[locale].map((paragraph) => (
+                    <p key={paragraph}>{paragraph}</p>
+                  ))}
+                  {section.facts && section.facts.length > 0 ? (
+                    <dl className="project-section-facts">
+                      {section.facts.map((fact) => (
+                        <div key={`${fact.label.en}-${fact.value.en}`}>
+                          <dt>{fact.label[locale]}</dt>
+                          <dd>{fact.value[locale]}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  ) : null}
+                </div>
+              </section>
+            );
+          })}
         </div>
 
         {project.videoUrl ? (
@@ -223,16 +272,18 @@ function getProjectFacts(project: Project): ProjectFact[] {
       },
       value: project.location
     },
-    {
-      label: {
-        zh: "年份",
-        en: "Year"
-      },
-      value: {
-        zh: project.year,
-        en: project.year
+    ...(project.year ? [
+      {
+        label: {
+          zh: "年份",
+          en: "Year"
+        },
+        value: {
+          zh: project.year,
+          en: project.year
+        }
       }
-    },
+    ] : []),
     {
       label: {
         zh: "类型",
@@ -247,17 +298,7 @@ function getProjectFacts(project: Project): ProjectFact[] {
       },
       value: project.status
     },
-    ...(project.facts ?? []),
-    {
-      label: {
-        zh: "影像",
-        en: "Image"
-      },
-      value: {
-        zh: project.credit,
-        en: project.credit
-      }
-    }
+    ...(project.facts ?? [])
   ];
 }
 

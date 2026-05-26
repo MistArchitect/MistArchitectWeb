@@ -1,9 +1,11 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { ProjectFilter } from "@/components/project-filter";
 import { SectionRibbon } from "@/components/section-ribbon";
 import { getProjects } from "@/lib/content";
 import { isLocale, type Locale } from "@/lib/i18n";
+import { buildPageMetadata } from "@/lib/seo";
 
 export const revalidate = 60;
 
@@ -12,6 +14,30 @@ type ProjectsPageProps = {
     locale: string;
   }>;
 };
+
+export async function generateMetadata({ params }: ProjectsPageProps): Promise<Metadata> {
+  const { locale: rawLocale } = await params;
+
+  if (!isLocale(rawLocale)) {
+    return {};
+  }
+
+  const locale = rawLocale as Locale;
+
+  return buildPageMetadata({
+    title: locale === "zh" ? "项目索引" : "Project Index",
+    description:
+      locale === "zh"
+        ? "浏览岚·建筑设计的建筑、室内、文化公共空间、商业零售与城市更新项目档案。"
+        : "Browse MIST Architects' archive of architecture, interiors, cultural public spaces, retail environments, and adaptive reuse projects.",
+    locale,
+    path: "/projects",
+    keywords:
+      locale === "zh"
+        ? ["建筑项目", "项目索引", "建筑作品集"]
+        : ["architecture projects", "project index", "architecture portfolio"]
+  });
+}
 
 export default async function ProjectsPage({ params }: ProjectsPageProps) {
   const { locale: rawLocale } = await params;
@@ -31,8 +57,8 @@ export default async function ProjectsPage({ params }: ProjectsPageProps) {
         <h1>{locale === "zh" ? "一个可筛选的建筑档案。" : "A filterable architectural archive."}</h1>
         <p>
           {locale === "zh"
-            ? "第一版使用本地内容数据，后续可替换为 CMS 发布数据。"
-            : "The first version uses local seed content and is ready to be replaced by CMS-published records."}
+            ? "按项目类型与地域浏览岚·建筑设计的公共、文化、更新与空间实践。"
+            : "Browse MIST Architects' public, cultural, renewal, and spatial practice by project type and location."}
         </p>
       </header>
       <ProjectFilter

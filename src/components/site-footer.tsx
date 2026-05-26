@@ -8,12 +8,12 @@ const footerCopy = {
   zh: {
     brand: "岚·建筑设计",
     rights: "All Rights Reserved",
-    progress: "网站内容持续更新中 / Work in progress."
+    progress: "项目档案与近作记录。"
   },
   en: {
     brand: "MIST Architects",
     rights: "All Rights Reserved",
-    progress: "Work in progress. The website is being updated."
+    progress: "Project archive and recent work."
   }
 } as const;
 

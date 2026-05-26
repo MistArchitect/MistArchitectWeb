@@ -8,17 +8,35 @@ import { SiteFooter } from "@/components/site-footer";
 import { ScrollToTopButton } from "@/components/scroll-to-top-button";
 import { SmoothScrollProvider } from "@/components/smooth-scroll-provider";
 import { isLocale, locales, type Locale } from "@/lib/i18n";
+import {
+  jsonLd,
+  organizationJsonLd,
+  siteDescription,
+  siteKeywords,
+  siteOrigin,
+  websiteJsonLd
+} from "@/lib/seo";
 
 import "../globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
+  metadataBase: new URL(siteOrigin),
+  applicationName: "MIST Architects",
   title: {
-    default: "MIST Architects",
+    default: "岚·建筑设计 | MIST Architects",
     template: "%s | MIST Architects"
   },
-  description:
-    "A bilingual architecture studio website for projects, films, journals, and long-term editorial updates."
+  description: siteDescription.zh,
+  keywords: siteKeywords.zh,
+  authors: [{ name: "MIST Architects", url: siteOrigin }],
+  creator: "MIST Architects",
+  publisher: "MIST Architects",
+  category: "architecture",
+  formatDetection: {
+    telephone: false,
+    email: false,
+    address: false
+  }
 };
 
 type LocaleLayoutProps = {
@@ -44,6 +62,14 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   return (
     <html data-scroll-behavior="smooth" lang={locale}>
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLd(organizationJsonLd(locale)) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLd(websiteJsonLd(locale)) }}
+        />
         <SmoothScrollProvider>
           <IntroSplash />
           <SiteHeader locale={locale} />
