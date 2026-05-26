@@ -8,12 +8,16 @@ const footerCopy = {
   zh: {
     brand: "岚·建筑设计",
     rights: "All Rights Reserved",
-    progress: "项目档案与近作记录。"
+    progress: "项目档案与近作记录。",
+    wechat: "公众号 MIST-ARCH",
+    channels: "视频号 岚建筑"
   },
   en: {
     brand: "MIST Architects",
     rights: "All Rights Reserved",
-    progress: "Project archive and recent work."
+    progress: "Project archive and recent work.",
+    wechat: "WeChat MIST-ARCH",
+    channels: "Channels 岚建筑"
   }
 } as const;
 
@@ -28,6 +32,8 @@ export function SiteFooter({ locale }: SiteFooterProps) {
       <p className="site-footer-meta">
         <span>© Copyright 2026</span>
         <span>{copy.brand}</span>
+        <span>{copy.wechat}</span>
+        <span>{copy.channels}</span>
         <span>{copy.rights}</span>
         {icpLicense ? (
           <a href="https://beian.miit.gov.cn/" rel="noreferrer" target="_blank">

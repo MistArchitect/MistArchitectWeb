@@ -793,6 +793,26 @@ export const about = {
           zh: "深圳市福田区福保街道福保社区槟榔道1号吉虹研发大厦B栋7层702",
           en: "Room 702, Building B, Jihong R&D Building, No. 1 Binlang Road, Fubao Community, Fubao Subdistrict, Futian District, Shenzhen"
         }
+      },
+      {
+        label: {
+          zh: "公众号",
+          en: "WeChat"
+        },
+        value: {
+          zh: "MIST-ARCH（岚建筑设计）",
+          en: "MIST-ARCH (岚建筑设计)"
+        }
+      },
+      {
+        label: {
+          zh: "视频号",
+          en: "Channels"
+        },
+        value: {
+          zh: "岚建筑",
+          en: "岚建筑"
+        }
       }
     ]
   },

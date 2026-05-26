@@ -10,6 +10,7 @@ changed, why it changed, how it was checked, and what remains open.
 
 - Add baseline technical SEO for the bilingual production site.
 - Keep preview and Studio surfaces out of search indexes.
+- Add available WeChat ecosystem contact handles while QR codes are pending.
 
 ### Changes
 
@@ -22,6 +23,8 @@ changed, why it changed, how it was checked, and what remains open.
   `/studio/`.
 - Added `sitemap.xml` with localized static pages and project detail URLs.
 - Marked the Sanity Studio layout as `noindex, nofollow`.
+- Added the public WeChat Official Account ID `MIST-ARCH（岚建筑设计）` and
+  WeChat Channels name `岚建筑` to the About contact area and footer.
 
 ### Verification
 
