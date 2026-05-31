@@ -150,13 +150,13 @@ Rules:
 
 ## 4. Current Baseline
 
-As of 2026-05-13:
+As of 2026-05-31:
 
 ```text
 Canonical source branch: main
 Preview deployment branch: preview/home-featured-projects
-Preview release: 20260513073020-73c8ce2
-Production release: 20260513073020-73c8ce2
+Preview release: 20260531115123-c9eab71
+Production release: 20260531115123-c9eab71
 Preview URL: https://preview.mist-arch.com
 Production URL: https://mist-arch.com
 ```

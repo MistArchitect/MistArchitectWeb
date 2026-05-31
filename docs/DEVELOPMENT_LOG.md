@@ -32,6 +32,19 @@ changed, why it changed, how it was checked, and what remains open.
   and opens the QR dialog; incomplete project detail fallback renders without
   a full-detail grid or fresh console errors.
 
+### Deployment
+
+- Commit `c9eab71` was pushed to `main` and `preview/home-featured-projects`.
+- GitHub Actions CI run `26711806571` succeeded on `main`.
+- GitHub Actions `Deploy Preview` run `26711808595` succeeded on
+  `preview/home-featured-projects`.
+- Preview release `20260531115123-c9eab71` was promoted to production.
+- ECS-local preview and production smoke checks passed for `/zh`, `/en`, and
+  `/en/about`.
+- Public production smoke checks passed for `https://mist-arch.com/zh`,
+  `https://mist-arch.com/en`, and `https://mist-arch.com/en/about`.
+- Unauthenticated preview returned `401`, confirming Basic Auth remains active.
+
 ## 2026-05-31 / About WeChat QR Contact
 
 ### Goals
