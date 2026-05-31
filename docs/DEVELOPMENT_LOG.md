@@ -34,6 +34,20 @@ changed, why it changed, how it was checked, and what remains open.
 - In-app Browser QA: Dream Factory fallback renders one static slide with no
   animation; Field Academy renders four slides, advances to the next active
   slide, and uses an opacity/filter transition without fresh console errors.
+- Public production browser QA: Dream Factory keeps one static slide with
+  stable opacity; Field Academy renders four slides, advances the active slide,
+  and exposes `opacity, filter` transitions.
+
+### Deployment
+
+- Commit `49c8370` was pushed to `main` and `preview/home-featured-projects`.
+- GitHub Actions CI run `26712370923` succeeded on `main`.
+- GitHub Actions `Deploy Preview` run `26712372320` succeeded on
+  `preview/home-featured-projects`.
+- Preview release `20260531121753-49c8370` was promoted to production.
+- Public production smoke checks passed for `/zh`, `/en`,
+  `/en/projects/dream-factory-experimental-theater`, and
+  `/en/projects/field-academy`.
 
 ## 2026-05-31 / Release Readiness Review
 
