@@ -4,6 +4,37 @@ This log is written for both human developers and future coding agents. Keep ent
 short, dated, and implementation-oriented so the next contributor can understand what
 changed, why it changed, how it was checked, and what remains open.
 
+## 2026-05-31 / Project Detail Hero Carousel Fix
+
+### Goals
+
+- Keep one-image project detail fallback pages fully static.
+- Restore a visible fade transition for the `field-academy` detail hero
+  carousel.
+
+### Changes
+
+- Added a small client-side `ProjectImmersiveBackground` component that advances
+  multi-image hero slides by active state instead of CSS keyframe phase offsets.
+- Changed project hero slide deduplication to compare original visual asset
+  identity, not the full processed OSS URL, so the same source image at
+  different widths no longer counts as multiple slides.
+- Replaced the project hero keyframe animation with opacity/filter transitions
+  on the active slide.
+- Expanded Playwright coverage for static fallback heroes and Field Academy
+  carousel advancement.
+
+### Verification
+
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `npm run build`: passed.
+- `npm run test:e2e`: passed, 7 Chromium tests.
+- `git diff --check`: passed.
+- In-app Browser QA: Dream Factory fallback renders one static slide with no
+  animation; Field Academy renders four slides, advances to the next active
+  slide, and uses an opacity/filter transition without fresh console errors.
+
 ## 2026-05-31 / Release Readiness Review
 
 ### Goals

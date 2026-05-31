@@ -58,6 +58,11 @@ test.describe("project and journal detail states", () => {
       "/en#projects"
     );
     await expect(page.locator("#project-white-detail")).toHaveCount(0);
+    await expect(page.locator(".project-immersive-carousel")).toHaveAttribute(
+      "data-static-image",
+      "true"
+    );
+    await expect(page.locator(".project-immersive-slide")).toHaveCount(1);
   });
 
   test("field academy still renders the complete project detail", async ({ page }) => {
@@ -66,6 +71,27 @@ test.describe("project and journal detail states", () => {
     await expect(page.locator(".project-data-grid")).toContainText("Location");
     await expect(page.locator("#drawings")).toContainText("Plan relationships");
     await expect(page.getByText("Project details are in development.")).toHaveCount(0);
+  });
+
+  test("field academy hero carousel advances with a fade transition", async ({ page }) => {
+    await page.goto("/en/projects/field-academy#project-intro-text");
+
+    const carousel = page.locator(".project-immersive-carousel");
+    await expect(carousel).toHaveAttribute("data-slide-count", "4");
+    await expect(carousel).not.toHaveAttribute("data-static-image", "true");
+
+    const activeSlide = page.locator(".project-immersive-slide.is-active");
+    const firstActiveSrc = await activeSlide.getAttribute("src");
+    const transition = await page.locator(".project-immersive-slide").first().evaluate((slide) => {
+      const style = window.getComputedStyle(slide);
+      return `${style.transitionProperty} ${style.transitionDuration}`;
+    });
+
+    expect(transition).toContain("opacity");
+
+    await page.waitForTimeout(5500);
+    await expect(activeSlide).toHaveCount(1);
+    await expect(activeSlide).not.toHaveAttribute("src", firstActiveSrc ?? "");
   });
 
   test("journal hash links target individual entries", async ({ page }) => {

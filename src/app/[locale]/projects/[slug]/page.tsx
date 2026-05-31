@@ -2,9 +2,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import type { CSSProperties } from "react";
 
 import { GsapPageMotion } from "@/components/gsap-page-motion";
+import { ProjectImmersiveBackground } from "@/components/project-immersive-background";
 import { getProjectBySlug, getProjectSlugs } from "@/lib/content";
 import { isLocale, locales, type Locale, withLocale } from "@/lib/i18n";
 import {
@@ -278,32 +278,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   );
 }
 
-function ProjectImmersiveBackground({ heroSlides }: { heroSlides: ReturnType<typeof getProjectHeroSlides> }) {
-  const isStaticImage = heroSlides.length === 1;
-
-  return (
-    <div className="project-immersive-sticky" aria-hidden="true">
-      <div
-        className="project-immersive-carousel"
-        data-static-image={isStaticImage ? "true" : undefined}
-        style={{ "--project-slide-count": heroSlides.length } as CSSProperties}
-      >
-        {heroSlides.map((slide, index) => (
-          <img
-            alt=""
-            className="project-immersive-slide"
-            key={`${slide.src}-${index}`}
-            loading={index === 0 ? "eager" : "lazy"}
-            src={slide.src}
-            style={{ "--project-slide-index": index } as CSSProperties}
-          />
-        ))}
-      </div>
-      <div className="project-immersive-shade" />
-    </div>
-  );
-}
-
 function getProjectHeroSlides(project: Project) {
   const slides = [
     {
@@ -314,11 +288,41 @@ function getProjectHeroSlides(project: Project) {
     ...project.gallery
   ];
 
-  const uniqueSlides = slides.filter((slide, index, allSlides) => {
-    return allSlides.findIndex((candidate) => candidate.src === slide.src) === index;
+  const seenSlideIdentities = new Set<string>();
+  const uniqueSlides = slides.filter((slide) => {
+    const identity = getSlideVisualIdentity(slide.src);
+    if (seenSlideIdentities.has(identity)) {
+      return false;
+    }
+
+    seenSlideIdentities.add(identity);
+    return true;
   });
 
   return uniqueSlides.slice(0, 4);
+}
+
+function getSlideVisualIdentity(src: string) {
+  const assetPath = getSlideAssetPath(src);
+  const filename = assetPath.split("/").pop() ?? assetPath;
+  const extensionless = filename.replace(/\.[^.]+$/, "");
+  const decimalVariant = extensionless.match(/^\d+\.(\d+)/)?.[1] ?? "";
+  const withoutSequence = extensionless
+    .replace(/^\d+(?:\.\d+)?[_\s-]*/, "")
+    .replace(/\b(?:4:3|16:9)\b/g, "")
+    .replace(/^(?:\d{4})[·\s_-]*/, "");
+  const normalizedName = withoutSequence.replace(/[\s·_:：-]+/g, "").toLowerCase();
+
+  return decimalVariant ? `${normalizedName}#${decimalVariant}` : normalizedName;
+}
+
+function getSlideAssetPath(src: string) {
+  try {
+    const url = new URL(src, "https://mist-arch.local");
+    return url.searchParams.get("path") ?? decodeURIComponent(url.pathname.replace(/^\/+/, ""));
+  } catch {
+    return src.split("?")[0];
+  }
 }
 
 function getProjectFacts(project: Project): ProjectFact[] {
