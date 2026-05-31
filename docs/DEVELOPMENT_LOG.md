@@ -18,9 +18,22 @@ changed, why it changed, how it was checked, and what remains open.
 
 ### Verification
 
-- Pending deployment: verify the key file at
-  `https://mist-arch.com/f5775da6489b4079bb75b30bdd8fdbf9.txt` before calling
-  the IndexNow API.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `npm run build`: passed.
+- `git diff --check`: passed.
+- Production smoke checks returned `200` for `/zh`, `/en`, `/sitemap.xml`, and
+  `/f5775da6489b4079bb75b30bdd8fdbf9.txt`.
+- The IndexNow API accepted 26 sitemap URLs with status `202 Accepted`.
+
+### Deployment
+
+- Commit `d61ddd1` was pushed to `main` and
+  `preview/home-featured-projects`.
+- GitHub Actions CI run `26715709133` succeeded on `main`.
+- GitHub Actions `Deploy Preview` run `26715709613` succeeded on
+  `preview/home-featured-projects`.
+- Preview release `20260531144721-d61ddd1` was promoted to production.
 
 ## 2026-05-31 / Project Detail Hero Carousel Fix
 

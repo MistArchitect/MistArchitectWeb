@@ -263,8 +263,8 @@ https://preview.mist-arch.com  (Basic Auth protected)
 Current release pointers as of this handoff:
 
 ```text
-Preview release:    20260531121753-49c8370
-Production release: 20260531121753-49c8370
+Preview release:    20260531144721-d61ddd1
+Production release: 20260531144721-d61ddd1
 ```
 
 ECS directory layout:
