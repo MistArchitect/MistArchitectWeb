@@ -30,6 +30,20 @@ changed, why it changed, how it was checked, and what remains open.
 - `git diff --check`: passed.
 - Built page artifacts include the WeChat Official Account ID, AboutPage /
   ContactPage structured data, and QR-code ImageObject strings.
+- Production smoke checks returned `200` for `/zh`, `/en`, `/zh/about`,
+  `/en/about`, and `/sitemap.xml`.
+- Production `/zh/about` and `/en/about` source includes the new WeChat
+  structured data.
+- IndexNow accepted `/zh/about` and `/en/about` with status `200 OK`.
+
+### Deployment
+
+- Commit `b41fc1f` was pushed to `main` and
+  `preview/home-featured-projects`.
+- GitHub Actions CI run `26716015758` succeeded on `main`.
+- GitHub Actions `Deploy Preview` run `26716016620` succeeded on
+  `preview/home-featured-projects`.
+- Preview release `20260531150039-b41fc1f` was promoted to production.
 
 ## 2026-05-31 / Baidu Site Verification File
 

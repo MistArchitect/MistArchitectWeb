@@ -340,17 +340,17 @@ mist-preview    -> 127.0.0.1:3001 -> /srv/mist-architect/current-preview
 Current production release:
 
 ```text
-20260531145243-acbba6e
+20260531150039-b41fc1f
 ```
 
 Latest verified preview workflow after production launch:
 
 ```text
-Run id: 26715834900
+Run id: 26716016620
 Branch: preview/home-featured-projects
-Head SHA: acbba6ee5c7c679abf53c1b9e18f70a2aaf4bf8d
-Short SHA: acbba6e
-Preview release: 20260531145243-acbba6e
+Head SHA: b41fc1fccdd7000c0bece17e8ff8ea3ef9346f13
+Short SHA: b41fc1f
+Preview release: 20260531150039-b41fc1f
 Conclusion: success
 ```
 
