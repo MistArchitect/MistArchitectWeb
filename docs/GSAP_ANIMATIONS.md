@@ -33,16 +33,29 @@ We strongly recommend coupling GSAP ScrollTrigger with **Lenis** (a lightweight 
 
 ```javascript
 'use client';
-import { ReactLenis } from '@studio-freight/react-lenis';
+import { useEffect } from 'react';
 import gsap from 'gsap';
+import Lenis from 'lenis';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export function SmoothScrolling({ children }) {
-  // Sync Lenis scroll with GSAP ScrollTrigger
-  return (
-    <ReactLenis root options={{ lerp: 0.05, duration: 1.5, smoothWheel: true }}>
-      {children}
-    </ReactLenis>
-  );
+  useEffect(() => {
+    const lenis = new Lenis({ lerp: 0.05, duration: 1.5, smoothWheel: true });
+    const tick = (time) => lenis.raf(time * 1000);
+
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add(tick);
+    gsap.ticker.lagSmoothing(0);
+
+    return () => {
+      gsap.ticker.remove(tick);
+      lenis.destroy();
+    };
+  }, []);
+
+  return <>{children}</>;
 }
 ```
 
@@ -85,13 +98,13 @@ export default function HorizontalProjects() {
   }, { scope: containerRef });
 
   return (
-    <section ref={containerRef} className="h-screen overflow-hidden flex bg-dark-gray text-white">
-      <div ref={scrollWrapperRef} className="flex h-full w-[300vw]">
+    <section ref={containerRef} className="horizontal-projects">
+      <div ref={scrollWrapperRef} className="horizontal-projects-track">
         {/* Render your project panels here */}
-        <div className="project-panel w-screen h-full flex-shrink-0 grid place-items-center">
+        <div className="project-panel">
             Project 1
         </div>
-        <div className="project-panel w-screen h-full flex-shrink-0 grid place-items-center">
+        <div className="project-panel">
             Project 2
         </div>
       </div>
@@ -148,12 +161,12 @@ export default function TextRevealSection() {
   }, { scope: sectionRef });
 
   return (
-    <section ref={sectionRef} className="py-24 px-8">
-      <h2 className="reveal-text overflow-hidden text-4xl">Elevating Context</h2>
-      <h2 className="reveal-text overflow-hidden text-4xl">Through Design</h2>
+    <section ref={sectionRef} className="reveal-section">
+      <h2 className="reveal-text reveal-title">Elevating Context</h2>
+      <h2 className="reveal-text reveal-title">Through Design</h2>
       
-      <div className="mt-12 overflow-hidden rounded-md">
-        <img src="/assets/project1.jpg" className="reveal-image w-full h-[60vh] object-cover" />
+      <div className="reveal-media">
+        <img src="/assets/project1.jpg" className="reveal-image" />
       </div>
     </section>
   );
@@ -180,13 +193,18 @@ Group texts inside a container with `overflow-hidden`.
   height: 1.2em; /* Line height */
 }
 
-.rolling-link span {
+.rolling-link > span {
   display: flex;
   flex-direction: column;
   transition: transform 0.4s cubic-bezier(0.76, 0, 0.24, 1);
 }
 
-.rolling-link:hover span {
+.rolling-link-line {
+  display: block;
+  height: 1.2em;
+}
+
+.rolling-link:hover > span {
   transform: translateY(-50%); /* Moves the top text up and pulls the bottom text in */
 }
 ```
@@ -195,12 +213,12 @@ Group texts inside a container with `overflow-hidden`.
 ```tsx
 export default function RollingLink({ href, text }) {
   return (
-    <a href={href} className="rolling-link font-medium hover:text-accent">
+    <a href={href} className="rolling-link">
       <span>
         {/* Primary visible text */}
-        <span className="block h-[1.2em]">{text}</span>
+        <span className="rolling-link-line">{text}</span>
         {/* Text hidden below, ready to slide up */}
-        <span className="block h-[1.2em]">{text}</span>
+        <span className="rolling-link-line">{text}</span>
       </span>
     </a>
   );

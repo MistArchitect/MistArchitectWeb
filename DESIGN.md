@@ -68,7 +68,7 @@ Typography must be clinical, geometric, and perfectly aligned, mirroring archite
   - On portrait/mobile viewports, horizontal swipe gestures must include a small direction-lock dead zone. Slightly diagonal left/right swipes should remain carousel gestures and should not drift the page vertically; strongly vertical gestures should continue to allow normal page scroll.
   - Portrait/mobile swipe transitions should use a light stacked deck model. Swiping toward the next/right-side image brings that image in from the right and layers it above the current image while the current image stays visually anchored; swiping toward the previous/left-side image moves the current image rightward and reveals the previous image underneath. The gesture can pause mid-drag, then either settle back or complete the image change on release. Autoplay should use the same stacked next-image overlay animation instead of an instant index swap. Avoid hard push animations, bounce, or large lateral movement.
   - After the initial homepage Hero, the recommended-projects page body should enter with a `scroll overlay` / `cover reveal`: keep the Hero sticky for the first scroll screen, then let the white content layer rise from below and cover the image. Do not add divider lines or decorative edges at the transition; the shift from image to white page is the visual cue.
-  - Homepage featured project tiles can be temporarily non-interactive during prototype review; when disabled, remove detail links and the full-index entry point.
+  - Homepage featured project tiles are interactive. If a project does not yet have full detail material, its detail page should still open and present the full cover image carousel, one concise in-development line, and a return link to the project index.
   - Homepage featured project tile captions use two lines: `year · location` on the first line and project name on the second line. Both use neutral greys, with the project name slightly stronger and the first line smaller.
   - Caption text is content data, not derived from filenames, so future renames or OSS migration do not change public-facing labels.
 - **In-page Images (Projects/Journal)**:
@@ -96,6 +96,7 @@ Adopt the following principles for Mist Architect project detail pages:
 
 1. **Entry Sequence**
    - Start with an immersive full-screen photographic page head using the project image carousel.
+   - Only run the carousel when a project has multiple distinct images; a single available image should remain static.
    - The carousel should occupy the entire viewport and remain visually present while the first two text groups are read.
    - Text over the image must sit directly on the image with transparent background. Do not place this opening text inside a card, panel, frosted box, or bordered container.
    - The first text group is the project identity: project title, location, year/status if needed, and a restrained divider.
@@ -110,6 +111,7 @@ Adopt the following principles for Mist Architect project detail pages:
    - Recommended anchors: `Overview`, `Site`, `Concept`, `Material`, `Process`, `Drawings`, `Media`, `Information`.
    - Use the Chinese equivalents in the UI and keep English labels available in the content model.
    - Each anchor should correspond to a real content block, not a decorative scroll stop.
+   - Do not auto-generate generic detail sections for projects that lack real material. Until full content is ready, use the in-development fallback state instead.
 
 3. **Image-First Blocks**
    - Each major section should lead with a large image, gallery, drawing, or video still.
@@ -146,7 +148,7 @@ Adopt the following principles for Mist Architect project detail pages:
    - Avoid large lateral movement, bounce, scale-heavy zooms, or scroll-jacking.
 
 9. **Content Model**
-   - Project data should be prepared for CMS migration. Do not hard-code page structure only in JSX.
+   - Project data should remain data-driven in `src/content/site.ts`. Do not hard-code page structure only in JSX.
    - Recommended shape:
 
 ```ts

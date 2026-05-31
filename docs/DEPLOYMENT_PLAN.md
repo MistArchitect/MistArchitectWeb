@@ -3,8 +3,8 @@
 This plan targets the current operating mode only:
 
 - Hosting moves to Alibaba Cloud.
-- Content updates stay in code and GitHub for now.
-- No CMS migration in this phase.
+- Content updates stay in code and GitHub.
+- CMS integration is intentionally out of scope for the current lean build.
 - The site needs two environments: internal preview and public production.
 
 ## 1. Target Architecture
@@ -58,7 +58,7 @@ This is enough for:
 - Next.js standalone server.
 - Nginx.
 - PM2.
-- Current local image assets.
+- Current OSS-served image assets.
 - Low-traffic internal preview.
 
 ### Budget Starter
@@ -75,8 +75,8 @@ Use this package only with these constraints:
 
 - Build the app locally or in CI when possible, then upload the standalone release package to ECS.
 - If building directly on the ECS, stop the preview process before production build/reload when memory is tight.
-- Keep only a small number of release folders, because 40 GiB will be consumed quickly by `.next`, `public/images`, logs, and backups.
-- Compress images before committing and avoid hosting large video files directly from the ECS.
+- Keep only a small number of release folders, because 40 GiB will be consumed quickly by `.next`, logs, and backups.
+- Keep runtime images and large video files out of the ECS release package.
 - Treat 3 Mbps as a prototype bandwidth ceiling. It is enough for internal review and light public traffic, but high-resolution image pages will feel slow on first load.
 
 Upgrade from this package to the 2c4g baseline before production if preview reviewers see slow first loads, build memory pressure, or if production needs to host many large project images/videos directly on the server.
@@ -103,7 +103,7 @@ Upgrade production to `4 vCPU / 8 GiB RAM` when any of these become true:
 
 - More real project media is added and image optimization becomes CPU-heavy.
 - Public traffic grows beyond low-volume company-site traffic.
-- A CMS, database, image processing, or background job runs on the same server.
+- A database, image processing service, or background job runs on the same server.
 - Build is performed on the server and regularly causes memory pressure.
 
 If the company prefers the g-series general-purpose family, choose the equivalent 1:4 memory ratio class, which usually means starting at `2 vCPU / 8 GiB RAM` rather than `2 vCPU / 4 GiB RAM`.
@@ -263,18 +263,16 @@ Do not edit production files manually on the server except emergency rollback.
 
 Current preview phase:
 
-- Keep compressed review images in `public/images` until visual approval.
-- Use `npm run optimize:images` before deploying new local media.
+- Keep runtime imagery in OSS instead of `public/images`.
 - Keep filenames stable after review links are shared.
 - Keep source-grade originals outside the website runtime package.
 
-OSS migration phase:
+OSS/CDN phase:
 
-- Create an OSS bucket in the same mainland region as ECS, preferably Shenzhen if the ECS stays in `cn-shenzhen`.
-- Upload optimized runtime images to OSS, not source-grade originals.
+- The OSS bucket is already the active runtime image source.
 - Let the browser load images directly from OSS or a CDN-bound OSS domain. Do not proxy public images through ECS, otherwise the 3 Mbps ECS bandwidth remains the bottleneck.
 - Keep ECS-to-OSS internal endpoints for server-side maintenance tasks, but do not depend on ECS internal bandwidth for browser-facing image delivery.
-- Add CDN after ICP and domain setup are complete.
+- Add CDN only after Alibaba Cloud CDN service is open, HTTPS is bound, DNS is ready, and the Next image remote host allow-list is updated in the same release as the `NEXT_PUBLIC_MEDIA_BASE` flip.
 
 ## 10. Operational Checklist
 

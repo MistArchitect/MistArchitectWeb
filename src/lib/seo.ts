@@ -15,6 +15,22 @@ export const siteBrand = {
   en: "MIST Architects"
 } satisfies Record<Locale, string>;
 
+export const wechatSeoContact = {
+  publicAccount: {
+    zh: "MIST-ARCH（岚建筑设计）",
+    en: "MIST-ARCH (岚建筑设计)"
+  },
+  channels: {
+    zh: "岚建筑",
+    en: "岚建筑"
+  },
+  qrImage: "/20260531-191007.jpeg"
+} satisfies {
+  publicAccount: Record<Locale, string>;
+  channels: Record<Locale, string>;
+  qrImage: string;
+};
+
 export const siteDescription = {
   zh: "岚·建筑设计是由程博和李博创立的建筑事务所，关注建筑、室内、城市更新、公共文化空间与材料研究。",
   en: "MIST Architects is an architecture studio founded by Cheng Bo and Li Bo, working across architecture, interiors, adaptive reuse, public cultural spaces, and material research."
@@ -24,6 +40,9 @@ export const siteKeywords = {
   zh: [
     "岚·建筑设计",
     "MIST Architects",
+    "岚建筑设计公众号",
+    "MIST-ARCH公众号",
+    "微信公众号",
     "建筑设计",
     "室内设计",
     "城市更新",
@@ -32,6 +51,9 @@ export const siteKeywords = {
   ],
   en: [
     "MIST Architects",
+    "MIST-ARCH WeChat",
+    "MIST Architects WeChat",
+    "WeChat public account",
     "architecture studio",
     "interior design",
     "adaptive reuse",
@@ -90,11 +112,12 @@ export function buildPageMetadata({
   const canonical = localizedSiteUrl(locale, path);
   const fullTitle = formatTitle(title);
   const imageUrl = absoluteUrl(image);
+  const pageKeywords = Array.from(new Set([...siteKeywords[locale], ...keywords]));
 
   return {
     title,
     description,
-    keywords: [...siteKeywords[locale], ...keywords],
+    keywords: pageKeywords,
     alternates: {
       canonical,
       languages: languageAlternates(path)
@@ -136,6 +159,27 @@ export function organizationJsonLd(locale: Locale) {
     description: siteDescription[locale],
     email: "info@mist-arch.com",
     telephone: "+86 186 1303 3310",
+    contactPoint: [
+      {
+        "@type": "ContactPoint",
+        contactType: locale === "zh" ? "微信公众账号" : "WeChat public account",
+        name: wechatSeoContact.publicAccount[locale],
+        availableLanguage: ["zh-CN", "en"]
+      },
+      {
+        "@type": "ContactPoint",
+        contactType: locale === "zh" ? "微信视频号" : "WeChat Channels",
+        name: wechatSeoContact.channels[locale],
+        availableLanguage: ["zh-CN"]
+      },
+      {
+        "@type": "ContactPoint",
+        contactType: locale === "zh" ? "业务咨询" : "Business inquiries",
+        email: "info@mist-arch.com",
+        telephone: "+86 186 1303 3310",
+        availableLanguage: ["zh-CN", "en"]
+      }
+    ],
     address: {
       "@type": "PostalAddress",
       streetAddress:
@@ -149,7 +193,32 @@ export function organizationJsonLd(locale: Locale) {
     founder: about.founders.map((founder) => ({
       "@type": "Person",
       name: founder.name[locale]
-    }))
+    })),
+    additionalProperty: [
+      {
+        "@type": "PropertyValue",
+        name: "WeChat public account",
+        value: wechatSeoContact.publicAccount[locale]
+      },
+      {
+        "@type": "PropertyValue",
+        name: "WeChat Channels",
+        value: wechatSeoContact.channels[locale]
+      }
+    ],
+    subjectOf: [
+      {
+        "@type": "ImageObject",
+        name: locale === "zh" ? "微信公众号二维码" : "WeChat public account QR code",
+        contentUrl: absoluteUrl(wechatSeoContact.qrImage),
+        caption:
+          locale === "zh"
+            ? "岚·建筑设计微信公众号二维码"
+            : "MIST Architects WeChat public account QR code",
+        encodingFormat: "image/jpeg",
+        representativeOfPage: false
+      }
+    ]
   };
 }
 

@@ -4,6 +4,152 @@ This log is written for both human developers and future coding agents. Keep ent
 short, dated, and implementation-oriented so the next contributor can understand what
 changed, why it changed, how it was checked, and what remains open.
 
+## 2026-05-31 / Release Readiness Review
+
+### Goals
+
+- Re-review the lean project state before preview and production release.
+- Apply scoped optimizations that reduce release risk.
+- Refresh README so it describes the current implementation and workflow.
+
+### Changes
+
+- Replaced broad `latest` package specs with version ranges matching the
+  current lockfile, keeping future installs from drifting unexpectedly.
+- Rewrote `README.md` around the current lean stack, active routes, content
+  model, WeChat QR contact, environment variables, verification commands, and
+  Local -> Preview -> Production release flow.
+
+### Verification
+
+- `npm audit --json`: 0 vulnerabilities.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `npm run build`: passed.
+- `npm run test:e2e`: passed, 6 Chromium tests.
+- `git diff --check`: passed.
+- In-app Browser release smoke: `/en/about#contact` exposes WeChat SEO data
+  and opens the QR dialog; incomplete project detail fallback renders without
+  a full-detail grid or fresh console errors.
+
+## 2026-05-31 / About WeChat QR Contact
+
+### Goals
+
+- Add the updated WeChat public-account QR code to the About contact section.
+- Let visitors enlarge the QR code by clicking the public account name.
+
+### Changes
+
+- Added `src/components/wechat-qr-dialog.tsx` for the About-page QR dialog.
+- Wired the `公众号 / WeChat` contact row to `public/20260531-191007.jpeg`.
+- Added dialog/backdrop/close styling and a Playwright smoke check for the
+  contact interaction.
+- Added WeChat-specific About metadata plus Organization JSON-LD contact
+  points, properties, and QR `ImageObject` data.
+- Tightened the About contact-row spacing and line height across desktop and
+  mobile layouts.
+
+### Verification
+
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `npm run build`: passed.
+- `npm run test:e2e`: passed, 6 Chromium tests, including WeChat structured
+  data coverage.
+- `git diff --check`: passed.
+- In-app Browser DOM check on `/en/about#contact`: WeChat contact trigger
+  opens a visible QR dialog with the updated QR image; contact lines render in
+  the tightened layout.
+
+## 2026-05-31 / Project Detail Fallback and Handoff Refresh
+
+### Goals
+
+- Keep project cards clickable while avoiding fake detail pages for projects
+  that do not yet have complete material.
+- Make journal hash links functional.
+- Refresh stale handoff/CDN/docs notes after the lean stack cleanup.
+
+### Changes
+
+- Limited complete project-detail rendering to `field-academy`.
+- Added an intentional fallback state for other project detail routes: full
+  cover/carousel, an in-development message, and a return link to the project
+  index.
+- Project detail hero imagery now deduplicates repeated image URLs and keeps a
+  single available image static instead of running a one-image carousel.
+- Added matching `id` anchors for journal entries so `/journal#<slug>` links
+  land on the selected entry.
+- Marked the first journal image as priority to address the journal LCP warning.
+- Removed the unused `featuredTiles` content block that no longer feeds the
+  homepage.
+- Rewrote `docs/AGENT_HANDOFF.md` and refreshed release, CDN, CI, image, GSAP,
+  README, AGENTS, and design notes.
+- Expanded Playwright smoke tests to cover project detail fallback/full states
+  and journal hash anchors.
+- Increased the CI timeout to give Playwright browser installation enough room
+  on GitHub-hosted runners.
+- Updated Playwright config so local runs use one dev-server worker and CI runs
+  against the standalone production server through `npm run start:standalone`.
+
+### Verification
+
+- `npm audit --json`: 0 vulnerabilities.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `npm run build`: passed.
+- `npm run test:e2e`: passed, 5 Chromium tests.
+- `CI=1 npm run test:e2e`: passed against the standalone production server,
+  5 Chromium tests.
+- `git diff --check`: passed.
+
+## 2026-05-31 / Audit Fix and Playwright Smoke Tests
+
+### Goals
+
+- Resolve the remaining npm audit findings after the lean stack cleanup.
+- Add a minimal browser-level smoke test path for the bilingual homepage.
+
+### Changes
+
+- Ran `npm audit fix`, which updated Next.js to the patched `16.2.6` line and removed the high-severity Next advisories.
+- Added an npm `overrides.postcss` entry to force the transitive PostCSS dependency to `^8.5.15`, resolving the remaining PostCSS advisory without accepting npm audit's unsafe Next.js downgrade suggestion.
+- Added `@playwright/test`, `playwright.config.ts`, and `tests/e2e/home.spec.ts` for Chromium smoke checks on `/zh` and `/en`.
+- Added `npm run test:e2e` and wired Playwright Chromium installation plus e2e smoke tests into the CI workflow.
+- Updated README and CI/release handoff docs with the new test command.
+
+### Verification
+
+- `npm audit --json`: 0 vulnerabilities.
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `npm run build`: passed.
+- `npm run test:e2e`: passed, 2 Chromium tests.
+- `git diff --check`: passed.
+
+## 2026-05-31 / Lean Stack Cleanup
+
+### Goals
+
+- Remove planned-but-unused integration layers from the current website build.
+- Keep the active code path focused on code-managed content, OSS media, and the existing Next.js frontend.
+
+### Changes
+
+- Removed the Sanity CMS integration, including `/studio`, Sanity schemas/config, GROQ client code, and related environment variables.
+- Simplified `src/lib/content.ts` so projects and journal entries come directly from local seed content.
+- Removed unused shadcn/Tailwind setup, React Bits TiltedCard leftovers, and the old local `public/images` optimization script.
+- Trimmed unused dependencies from `package.json` and removed unused remote image host allow-list entries from `next.config.ts`.
+- Updated README and handoff/media/deployment notes to reflect the lean stack.
+
+### Verification
+
+- `npm run typecheck`: passed after clearing stale `.next` route types from the removed `/studio` route.
+- `npm run lint`: passed.
+- `npm run build`: passed.
+- `git diff --check`: passed.
+
 ## 2026-05-26 / Technical SEO Foundation
 
 ### Goals

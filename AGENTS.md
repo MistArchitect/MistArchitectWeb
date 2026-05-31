@@ -88,6 +88,7 @@ Before committing code changes:
 ```bash
 npm run typecheck
 npm run lint
+npm run test:e2e
 git diff --check
 ```
 
@@ -96,13 +97,13 @@ pipeline, environment variables, or deployment behavior.
 
 ## 5. Current Baseline
 
-As of 2026-05-07:
+As of 2026-05-31:
 
 ```text
 Canonical source branch: main
 Preview deployment branch: preview/home-featured-projects
-Preview release: 20260501112459-1dc4c20
-Production release: 20260501112459-1dc4c20
+Preview release: 20260513073020-73c8ce2
+Production release: 20260513073020-73c8ce2
 Production host: https://mist-arch.com
 Protected preview host: https://preview.mist-arch.com
 ```

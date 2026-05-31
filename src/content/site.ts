@@ -281,172 +281,6 @@ export const heroSlides: HeroSlide[] = [
   }
 ];
 
-/**
- * Featured project tiles shown on the homepage under the hero.
- *
- * Source filenames live in `home/feature/` and embed `year·location·title`.
- * The sequence prefix is metadata only and stripped at the data layer.
- * Duplicated location fragments in source names (e.g. "深圳 · 深圳 ·…")
- * have been collapsed here so the UI is not affected by source typos.
- *
- * Tiles are currently non-clickable during prototype review. The homepage
- * renders them through `FeaturedProjectField` so the imagery can keep a
- * quiet pointer-responsive treatment without exposing detail links yet.
- */
-export type FeaturedTile = {
-  id: string;
-  slug?: string;
-  image: string;
-  year: string;
-  location: Localized;
-  title: Localized;
-  folder: {
-    shell: string;
-    tab: string;
-    edge: string;
-    stamp: string;
-  };
-};
-
-export const featuredTiles: FeaturedTile[] = [
-  {
-    id: "dream-factory-experimental-theater",
-    slug: "dream-factory-experimental-theater",
-    image: "home/feature/01 2023·深圳·梦工场·青年实验剧场.jpg",
-    year: "2023",
-    location: { zh: "深圳", en: "Shenzhen" },
-    title: {
-      zh: "梦工场 · 青年实验剧场",
-      en: "Dream Factory Experimental Theater"
-    },
-    folder: {
-      shell: "#d4cab6",
-      tab: "#c3b696",
-      edge: "#aa9b7e",
-      stamp: "#60574a"
-    }
-  },
-  {
-    id: "wanzhi-natural-history-park",
-    slug: "wanzhi-natural-history-park",
-    image: "home/feature/02 2024·深圳 · 深圳 ·万致天地·自然博物园.jpg",
-    year: "2024",
-    location: { zh: "深圳", en: "Shenzhen" },
-    title: {
-      zh: "万致天地 · 自然博物园",
-      en: "Wanzhi Tiandi · Natural History Park"
-    },
-    folder: {
-      shell: "#cfd4cd",
-      tab: "#b9c0b5",
-      edge: "#9ea696",
-      stamp: "#4f5a4b"
-    }
-  },
-  {
-    id: "wujingkui-ruins-garden",
-    slug: "wujingkui-ruins-garden",
-    image: "home/feature/03 2025·惠州 · 五经魁废墟花园.jpg",
-    year: "2025",
-    location: { zh: "惠州", en: "Huizhou" },
-    title: {
-      zh: "五经魁废墟花园",
-      en: "Wujingkui Ruins Garden"
-    },
-    folder: {
-      shell: "#d3d0ca",
-      tab: "#c2beb6",
-      edge: "#aaa59c",
-      stamp: "#59554f"
-    }
-  },
-  {
-    id: "pavilion-of-light",
-    slug: "pavilion-of-light",
-    image: "home/feature/04 2021·深圳 · 光之展亭·光影艺术季主展场.jpeg",
-    year: "2021",
-    location: { zh: "深圳", en: "Shenzhen" },
-    title: {
-      zh: "光之展亭 · 光影艺术季主展场",
-      en: "Pavilion of Light · Main Hall, Light & Shadow Art Season"
-    },
-    folder: {
-      shell: "#d3d7dc",
-      tab: "#bcc5cd",
-      edge: "#9fabb5",
-      stamp: "#4c5663"
-    }
-  },
-  {
-    id: "bambu-lab-first-store",
-    slug: "bambu-lab-first-store",
-    image: "home/feature/05 2025·深圳 · 拓竹科技首店.jpeg",
-    year: "2025",
-    location: { zh: "深圳", en: "Shenzhen" },
-    title: {
-      zh: "拓竹科技首店",
-      en: "Bambu Lab First Store"
-    },
-    folder: {
-      shell: "#cbc8c0",
-      tab: "#b6b5ad",
-      edge: "#96958d",
-      stamp: "#50504a"
-    }
-  },
-  {
-    id: "light-encounter-theater",
-    slug: "light-encounter-theater",
-    image: "home/horizontal/05 深圳 · 光遇剧场.jpeg",
-    year: "2024",
-    location: { zh: "深圳", en: "Shenzhen" },
-    title: {
-      zh: "光遇剧场",
-      en: "Light Encounter Theater"
-    },
-    folder: {
-      shell: "#d1d3d0",
-      tab: "#bdc0bb",
-      edge: "#a1a59e",
-      stamp: "#535951"
-    }
-  },
-  {
-    id: "teastone-mixc",
-    slug: "teastone-mixc",
-    image: "home/horizontal/06 杭州 · 万象城 tea’stone.jpeg",
-    year: "2024",
-    location: { zh: "杭州", en: "Hangzhou" },
-    title: {
-      zh: "万象城 tea’stone",
-      en: "MixC tea’stone"
-    },
-    folder: {
-      shell: "#d4d1c8",
-      tab: "#c2beb4",
-      edge: "#aaa399",
-      stamp: "#59534b"
-    }
-  },
-  {
-    id: "meditation-hall-by-the-wetland",
-    slug: "meditation-hall-by-the-wetland",
-    image: "home/horizontal/08 北京 · 湿地旁的禅修馆.jpeg",
-    year: "2023",
-    location: { zh: "北京", en: "Beijing" },
-    title: {
-      zh: "湿地旁的禅修馆",
-      en: "Meditation Hall by the Wetland"
-    },
-    folder: {
-      shell: "#cfd4d2",
-      tab: "#b8bfbc",
-      edge: "#9fa8a5",
-      stamp: "#505b58"
-    }
-  }
-];
-
 export const home = {
   hero: {
     kicker: {
@@ -802,7 +636,8 @@ export const about = {
         value: {
           zh: "MIST-ARCH（岚建筑设计）",
           en: "MIST-ARCH (岚建筑设计)"
-        }
+        },
+        qrImage: "/20260531-191007.jpeg"
       },
       {
         label: {
@@ -1911,7 +1746,7 @@ export const journalEntries: JournalEntry[] = [
     }
   },
   {
-    slug: "future-cms-language-model",
+    slug: "bilingual-architecture-records",
     date: "2026-04-13",
     category: {
       zh: "内容架构",

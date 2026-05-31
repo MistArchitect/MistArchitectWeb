@@ -13,14 +13,15 @@ type JournalListProps = {
 export function JournalList({ entries, locale }: JournalListProps) {
   return (
     <div className="journal-list">
-      {entries.map((entry) => (
-        <article className="story-tile journal-tile" key={entry.slug}>
+      {entries.map((entry, index) => (
+        <article className="story-tile journal-tile" id={entry.slug} key={entry.slug}>
           <Link href={withLocale(locale, `/journal#${entry.slug}`)} aria-label={entry.title[locale]}>
             <Image
               src={entry.image}
               alt={entry.imageAlt[locale]}
               width={1000}
               height={700}
+              priority={index === 0}
               sizes="(min-width: 960px) 50vw, 100vw"
             />
           </Link>

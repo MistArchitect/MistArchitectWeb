@@ -4,7 +4,8 @@ End-to-end spec for how MIST Architects ships imagery: where files
 live, how they are processed, what the page actually requests, and the
 guard rails that keep file weight predictable.
 
-Last reviewed: 2026-04-22 — OSS Referer protection + versioning enabled.
+Last reviewed: 2026-05-31 — lean build, project-detail fallback, and CDN
+activation guard rails updated.
 Local dev note added 2026-04-24 — `mediaUrl()` uses a Next.js dev proxy
 for the default OSS origin so non-whitelisted local ports such as `3001`
 do not break browser image loading.
@@ -21,10 +22,11 @@ public origin is:
 https://mist-architects-media.oss-cn-shenzhen.aliyuncs.com
 ```
 
-Override in any environment by setting `NEXT_PUBLIC_MEDIA_BASE`. The
-reserved CDN media domain is `https://media.mist-arch.com`. It is
-pre-registered in `next.config.ts`, but not active yet because Alibaba
-Cloud CDN service is not open on the account as of 2026-04-22.
+Override in a future environment by setting `NEXT_PUBLIC_MEDIA_BASE`. The
+reserved CDN media domain is `https://media.mist-arch.com`, but the active
+build should leave the variable unset until Alibaba Cloud CDN is open on the
+account, HTTPS is bound, DNS points at the CDN target, and `next.config.ts`
+allow-lists that hostname for any remaining `next/image` surfaces.
 
 Current OSS security state:
 
@@ -34,8 +36,10 @@ Current OSS security state:
 - Bucket versioning is enabled.
 - CORS is intentionally unset. Plain `<img>` / `<picture>` rendering
   does not need it.
-- The raw OSS endpoint remains the active media base until CDN is
-  opened and `NEXT_PUBLIC_MEDIA_BASE` is switched.
+- The raw OSS endpoint remains the active media base. Do not switch
+  `NEXT_PUBLIC_MEDIA_BASE` to `https://media.mist-arch.com` until the CDN
+  service, certificate, DNS, and Next image remote host configuration are
+  changed together.
 
 Bucket layout (folder names are the contract — code keys off them):
 
@@ -46,7 +50,8 @@ home/feature/           → square-ish featured tiles for the homepage grid
 about/horizontal/       → about-page hero carousel sources
 about/founders/         → founder portrait
 LOGO/                   → wordmark (PNG, served raw)
-projects/<slug>/        → reserved for project detail imagery (not yet on OSS)
+projects/field-academy/ → complete WILD WORKSHOP project-detail imagery
+projects/<slug>/        → future project-detail imagery
 ```
 
 Filename convention: `<seq> <year>·<location>·<title>.<ext>`. Code
@@ -253,7 +258,7 @@ testing bucket Referer behavior directly.
    `aliyun ossutil cp`. Use the existing `<seq> ...` naming pattern
    so the file sorts correctly in the bucket UI.
 2. Add the bucket-relative path to `src/content/site.ts` (typed
-   under `heroSlides` / `featuredTiles` / `about.*` etc.). Do not
+   under `heroSlides` / `projects` / `about.*` etc.). Do not
    prefix with a slash; do not URL-encode.
 3. Pick a `layout` preset that matches the placement. If none fit,
    add a new preset to `LAYOUTS` in `src/lib/media.ts` rather than
@@ -279,7 +284,15 @@ testing bucket Referer behavior directly.
 - Open Alibaba Cloud CDN service for the account. Current CLI response
   is `CdnServiceNotFound`, so CDN domains cannot be created yet.
 - Bind `media.mist-arch.com` to Alibaba Cloud CDN with the OSS bucket
-  as origin, enable HTTPS, then switch `NEXT_PUBLIC_MEDIA_BASE` to it.
+  as origin and enable HTTPS.
+- Add DNS CNAME for `media.mist-arch.com` only after Alibaba Cloud returns
+  the CDN target.
+- Add `media.mist-arch.com` back to `next.config.ts` `images.remotePatterns`
+  in the same change that flips `NEXT_PUBLIC_MEDIA_BASE`, because journal
+  images and any future `next/image` surfaces must be allowed by Next at
+  build/runtime.
+- Switch `NEXT_PUBLIC_MEDIA_BASE=https://media.mist-arch.com` only after the
+  previous steps are verified in preview.
 - Front the bucket with Aliyun CDN (DCDN), configure cache rules:
   long-cache processed URLs (immutable, fingerprinted by query),
   short-cache base paths.

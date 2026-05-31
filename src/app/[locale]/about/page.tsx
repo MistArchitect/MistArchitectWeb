@@ -5,6 +5,7 @@ import { AboutHeroCarousel } from "@/components/about-hero-carousel";
 import { GsapPageMotion } from "@/components/gsap-page-motion";
 import { MotionReveal } from "@/components/motion-reveal";
 import { OssPicture } from "@/components/oss-picture";
+import { WechatQrDialog } from "@/components/wechat-qr-dialog";
 import { about } from "@/content/site";
 import { isLocale, type Locale } from "@/lib/i18n";
 import { mediaUrl } from "@/lib/media";
@@ -31,16 +32,23 @@ export async function generateMetadata({ params }: AboutPageProps): Promise<Meta
     title: locale === "zh" ? "关于岚·建筑设计" : "About",
     description:
       locale === "zh"
-        ? "了解岚·建筑设计的事务所背景、创始人、获奖出版经历、业务方向与联系方式。"
-        : "Learn about MIST Architects' studio background, founders, awards, publications, services, and contact details.",
+        ? "了解岚·建筑设计的事务所背景、创始人、获奖出版经历、业务方向、微信公众号与联系方式。"
+        : "Learn about MIST Architects' studio background, founders, awards, publications, services, WeChat public account, and contact details.",
     locale,
     path: "/about",
     image: mediaUrl(about.heroImage, { width: 1920, quality: "std" }),
     imageAlt: about.hero.title[locale],
     keywords:
       locale === "zh"
-        ? ["建筑事务所简介", "建筑师程博", "建筑师李博", "联系方式"]
-        : ["architecture studio profile", "Cheng Bo architect", "Li Bo architect", "contact"]
+        ? ["建筑事务所简介", "建筑师程博", "建筑师李博", "联系方式", "微信公众号", "微信二维码"]
+        : [
+            "architecture studio profile",
+            "Cheng Bo architect",
+            "Li Bo architect",
+            "contact",
+            "MIST-ARCH WeChat",
+            "WeChat QR code"
+          ]
   });
 }
 
@@ -189,6 +197,14 @@ export default async function AboutPage({ params }: AboutPageProps) {
                           <a className="about-contact-value" href={item.href}>
                             {item.value[locale]}
                           </a>
+                        ) : item.qrImage ? (
+                          <WechatQrDialog
+                            alt={locale === "zh" ? "微信公众号二维码" : "WeChat public account QR code"}
+                            backdropLabel={locale === "zh" ? "关闭二维码浮层" : "Close QR code overlay"}
+                            closeLabel={locale === "zh" ? "关闭" : "Close"}
+                            imageSrc={item.qrImage}
+                            label={item.value[locale]}
+                          />
                         ) : (
                           <span className="about-contact-value">{item.value[locale]}</span>
                         )}

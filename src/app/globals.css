@@ -1,6 +1,3 @@
-@import "tailwindcss/theme.css" layer(theme);
-@import "tailwindcss/utilities.css" layer(utilities);
-
 @font-face {
   font-display: swap;
   font-family: "HarmonyOS Sans SC";
@@ -80,31 +77,6 @@
     BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--paper);
-  --color-foreground: var(--page-ink);
-  --color-card: var(--paper);
-  --color-card-foreground: var(--page-ink);
-  --color-popover: var(--paper);
-  --color-popover-foreground: var(--page-ink);
-  --color-primary: var(--page-ink);
-  --color-primary-foreground: var(--paper);
-  --color-secondary: var(--hairline);
-  --color-secondary-foreground: var(--page-ink);
-  --color-muted: var(--hairline);
-  --color-muted-foreground: var(--muted);
-  --color-accent: var(--hairline);
-  --color-accent-foreground: var(--page-ink);
-  --color-destructive: #dc2626;
-  --color-border: var(--hairline);
-  --color-input: var(--hairline);
-  --color-ring: var(--muted);
-  --radius-sm: 0;
-  --radius-md: 0;
-  --radius-lg: 0;
-  --radius-xl: 0;
-}
-
 @media (prefers-color-scheme: dark) {
   :root {
     color-scheme: dark;
@@ -148,7 +120,6 @@ body,
 .about-page,
 .project-detail,
 .project-title-block,
-.studio-setup,
 .button {
   transition: background-color 450ms ease, border-color 450ms ease, color 450ms ease;
 }
@@ -1019,8 +990,7 @@ button {
 .two-column-band h2,
 .contact-band h2,
 .archive-heading h1,
-.project-title-block h1,
-.studio-setup h1 {
+.project-title-block h1 {
   font-size: 30px;
   font-weight: 400;
   line-height: 1.35;
@@ -1032,8 +1002,7 @@ button {
 .archive-heading p:not(.kicker),
 .contact-band a,
 .project-title-block p,
-.project-narrative p,
-.studio-setup p:not(.kicker) {
+.project-narrative p {
   font-size: 14px;
   line-height: 1.9;
   margin: 0;
@@ -1043,13 +1012,16 @@ button {
 .two-column-band p:not(.kicker),
 .archive-heading p:not(.kicker),
 .project-title-block p,
-.project-narrative p,
-.studio-setup p:not(.kicker) {
+.project-narrative p {
   color: var(--muted);
 }
 
 .journal-list {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.journal-tile {
+  scroll-margin-top: calc(var(--header-height) + 32px);
 }
 
 .contact-band {
@@ -1059,23 +1031,6 @@ button {
 .contact-band a {
   display: inline-block;
   margin-top: 28px;
-}
-
-.studio-setup {
-  margin: 0 auto;
-  max-width: 880px;
-  padding: 160px var(--gutter);
-}
-
-.studio-setup p:not(.kicker) {
-  margin-top: 24px;
-}
-
-.studio-setup pre {
-  border: 1px solid var(--hairline);
-  color: var(--page-ink);
-  overflow-x: auto;
-  padding: 20px;
 }
 
 .archive-heading h1 {
@@ -1159,6 +1114,13 @@ button {
   opacity: 1;
 }
 
+.project-immersive-carousel[data-static-image="true"] .project-immersive-slide {
+  animation: none;
+  filter: brightness(0.82) saturate(1);
+  opacity: 1;
+  will-change: auto;
+}
+
 .project-immersive-shade {
   background:
     linear-gradient(to bottom, rgba(0, 0, 0, 0.42), rgba(0, 0, 0, 0.1) 35%, rgba(0, 0, 0, 0.44)),
@@ -1235,6 +1197,38 @@ button {
   line-height: 2.05;
   margin: 0 auto;
   max-width: 760px;
+}
+
+.project-development-status {
+  flex-direction: column;
+  gap: 30px;
+}
+
+.project-development-back {
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.64);
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.9);
+  display: inline-flex;
+  font-family: var(--mono);
+  font-size: 13px;
+  gap: 10px;
+  justify-content: center;
+  line-height: 1.4;
+  padding: 12px 18px;
+  text-decoration: none;
+  transition: background 240ms ease, border-color 240ms ease, color 240ms ease, opacity 240ms ease;
+}
+
+.project-development-back span {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.project-development-back:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.82);
+  color: #fff;
 }
 
 .project-scroll-cue {
@@ -1909,21 +1903,33 @@ button {
 
 .about-contact-line {
   display: grid;
-  gap: 28px;
+  gap: 20px;
   grid-template-columns: 96px minmax(0, 1fr);
-  padding: 18px 0;
+  padding: 10px 0;
 }
 
 .about-contact-label {
   color: var(--muted);
   font-size: 13px;
-  line-height: 1.8;
+  line-height: 1.55;
 }
 
 .about-contact-value {
   color: var(--ink);
   font-size: 15px;
-  line-height: 1.8;
+  line-height: 1.55;
+}
+
+.about-contact-qr-trigger {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  line-height: 1.55;
+  padding: 0;
+  text-align: left;
+  width: fit-content;
 }
 
 a.about-contact-value {
@@ -1931,8 +1937,75 @@ a.about-contact-value {
   transition: color 300ms ease, opacity 300ms ease;
 }
 
-a.about-contact-value:hover {
+a.about-contact-value:hover,
+.about-contact-qr-trigger:hover {
   opacity: 0.62;
+}
+
+.wechat-qr-dialog {
+  align-items: center;
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: var(--gutter);
+  position: fixed;
+  z-index: 1400;
+}
+
+.wechat-qr-backdrop {
+  background: rgba(0, 0, 0, 0.62);
+  border: 0;
+  cursor: zoom-out;
+  inset: 0;
+  padding: 0;
+  position: absolute;
+}
+
+.wechat-qr-panel {
+  background: var(--paper);
+  color: var(--ink);
+  max-width: min(450px, calc(100vw - var(--gutter) * 2));
+  padding: clamp(18px, 3vw, 28px);
+  position: relative;
+  width: 100%;
+}
+
+.wechat-qr-heading {
+  align-items: center;
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.wechat-qr-heading h3 {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.wechat-qr-close {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: 0;
+  transition: color 240ms ease, opacity 240ms ease;
+}
+
+.wechat-qr-close:hover {
+  color: var(--ink);
+  opacity: 0.68;
+}
+
+.wechat-qr-image {
+  display: block;
+  height: auto;
+  width: 100%;
 }
 
 @media (max-width: 980px) {
@@ -2081,7 +2154,6 @@ a.about-contact-value:hover {
   .contact-band h2,
   .archive-heading h1,
   .project-title-block h1,
-  .studio-setup h1,
   .about-office-section h2,
   .founder-entry h3 {
     font-size: 24px;
@@ -2157,9 +2229,9 @@ a.about-contact-value:hover {
   }
 
   .about-contact-line {
-    gap: 6px;
+    gap: 3px;
     grid-template-columns: 1fr;
-    padding: 16px 0;
+    padding: 12px 0;
   }
 }
 

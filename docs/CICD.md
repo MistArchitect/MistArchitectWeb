@@ -1,6 +1,6 @@
 # Mist Architect CI/CD Notes
 
-Last updated: 2026-05-13, Asia/Shanghai.
+Last updated: 2026-05-31, Asia/Shanghai.
 
 This document explains the current GitHub Actions CI/CD setup for the Mist
 Architect website. It is intended for the project owner and future coding
@@ -65,9 +65,15 @@ npm ci
 npm run typecheck
 npm run lint
 npm run build
+npx playwright install --with-deps chromium
+npm run test:e2e
 ```
 
-This workflow does not deploy anything.
+This workflow does not deploy anything. The Playwright smoke tests run after
+`npm run build`; in CI they start the standalone production server through
+`npm run start:standalone` and verify the localized homepages, project-detail
+complete/fallback states, and journal hash anchors in Chromium. Local
+`npm run test:e2e` still uses the Next.js dev server.
 
 ### Deploy Preview
 
@@ -94,6 +100,10 @@ workflow_dispatch
 That means preview deployment is automatic for the active preview branch.
 Manual `workflow_dispatch` remains available when a deployment needs to be
 re-run without creating a new commit.
+
+The deploy workflow currently runs typecheck, lint, build, ECS-local smoke
+checks, and authenticated public preview smoke checks. It does not run the
+Playwright e2e suite; keep `ci.yml` passing before pushing the preview branch.
 
 ## 3. Required GitHub Secrets
 
@@ -133,8 +143,8 @@ gh secret set ALIYUN_ECS_SSH_KEY \
 
 ## 4. Deploy Preview Flow
 
-When a new manual `Deploy Preview` run is started on
-`preview/home-featured-projects`, the workflow performs:
+When `Deploy Preview` is triggered by a push to `preview/home-featured-projects`
+or by a manual `workflow_dispatch` run, the workflow performs:
 
 ```text
 1. Checkout selected branch and commit.
@@ -272,8 +282,8 @@ agreed. The current automated workflow deploys preview only.
 The intended release flow is:
 
 1. Develop and review locally.
-2. Commit and manually deploy `preview/home-featured-projects` to
-   protected preview.
+2. Commit, update `preview/home-featured-projects`, and let the preview
+   workflow deploy the protected preview.
 3. After client approval, promote the exact approved preview release id
    to production.
 
@@ -287,9 +297,6 @@ Current state:
 
 - Vercel GitHub Environments were removed by the user.
 - `vercel.json` was removed from `preview/home-featured-projects`.
-- Some package-lock references to `@vercel/*` remain because they are transitive
-  dependencies of Next/Sanity-related tooling, not active Vercel deployment
-  configuration.
 
 ## 9. Production Domain State
 

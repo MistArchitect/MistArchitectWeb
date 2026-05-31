@@ -24,6 +24,8 @@ type ProjectPageProps = {
   }>;
 };
 
+const COMPLETE_PROJECT_SLUGS = new Set(["field-academy"]);
+
 export async function generateStaticParams() {
   const slugs = await getProjectSlugs();
 
@@ -76,8 +78,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   }
 
   const locale = rawLocale as Locale;
-  const facts = getProjectFacts(project);
-  const sections = getProjectSections(project);
   const heroSlides = getProjectHeroSlides(project);
   const projectMeta = [project.code, project.year, project.status[locale]].filter(Boolean).join(" / ");
   const projectIndexHref = `${withLocale(locale, "/")}#projects`;
@@ -96,6 +96,51 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     }
   ]);
 
+  if (!COMPLETE_PROJECT_SLUGS.has(project.slug)) {
+    return (
+      <main className="project-detail project-detail-development">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLd(projectJsonLd(locale, project)) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLd(breadcrumbData) }}
+        />
+        <GsapPageMotion page="project" />
+        <section className="project-immersive project-immersive-development" aria-labelledby="project-title">
+          <ProjectImmersiveBackground heroSlides={heroSlides} />
+
+          <div className="project-immersive-panel project-immersive-lockup">
+            {projectMeta ? <p className="kicker">{projectMeta}</p> : null}
+            <h1 id="project-title">{project.title[locale]}</h1>
+            <div className="project-title-rule" />
+            <p>{project.location[locale]}</p>
+            <a
+              aria-label={locale === "zh" ? "查看项目状态" : "View project status"}
+              className="project-scroll-cue"
+              href="#project-development-status"
+            />
+          </div>
+
+          <div
+            className="project-immersive-panel project-immersive-copy project-development-status"
+            id="project-development-status"
+          >
+            <p>{locale === "zh" ? "项目详情正在整理中。" : "Project details are in development."}</p>
+            <Link className="project-development-back" href={projectIndexHref}>
+              <span aria-hidden="true">←</span>
+              {locale === "zh" ? "返回项目索引" : "Back to Project Index"}
+            </Link>
+          </div>
+        </section>
+      </main>
+    );
+  }
+
+  const facts = getProjectFacts(project);
+  const sections = getProjectSections(project);
+
   return (
     <main className="project-detail">
       <script
@@ -108,24 +153,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       />
       <GsapPageMotion page="project" />
       <section className="project-immersive" aria-labelledby="project-title">
-        <div className="project-immersive-sticky" aria-hidden="true">
-          <div
-            className="project-immersive-carousel"
-            style={{ "--project-slide-count": heroSlides.length } as CSSProperties}
-          >
-            {heroSlides.map((slide, index) => (
-              <img
-                alt=""
-                className="project-immersive-slide"
-                key={`${slide.src}-${index}`}
-                loading={index === 0 ? "eager" : "lazy"}
-                src={slide.src}
-                style={{ "--project-slide-index": index } as CSSProperties}
-              />
-            ))}
-          </div>
-          <div className="project-immersive-shade" />
-        </div>
+        <ProjectImmersiveBackground heroSlides={heroSlides} />
 
         <div className="project-immersive-panel project-immersive-lockup">
           {projectMeta ? <p className="kicker">{projectMeta}</p> : null}
@@ -250,6 +278,32 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   );
 }
 
+function ProjectImmersiveBackground({ heroSlides }: { heroSlides: ReturnType<typeof getProjectHeroSlides> }) {
+  const isStaticImage = heroSlides.length === 1;
+
+  return (
+    <div className="project-immersive-sticky" aria-hidden="true">
+      <div
+        className="project-immersive-carousel"
+        data-static-image={isStaticImage ? "true" : undefined}
+        style={{ "--project-slide-count": heroSlides.length } as CSSProperties}
+      >
+        {heroSlides.map((slide, index) => (
+          <img
+            alt=""
+            className="project-immersive-slide"
+            key={`${slide.src}-${index}`}
+            loading={index === 0 ? "eager" : "lazy"}
+            src={slide.src}
+            style={{ "--project-slide-index": index } as CSSProperties}
+          />
+        ))}
+      </div>
+      <div className="project-immersive-shade" />
+    </div>
+  );
+}
+
 function getProjectHeroSlides(project: Project) {
   const slides = [
     {
@@ -260,7 +314,11 @@ function getProjectHeroSlides(project: Project) {
     ...project.gallery
   ];
 
-  return slides.slice(0, 4);
+  const uniqueSlides = slides.filter((slide, index, allSlides) => {
+    return allSlides.findIndex((candidate) => candidate.src === slide.src) === index;
+  });
+
+  return uniqueSlides.slice(0, 4);
 }
 
 function getProjectFacts(project: Project): ProjectFact[] {

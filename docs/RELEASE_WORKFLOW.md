@@ -1,6 +1,6 @@
 # Release Workflow
 
-Last updated: 2026-05-13, Asia/Shanghai.
+Last updated: 2026-05-31, Asia/Shanghai.
 
 This is the operating workflow for Mist Architect website changes.
 
@@ -14,7 +14,7 @@ Use this for:
 - layout and interaction changes,
 - copy changes,
 - image wiring,
-- CMS/schema experiments,
+- code-managed content updates,
 - visual QA with the project owner.
 
 Commands:
@@ -36,11 +36,18 @@ Before committing:
 ```bash
 npm run typecheck
 npm run lint
+npm run test:e2e
 git diff --check
 ```
 
 Use `npm run build` when the change touches routing, Next.js config,
 image handling, environment variables, or deployment behavior.
+
+The first local Playwright run may need:
+
+```bash
+npx playwright install chromium
+```
 
 Branch hygiene:
 
