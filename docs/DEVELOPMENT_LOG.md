@@ -16,6 +16,9 @@ changed, why it changed, how it was checked, and what remains open.
 
 - Replaced broad `latest` package specs with version ranges matching the
   current lockfile, keeping future installs from drifting unexpectedly.
+- Added the Node 24 JavaScript-actions force flag to CI, matching the preview
+  deploy workflow and removing the pending GitHub Actions Node 20 migration
+  warning path.
 - Rewrote `README.md` around the current lean stack, active routes, content
   model, WeChat QR contact, environment variables, verification commands, and
   Local -> Preview -> Production release flow.
