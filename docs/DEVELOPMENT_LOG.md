@@ -4,6 +4,23 @@ This log is written for both human developers and future coding agents. Keep ent
 short, dated, and implementation-oriented so the next contributor can understand what
 changed, why it changed, how it was checked, and what remains open.
 
+## 2026-05-31 / Baidu Site Verification File
+
+### Goals
+
+- Enable Baidu Search Resource Platform site verification for
+  `mist-arch.com`.
+
+### Changes
+
+- Added the root-served Baidu verification file at
+  `/baidu_verify_codeva-rzwTLycS3q.html`.
+
+### Verification
+
+- Pending deployment: verify the file at
+  `https://mist-arch.com/baidu_verify_codeva-rzwTLycS3q.html`.
+
 ## 2026-05-31 / IndexNow Key File
 
 ### Goals
