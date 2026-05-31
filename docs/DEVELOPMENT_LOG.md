@@ -4,6 +4,33 @@ This log is written for both human developers and future coding agents. Keep ent
 short, dated, and implementation-oriented so the next contributor can understand what
 changed, why it changed, how it was checked, and what remains open.
 
+## 2026-05-31 / WeChat QR SEO Enhancement
+
+### Goals
+
+- Make the newly published WeChat public-account QR code clearer to search
+  engines without adding visible keyword-heavy page clutter.
+
+### Changes
+
+- Expanded Organization JSON-LD with WeChat Official Account ID, account name,
+  Channels name, and a more specific QR-code ImageObject.
+- Added AboutPage / ContactPage JSON-LD on the About route that references the
+  WeChat QR image and MIST-ARCH public account.
+- Tightened About metadata keywords and QR image alt text around
+  `MIST-ARCH` / `岚建筑设计`.
+- Updated Playwright coverage for the WeChat structured data and QR image alt.
+
+### Verification
+
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `npm run build`: passed.
+- `npm run test:e2e`: passed, 7 Chromium tests.
+- `git diff --check`: passed.
+- Built page artifacts include the WeChat Official Account ID, AboutPage /
+  ContactPage structured data, and QR-code ImageObject strings.
+
 ## 2026-05-31 / Baidu Site Verification File
 
 ### Goals

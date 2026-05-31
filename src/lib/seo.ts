@@ -16,6 +16,11 @@ export const siteBrand = {
 } satisfies Record<Locale, string>;
 
 export const wechatSeoContact = {
+  publicAccountId: "MIST-ARCH",
+  publicAccountName: {
+    zh: "岚建筑设计",
+    en: "岚建筑设计"
+  },
   publicAccount: {
     zh: "MIST-ARCH（岚建筑设计）",
     en: "MIST-ARCH (岚建筑设计)"
@@ -26,6 +31,8 @@ export const wechatSeoContact = {
   },
   qrImage: "/20260531-191007.jpeg"
 } satisfies {
+  publicAccountId: string;
+  publicAccountName: Record<Locale, string>;
   publicAccount: Record<Locale, string>;
   channels: Record<Locale, string>;
   qrImage: string;
@@ -152,7 +159,13 @@ export function organizationJsonLd(locale: Locale) {
     "@id": `${siteOrigin}/#organization`,
     "@type": ["Organization", "ArchitecturalService"],
     name: siteBrand[locale],
-    alternateName: ["MIST Architects", "岚·建筑设计"],
+    alternateName: [
+      "MIST Architects",
+      "岚·建筑设计",
+      "岚建筑设计",
+      wechatSeoContact.publicAccountId,
+      wechatSeoContact.publicAccount[locale]
+    ],
     url: localizedSiteUrl(locale),
     logo: absoluteUrl(mediaUrl("LOGO/logo.png", { quality: "raw" })),
     image: absoluteUrl(mediaUrl(about.heroImage, { width: 1920, quality: "std" })),
@@ -194,6 +207,26 @@ export function organizationJsonLd(locale: Locale) {
       "@type": "Person",
       name: founder.name[locale]
     })),
+    identifier: [
+      {
+        "@type": "PropertyValue",
+        propertyID: "WeChat Official Account ID",
+        name: "WeChat Official Account ID",
+        value: wechatSeoContact.publicAccountId
+      },
+      {
+        "@type": "PropertyValue",
+        propertyID: "WeChat Official Account Name",
+        name: "WeChat Official Account Name",
+        value: wechatSeoContact.publicAccountName[locale]
+      },
+      {
+        "@type": "PropertyValue",
+        propertyID: "WeChat Channels Name",
+        name: "WeChat Channels Name",
+        value: wechatSeoContact.channels[locale]
+      }
+    ],
     additionalProperty: [
       {
         "@type": "PropertyValue",
@@ -206,19 +239,63 @@ export function organizationJsonLd(locale: Locale) {
         value: wechatSeoContact.channels[locale]
       }
     ],
-    subjectOf: [
-      {
-        "@type": "ImageObject",
-        name: locale === "zh" ? "微信公众号二维码" : "WeChat public account QR code",
-        contentUrl: absoluteUrl(wechatSeoContact.qrImage),
-        caption:
-          locale === "zh"
-            ? "岚·建筑设计微信公众号二维码"
-            : "MIST Architects WeChat public account QR code",
-        encodingFormat: "image/jpeg",
-        representativeOfPage: false
-      }
-    ]
+    subjectOf: [wechatQrImageJsonLd(locale)]
+  };
+}
+
+export function aboutPageJsonLd(locale: Locale) {
+  const url = localizedSiteUrl(locale, "/about");
+
+  return {
+    "@context": "https://schema.org",
+    "@id": `${url}#about-page`,
+    "@type": ["AboutPage", "ContactPage"],
+    name: locale === "zh" ? "关于岚·建筑设计" : "About MIST Architects",
+    description:
+      locale === "zh"
+        ? "岚·建筑设计事务所介绍、创始人、业务方向、联系方式、微信公众号 MIST-ARCH 与二维码。"
+        : "MIST Architects studio profile, founders, services, contact details, WeChat public account MIST-ARCH, and QR code.",
+    url,
+    inLanguage: locale === "zh" ? "zh-CN" : "en",
+    isPartOf: {
+      "@id": `${siteOrigin}/#website`
+    },
+    publisher: {
+      "@id": `${siteOrigin}/#organization`
+    },
+    about: {
+      "@id": `${siteOrigin}/#organization`
+    },
+    mainEntity: {
+      "@id": `${siteOrigin}/#organization`
+    },
+    hasPart: [wechatQrImageJsonLd(locale)]
+  };
+}
+
+export function wechatQrImageJsonLd(locale: Locale) {
+  return {
+    "@type": "ImageObject",
+    "@id": `${absoluteUrl(wechatSeoContact.qrImage)}#wechat-official-account-qr`,
+    name:
+      locale === "zh"
+        ? "岚建筑设计微信公众号 MIST-ARCH 二维码"
+        : "MIST Architects WeChat public account MIST-ARCH QR code",
+    description:
+      locale === "zh"
+        ? "用于关注岚建筑设计微信公众号 MIST-ARCH 的二维码。"
+        : "QR code for following the MIST Architects WeChat public account MIST-ARCH.",
+    contentUrl: absoluteUrl(wechatSeoContact.qrImage),
+    url: absoluteUrl(wechatSeoContact.qrImage),
+    caption:
+      locale === "zh"
+        ? "岚建筑设计微信公众号：MIST-ARCH"
+        : "MIST Architects WeChat public account: MIST-ARCH",
+    encodingFormat: "image/jpeg",
+    representativeOfPage: false,
+    about: {
+      "@id": `${siteOrigin}/#organization`
+    }
   };
 }
 

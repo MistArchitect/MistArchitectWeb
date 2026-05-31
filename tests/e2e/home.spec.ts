@@ -33,14 +33,20 @@ test.describe("about contact interactions", () => {
       .evaluateAll((nodes) => nodes.map((node) => node.textContent ?? "").join("\n"));
 
     expect(structuredData).toContain("WeChat public account");
+    expect(structuredData).toContain("WeChat Official Account ID");
     expect(structuredData).toContain("MIST-ARCH (岚建筑设计)");
+    expect(structuredData).toContain("AboutPage");
+    expect(structuredData).toContain("ContactPage");
+    expect(structuredData).toContain("MIST Architects WeChat public account MIST-ARCH QR code");
     expect(structuredData).toContain("/20260531-191007.jpeg");
 
     await page.getByRole("button", { name: "MIST-ARCH (岚建筑设计)" }).click();
 
     const dialog = page.getByRole("dialog", { name: "MIST-ARCH (岚建筑设计)" });
     await expect(dialog).toBeVisible();
-    await expect(dialog.getByRole("img", { name: "WeChat public account QR code" })).toBeVisible();
+    await expect(
+      dialog.getByRole("img", { name: "MIST Architects WeChat public account MIST-ARCH QR code" })
+    ).toBeVisible();
 
     await dialog.getByRole("button", { exact: true, name: "Close" }).click();
     await expect(dialog).toHaveCount(0);
