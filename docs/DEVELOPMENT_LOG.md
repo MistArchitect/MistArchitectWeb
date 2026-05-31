@@ -18,8 +18,20 @@ changed, why it changed, how it was checked, and what remains open.
 
 ### Verification
 
-- Pending deployment: verify the file at
-  `https://mist-arch.com/baidu_verify_codeva-rzwTLycS3q.html`.
+- `git diff --check`: passed.
+- Production smoke checks returned `200` for `/zh`, `/en`, `/sitemap.xml`,
+  `/baidu_verify_codeva-rzwTLycS3q.html`, and the IndexNow key file.
+- `https://mist-arch.com/baidu_verify_codeva-rzwTLycS3q.html` returns the
+  expected verification code.
+
+### Deployment
+
+- Commit `acbba6e` was pushed to `main` and
+  `preview/home-featured-projects`.
+- GitHub Actions CI run `26715834130` succeeded on `main`.
+- GitHub Actions `Deploy Preview` run `26715834900` succeeded on
+  `preview/home-featured-projects`.
+- Preview release `20260531145243-acbba6e` was promoted to production.
 
 ## 2026-05-31 / IndexNow Key File
 

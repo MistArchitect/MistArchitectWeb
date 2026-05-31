@@ -155,8 +155,8 @@ As of 2026-05-31:
 ```text
 Canonical source branch: main
 Preview deployment branch: preview/home-featured-projects
-Preview release: 20260531144721-d61ddd1
-Production release: 20260531144721-d61ddd1
+Preview release: 20260531145243-acbba6e
+Production release: 20260531145243-acbba6e
 Preview URL: https://preview.mist-arch.com
 Production URL: https://mist-arch.com
 ```
