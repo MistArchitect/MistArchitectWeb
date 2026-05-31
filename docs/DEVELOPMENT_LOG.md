@@ -4,6 +4,24 @@ This log is written for both human developers and future coding agents. Keep ent
 short, dated, and implementation-oriented so the next contributor can understand what
 changed, why it changed, how it was checked, and what remains open.
 
+## 2026-05-31 / IndexNow Key File
+
+### Goals
+
+- Enable IndexNow API submissions for `mist-arch.com` after Bing Webmaster
+  verification.
+
+### Changes
+
+- Added the root-served IndexNow UTF-8 key file at
+  `/f5775da6489b4079bb75b30bdd8fdbf9.txt`.
+
+### Verification
+
+- Pending deployment: verify the key file at
+  `https://mist-arch.com/f5775da6489b4079bb75b30bdd8fdbf9.txt` before calling
+  the IndexNow API.
+
 ## 2026-05-31 / Project Detail Hero Carousel Fix
 
 ### Goals
