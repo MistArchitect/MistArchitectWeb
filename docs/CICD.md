@@ -1,6 +1,6 @@
 # Mist Architect CI/CD Notes
 
-Last updated: 2026-05-31, Asia/Shanghai.
+Last updated: 2026-06-05, Asia/Shanghai.
 
 This document explains the current GitHub Actions CI/CD setup for the Mist
 Architect website. It is intended for the project owner and future coding
@@ -340,17 +340,17 @@ mist-preview    -> 127.0.0.1:3001 -> /srv/mist-architect/current-preview
 Current production release:
 
 ```text
-20260604075510-9eb2cfc
+20260604190723-5d999c1
 ```
 
 Latest verified preview workflow after production launch:
 
 ```text
-Run id: 26938637082
+Run id: 26973421426
 Branch: preview/home-featured-projects
-Head SHA: 9eb2cfc9c8aeecf57921ca9f3bb452fd1a3c4b39
-Short SHA: 9eb2cfc
-Preview release: 20260604075510-9eb2cfc
+Head SHA: 5d999c1e916a2ec8a9cd5d0bce4a2ab8f8593b71
+Short SHA: 5d999c1
+Preview release: 20260604190723-5d999c1
 Conclusion: success
 ```
 

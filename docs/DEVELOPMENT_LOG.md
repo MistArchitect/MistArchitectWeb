@@ -33,6 +33,21 @@ changed, why it changed, how it was checked, and what remains open.
 - Browser QA on `http://localhost:3000/en` confirmed the page title,
   133-character meta description, zero empty `.hero-media` alt attributes,
   working hero next-image interaction, and no console errors or warnings.
+- Production smoke confirmed `/` returns `308 Permanent Redirect` to `/zh`;
+  `/zh` and `/en` return `200`.
+- Production HTML checks confirmed `/en`, `/en/about`, and
+  `/en/projects/field-academy` have zero `alt=""` attributes.
+- IndexNow accepted `/en`, `/zh`, `/en/about`, `/zh/about`,
+  `/en/projects/field-academy`, and `/sitemap.xml` with status `200 OK`.
+
+### Deployment
+
+- Commit `5d999c1` was pushed to `main` and
+  `preview/home-featured-projects`.
+- GitHub Actions CI run `26973417567` succeeded on `main`.
+- GitHub Actions `Deploy Preview` run `26973421426` succeeded on
+  `preview/home-featured-projects`.
+- Preview release `20260604190723-5d999c1` was promoted to production.
 
 ## 2026-06-04 / Root Redirect SEO Fix
 
