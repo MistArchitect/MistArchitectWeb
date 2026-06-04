@@ -4,6 +4,28 @@ This log is written for both human developers and future coding agents. Keep ent
 short, dated, and implementation-oriented so the next contributor can understand what
 changed, why it changed, how it was checked, and what remains open.
 
+## 2026-06-04 / Root Redirect SEO Fix
+
+### Goals
+
+- Make the canonical root entry clearer for search engines after Bing has
+  crawled the site but has not indexed it yet.
+
+### Changes
+
+- Changed the root `/` redirect to `/zh` from a temporary redirect to a
+  permanent redirect.
+
+### Verification
+
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `npm run build`: passed.
+- `npm run test:e2e`: passed, 7 Chromium tests.
+- `git diff --check`: passed.
+- Local standalone smoke confirmed `/` returns `308 Permanent Redirect` to
+  `/zh`, and `/zh` returns `200`.
+
 ## 2026-05-31 / WeChat QR SEO Enhancement
 
 ### Goals
