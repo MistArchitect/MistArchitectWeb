@@ -12,9 +12,13 @@ const SPLASH_LOGO_SECONDS = 1.22;
 
 type IntroSplashProps = {
   logoSrc?: string;
+  logoAlt?: string;
 };
 
-export function IntroSplash({ logoSrc = mediaUrl("LOGO/logo.png") }: IntroSplashProps) {
+export function IntroSplash({
+  logoSrc = mediaUrl("LOGO/logo.png"),
+  logoAlt = "MIST Architects"
+}: IntroSplashProps) {
   const [shouldShow, setShouldShow] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const reduceMotion = useReducedMotion();
@@ -82,7 +86,7 @@ export function IntroSplash({ logoSrc = mediaUrl("LOGO/logo.png") }: IntroSplash
           >
             <motion.img
               src={logoSrc}
-              alt=""
+              alt={logoAlt}
               className="intro-splash-logo"
             />
           </motion.div>

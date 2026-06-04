@@ -39,8 +39,8 @@ export const wechatSeoContact = {
 };
 
 export const siteDescription = {
-  zh: "岚·建筑设计是由程博和李博创立的建筑事务所，关注建筑、室内、城市更新、公共文化空间与材料研究。",
-  en: "MIST Architects is an architecture studio founded by Cheng Bo and Li Bo, working across architecture, interiors, adaptive reuse, public cultural spaces, and material research."
+  zh: "岚·建筑设计是由程博、李博创立的建筑事务所，专注建筑、室内、城市更新与公共文化空间。",
+  en: "MIST Architects is a Shenzhen architecture studio working across cultural spaces, interiors, adaptive reuse, and public architecture."
 } satisfies Record<Locale, string>;
 
 export const siteKeywords = {

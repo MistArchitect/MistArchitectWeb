@@ -22,6 +22,24 @@ test.describe("localized homepage", () => {
     );
     await expect(page.locator("#projects")).toContainText("Project Index");
   });
+
+  test("English homepage exposes Bing-friendly metadata and image alt text", async ({ page }) => {
+    await page.goto("/en");
+
+    const metaDescription = page.locator('meta[name="description"]');
+    await expect(metaDescription).toHaveAttribute(
+      "content",
+      "MIST Architects is a Shenzhen architecture studio working across cultural spaces, interiors, adaptive reuse, and public architecture."
+    );
+
+    const description = await metaDescription.getAttribute("content");
+    expect(description?.length ?? 0).toBeLessThanOrEqual(160);
+    await expect(page.locator('.hero-media[alt=""]')).toHaveCount(0);
+    await expect(page.locator(".hero-media").first()).toHaveAttribute(
+      "alt",
+      /MIST Architects project photograph/
+    );
+  });
 });
 
 test.describe("about contact interactions", () => {

@@ -71,7 +71,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
           dangerouslySetInnerHTML={{ __html: jsonLd(websiteJsonLd(locale)) }}
         />
         <SmoothScrollProvider>
-          <IntroSplash />
+          <IntroSplash logoAlt={locale === "zh" ? "岚·建筑设计" : "MIST Architects"} />
           <SiteHeader locale={locale} />
           {children}
           <SiteFooter locale={locale} />

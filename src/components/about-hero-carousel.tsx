@@ -7,6 +7,7 @@ import { mediaUrl } from "@/lib/media";
 type AboutHeroCarouselProps = {
   horizontal: readonly string[];
   vertical: readonly string[];
+  altPrefix: string;
 };
 
 type Orientation = "landscape" | "portrait";
@@ -15,7 +16,7 @@ type Orientation = "landscape" | "portrait";
 // instantly; portrait phones swap to the vertical set after hydration.
 const DEFAULT_ORIENTATION: Orientation = "landscape";
 
-export function AboutHeroCarousel({ horizontal, vertical }: AboutHeroCarouselProps) {
+export function AboutHeroCarousel({ horizontal, vertical, altPrefix }: AboutHeroCarouselProps) {
   const [orientation, setOrientation] = useState<Orientation>(DEFAULT_ORIENTATION);
 
   useEffect(() => {
@@ -58,7 +59,7 @@ export function AboutHeroCarousel({ horizontal, vertical }: AboutHeroCarouselPro
           // state from the previous band.
           key={`${orientation}-${image}`}
           src={mediaUrl(image)}
-          alt=""
+          alt={`${altPrefix} ${index + 1}`}
           className="about-hero-slide"
           // 5s stagger matches the 20s / 4-slide CSS cycle in
           // globals.css `.about-hero-slide`. Change both together.

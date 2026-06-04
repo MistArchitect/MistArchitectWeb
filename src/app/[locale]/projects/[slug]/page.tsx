@@ -78,7 +78,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   }
 
   const locale = rawLocale as Locale;
-  const heroSlides = getProjectHeroSlides(project);
+  const heroSlides = getProjectHeroSlides(project, locale);
   const projectMeta = [project.code, project.year, project.status[locale]].filter(Boolean).join(" / ");
   const projectIndexHref = `${withLocale(locale, "/")}#projects`;
   const breadcrumbData = breadcrumbJsonLd(locale, [
@@ -278,14 +278,18 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   );
 }
 
-function getProjectHeroSlides(project: Project) {
+function getProjectHeroSlides(project: Project, locale: Locale) {
   const slides = [
     {
       src: project.heroImage,
-      alt: project.imageAlt,
+      alt: project.imageAlt[locale],
       credit: project.credit
     },
-    ...project.gallery
+    ...project.gallery.map((media) => ({
+      src: media.src,
+      alt: media.alt[locale],
+      credit: media.credit
+    }))
   ];
 
   const seenSlideIdentities = new Set<string>();

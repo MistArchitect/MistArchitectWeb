@@ -4,6 +4,36 @@ This log is written for both human developers and future coding agents. Keep ent
 short, dated, and implementation-oriented so the next contributor can understand what
 changed, why it changed, how it was checked, and what remains open.
 
+## 2026-06-05 / Bing SEO Issue Cleanup
+
+### Goals
+
+- Address Bing Webmaster Tools SEO/GEO findings on `/en`: meta description
+  length and one missing image alt attribute.
+- Prevent the same missing-alt warning from recurring on About and project
+  hero imagery when Bing crawls those routes.
+
+### Changes
+
+- Shortened the global Chinese and English site descriptions used by homepage
+  metadata and shared structured data.
+- Added descriptive alt text to homepage hero images from their localized
+  carousel captions.
+- Reused existing About/project image context for previously empty hero,
+  background, and splash image alt attributes.
+- Added Playwright coverage for the English homepage description length and
+  non-empty hero image alt text.
+
+### Verification
+
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `npm run build`: passed.
+- `npm run test:e2e`: passed, 8 Chromium tests.
+- Browser QA on `http://localhost:3000/en` confirmed the page title,
+  133-character meta description, zero empty `.hero-media` alt attributes,
+  working hero next-image interaction, and no console errors or warnings.
+
 ## 2026-06-04 / Root Redirect SEO Fix
 
 ### Goals

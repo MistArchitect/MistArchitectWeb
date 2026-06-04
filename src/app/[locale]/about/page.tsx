@@ -99,6 +99,11 @@ export default async function AboutPage({ params }: AboutPageProps) {
             <AboutHeroCarousel
               horizontal={about.aboutHero.horizontal}
               vertical={about.aboutHero.vertical}
+              altPrefix={
+                locale === "zh"
+                  ? "岚·建筑设计办公室照片"
+                  : "MIST Architects studio office photograph"
+              }
             />
             <a
               aria-label={locale === "zh" ? "向下滚动查看更多" : "Scroll down for more"}

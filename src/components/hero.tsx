@@ -140,12 +140,26 @@ const heroImageTransition = {
   ease: [0.22, 1, 0.36, 1] as const
 };
 
-function HeroImage({ slide, band }: { slide: HeroSlide; band: AspectBand }) {
+function heroImageAlt(slide: HeroSlide, locale: Locale) {
+  return locale === "zh"
+    ? `${slide.caption.zh}，岚·建筑设计项目照片`
+    : `${slide.caption.en}, MIST Architects project photograph`;
+}
+
+function HeroImage({
+  slide,
+  band,
+  locale
+}: {
+  slide: HeroSlide;
+  band: AspectBand;
+  locale: Locale;
+}) {
   return (
     <OssPicture
       path={pickSource(slide, band)}
       layout={pickLayout(slide, band)}
-      alt=""
+      alt={heroImageAlt(slide, locale)}
       className="hero-media"
       // Every hero slide is full-screen and the active slide is the LCP
       // candidate at the moment it mounts. Eager loading prevents blank
@@ -477,7 +491,7 @@ export function Hero({ locale }: HeroProps) {
               x: previousImageX
             }}
           >
-            <HeroImage slide={previousSlide} band={band} />
+            <HeroImage slide={previousSlide} band={band} locale={locale} />
           </motion.div>
           <motion.div
             className="hero-media-frame hero-media-frame-mobile hero-media-frame-next"
@@ -487,7 +501,7 @@ export function Hero({ locale }: HeroProps) {
               x: nextImageX
             }}
           >
-            <HeroImage slide={nextSlide} band={band} />
+            <HeroImage slide={nextSlide} band={band} locale={locale} />
           </motion.div>
           <motion.div
             className="hero-media-frame hero-media-frame-mobile hero-media-frame-current"
@@ -511,7 +525,7 @@ export function Hero({ locale }: HeroProps) {
               className="hero-mobile-current-visual"
               style={{ x: activeImageCounterX }}
             >
-              <HeroImage slide={activeSlide} band={band} />
+              <HeroImage slide={activeSlide} band={band} locale={locale} />
             </motion.div>
           </motion.div>
         </div>
@@ -542,7 +556,7 @@ export function Hero({ locale }: HeroProps) {
               transition={heroImageTransition}
               variants={heroImageVariants}
             >
-              <HeroImage slide={activeSlide} band={band} />
+              <HeroImage slide={activeSlide} band={band} locale={locale} />
             </motion.div>
           ) : null}
         </AnimatePresence>

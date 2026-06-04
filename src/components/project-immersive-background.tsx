@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 
 type ProjectHeroSlide = {
   src: string;
+  alt: string;
 };
 
 type ProjectImmersiveBackgroundProps = {
@@ -38,7 +39,7 @@ export function ProjectImmersiveBackground({ heroSlides }: ProjectImmersiveBackg
       >
         {heroSlides.map((slide, index) => (
           <img
-            alt=""
+            alt={slide.alt}
             className={`project-immersive-slide${index === activeIndex ? " is-active" : ""}`}
             key={`${slide.src}-${index}`}
             loading={index === 0 ? "eager" : "lazy"}
