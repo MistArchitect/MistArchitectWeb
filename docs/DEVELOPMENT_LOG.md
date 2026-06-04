@@ -4,6 +4,25 @@ This log is written for both human developers and future coding agents. Keep ent
 short, dated, and implementation-oriented so the next contributor can understand what
 changed, why it changed, how it was checked, and what remains open.
 
+## 2026-06-05 / SEO Implementation Documentation
+
+### Goals
+
+- Consolidate the currently deployed SEO implementation into a dedicated
+  reference document for future maintenance.
+
+### Changes
+
+- Added `docs/SEO.md` covering metadata, canonical URLs, `hreflang`,
+  JSON-LD, robots, sitemap, verification files, IndexNow, Baidu push,
+  release checks, and current Bing indexing notes.
+- Added `docs/SEO.md` to agent read-order references in `AGENTS.md` and
+  the project handoff important-files list.
+
+### Verification
+
+- `git diff --check`: passed.
+
 ## 2026-06-05 / Bing SEO Issue Cleanup
 
 ### Goals

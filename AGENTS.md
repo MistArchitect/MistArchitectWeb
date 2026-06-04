@@ -14,6 +14,8 @@ Read these files in order before making changes:
 5. Task-specific docs:
    - `docs/CICD.md` for GitHub Actions, preview deploys, and production promotion.
    - `docs/IMAGE_PIPELINE.md` for OSS, responsive images, CDN, and image processing.
+   - `docs/SEO.md` for search metadata, sitemap, robots, structured data,
+     verification files, and search-engine submissions.
    - `docs/DEPLOYMENT_PLAN.md` for Alibaba Cloud architecture decisions.
    - `docs/DEVELOPMENT_LOG.md` for chronological implementation history.
 
