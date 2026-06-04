@@ -25,6 +25,20 @@ changed, why it changed, how it was checked, and what remains open.
 - `git diff --check`: passed.
 - Local standalone smoke confirmed `/` returns `308 Permanent Redirect` to
   `/zh`, and `/zh` returns `200`.
+- Production smoke confirmed `/` returns `308 Permanent Redirect` to `/zh`;
+  `/zh`, `/en`, `/zh/about`, `/en/about`, `/sitemap.xml`, and `/robots.txt`
+  return `200`.
+- IndexNow accepted `/zh`, `/en`, `/zh/about`, `/en/about`, and
+  `/sitemap.xml` with status `200 OK`.
+
+### Deployment
+
+- Commit `9eb2cfc` was pushed to `main` and
+  `preview/home-featured-projects`.
+- GitHub Actions CI run `26938636286` succeeded on `main`.
+- GitHub Actions `Deploy Preview` run `26938637082` succeeded on
+  `preview/home-featured-projects`.
+- Preview release `20260604075510-9eb2cfc` was promoted to production.
 
 ## 2026-05-31 / WeChat QR SEO Enhancement
 
