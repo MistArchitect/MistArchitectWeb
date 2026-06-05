@@ -380,6 +380,7 @@ Expected current production values:
 /sitemap.xml returns 200
 /robots.txt returns 200
 /en description length is 133
+/en/about description length is 127
 public pages should normally have empty alt count 0
 ```
 

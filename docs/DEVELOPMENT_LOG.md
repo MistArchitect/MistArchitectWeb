@@ -4,6 +4,30 @@ This log is written for both human developers and future coding agents. Keep ent
 short, dated, and implementation-oriented so the next contributor can understand what
 changed, why it changed, how it was checked, and what remains open.
 
+## 2026-06-06 / Bing URL Inspection Follow-up
+
+### Goals
+
+- Review Bing URL Inspection snapshots for `/zh`, `/zh/about`, `/en`, and
+  `/en/about`.
+- Reduce the `/en/about` meta description length before Bing crawls that URL.
+
+### Changes
+
+- Confirmed the pasted Bing HTML snapshots are stale: they still contain the
+  old homepage `alt=""` and old `/en` 175-character description.
+- Shortened the `/en/about` metadata description to 127 characters.
+- Added Playwright coverage for the `/en/about` description content and length.
+- Updated `docs/SEO.md` expected production values.
+
+### Verification
+
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `npm run build`: passed.
+- `npm run test:e2e`: passed, 8 Chromium tests.
+- `git diff --check`: passed.
+
 ## 2026-06-05 / SEO Implementation Documentation
 
 ### Goals

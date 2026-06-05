@@ -46,6 +46,14 @@ test.describe("about contact interactions", () => {
   test("WeChat public account opens the QR code dialog", async ({ page }) => {
     await page.goto("/en/about#contact");
 
+    const metaDescription = page.locator('meta[name="description"]');
+    await expect(metaDescription).toHaveAttribute(
+      "content",
+      "Learn about MIST Architects' studio, founders, services, awards, WeChat public account MIST-ARCH, QR code, and contact details."
+    );
+    const description = await metaDescription.getAttribute("content");
+    expect(description?.length ?? 0).toBeLessThanOrEqual(155);
+
     const structuredData = await page
       .locator('script[type="application/ld+json"]')
       .evaluateAll((nodes) => nodes.map((node) => node.textContent ?? "").join("\n"));

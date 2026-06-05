@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: AboutPageProps): Promise<Meta
     description:
       locale === "zh"
         ? "了解岚·建筑设计的事务所背景、创始人、获奖出版经历、业务方向、微信公众号 MIST-ARCH、二维码与联系方式。"
-        : "Learn about MIST Architects' studio background, founders, awards, publications, services, WeChat public account MIST-ARCH, QR code, and contact details.",
+        : "Learn about MIST Architects' studio, founders, services, awards, WeChat public account MIST-ARCH, QR code, and contact details.",
     locale,
     path: "/about",
     image: mediaUrl(about.heroImage, { width: 1920, quality: "std" }),
