@@ -27,6 +27,21 @@ changed, why it changed, how it was checked, and what remains open.
 - `npm run build`: passed.
 - `npm run test:e2e`: passed, 8 Chromium tests.
 - `git diff --check`: passed.
+- Production smoke confirmed `/zh`, `/zh/about`, `/en`, and `/en/about`
+  return `200`, all with zero `alt=""` attributes.
+- Production `/en/about` description is 127 characters decoded, 132
+  characters in HTML source after apostrophe escaping.
+- IndexNow accepted `/zh`, `/zh/about`, `/en`, `/en/about`, and
+  `/sitemap.xml` with status `200 OK`.
+
+### Deployment
+
+- Commit `da9960e` was pushed to `main` and
+  `preview/home-featured-projects`.
+- GitHub Actions CI run `27036499791` succeeded on `main`.
+- GitHub Actions `Deploy Preview` run `27036505244` succeeded on
+  `preview/home-featured-projects`.
+- Preview release `20260605194748-da9960e` was promoted to production.
 
 ## 2026-06-05 / SEO Implementation Documentation
 

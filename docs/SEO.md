@@ -1,6 +1,6 @@
 # SEO Implementation
 
-Last updated: 2026-06-05, Asia/Shanghai.
+Last updated: 2026-06-06, Asia/Shanghai.
 
 This document records how technical SEO is implemented for
 `https://mist-arch.com`, where to maintain it, and how to verify search-engine
@@ -386,15 +386,19 @@ public pages should normally have empty alt count 0
 
 ## 12. Current Search State Notes
 
-As of 2026-06-05:
+As of 2026-06-06:
 
 - Bing has indexed `https://mist-arch.com/zh`.
 - `https://mist-arch.com/en/about` was known to Bing as
   `Discovered but not crawled` in URL Inspection.
 - `/en` SEO/GEO warnings for meta description length and one missing image alt
   were fixed in production release `20260604190723-5d999c1`.
-- IndexNow accepted `/en`, `/zh`, `/en/about`, `/zh/about`,
-  `/en/projects/field-academy`, and `/sitemap.xml` after that release.
+- `/en/about` meta description was shortened in production release
+  `20260605194748-da9960e` before Bing crawled that URL.
+- IndexNow accepted `/zh`, `/zh/about`, `/en`, `/en/about`, and
+  `/sitemap.xml` after production release `20260605194748-da9960e`.
+- IndexNow also accepted `/en/projects/field-academy` during the previous
+  SEO cleanup release.
 
 Search visibility can lag after a successful technical fix. Bing, Baidu, and
 WeChat search may take days or longer to refresh snippets, indexing state, and
