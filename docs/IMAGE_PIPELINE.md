@@ -250,6 +250,12 @@ production builds still emit direct OSS/CDN URLs. Set
 `NEXT_PUBLIC_DISABLE_MEDIA_PROXY=1` to bypass the local proxy when
 testing bucket Referer behavior directly.
 
+Search metadata is the exception. `mediaMetadataUrl()` returns a site-owned
+`/api/media?...` URL for Open Graph, Twitter, and JSON-LD images so crawlers
+that fetch images without a page Referer can retrieve OSS assets. This does
+not change visible page imagery; browser-facing `<picture>` and `<img>`
+sources should continue to use `mediaUrl()` / `pictureSet()`.
+
 ---
 
 ## 7. Adding a new image

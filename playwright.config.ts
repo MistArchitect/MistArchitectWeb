@@ -1,6 +1,8 @@
 import { defineConfig, devices } from "@playwright/test";
 
 const isCi = Boolean(process.env.CI);
+const port = process.env.PLAYWRIGHT_PORT ?? "3000";
+const baseURL = `http://127.0.0.1:${port}`;
 
 export default defineConfig({
   testDir: "./tests/e2e",
@@ -8,12 +10,12 @@ export default defineConfig({
   workers: 1,
   reporter: [["list"]],
   use: {
-    baseURL: "http://127.0.0.1:3000",
+    baseURL,
     trace: "on-first-retry"
   },
   webServer: {
-    command: isCi ? "npm run start:standalone" : "npm run dev -- --hostname 127.0.0.1 --port 3000",
-    url: "http://127.0.0.1:3000/zh",
+    command: isCi ? "npm run start:standalone" : `npm run dev -- --hostname 127.0.0.1 --port ${port}`,
+    url: `${baseURL}/zh`,
     reuseExistingServer: !isCi,
     timeout: 120_000
   },

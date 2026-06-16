@@ -4,6 +4,47 @@ This log is written for both human developers and future coding agents. Keep ent
 short, dated, and implementation-oriented so the next contributor can understand what
 changed, why it changed, how it was checked, and what remains open.
 
+## 2026-06-17 / Bing Metadata Image Crawlability
+
+### Goals
+
+- Improve Bing/search-engine result presentation signals without changing
+  visible page design, product behavior, or customer-facing copy.
+- Ensure Open Graph, Twitter, and JSON-LD logo/image URLs are fetchable by
+  crawlers that do not send a page Referer.
+
+### Changes
+
+- Added `mediaMetadataUrl()` for search metadata images. It keeps visible page
+  imagery on direct OSS/CDN URLs, while routing metadata and structured-data
+  images through the site-owned `/api/media` endpoint.
+- Enabled `/api/media` in production with safe bucket-relative path validation,
+  a stable `https://mist-arch.com/` OSS Referer, and public cache headers.
+- Updated Open Graph, Twitter, Organization JSON-LD, and project JSON-LD image
+  URLs to use crawler-fetchable site URLs.
+- Added explicit `index, follow` page robots metadata.
+- Updated `robots.txt` to allow `/api/media` while keeping the broader `/api/`
+  path disallowed.
+- Added Playwright coverage for metadata image URLs, `/api/media` image fetch,
+  JSON-LD logo URL, and robots rules.
+- Allowed local Playwright runs to use `PLAYWRIGHT_PORT` so tests can run
+  without stopping unrelated local services on port `3000`.
+- Updated `docs/SEO.md` and `docs/IMAGE_PIPELINE.md` with the metadata-image
+  proxy behavior.
+
+### Verification
+
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `npm run build`: passed.
+- `PLAYWRIGHT_PORT=3005 npm run test:e2e`: passed, 9 Chromium tests.
+- `git diff --check`: passed.
+
+### Deployment
+
+- No merge, preview deploy, production deploy, Bing Webmaster action, or
+  production credential/account operation was performed.
+
 ## 2026-06-06 / Bing URL Inspection Follow-up
 
 ### Goals

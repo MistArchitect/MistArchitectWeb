@@ -264,6 +264,53 @@ export function mediaUrl(path: string, opts: ProcessOptions = {}): string {
   return process ? `${url}?x-oss-process=${process}` : url;
 }
 
+function mediaProxyPath(path: string, process: string | null) {
+  const params = new URLSearchParams({ path });
+  if (process) {
+    params.set("process", process);
+  }
+  return `/api/media?${params.toString()}`;
+}
+
+function proxiedOssUrl(url: string) {
+  try {
+    const parsed = new URL(url);
+    const mediaBase = new URL(MEDIA_BASE);
+
+    if (parsed.origin !== mediaBase.origin) {
+      return null;
+    }
+
+    const path = decodeURIComponent(parsed.pathname.replace(/^\/+/, ""));
+    return mediaProxyPath(path, parsed.searchParams.get("x-oss-process"));
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Resolve a bucket-relative path or existing OSS URL to the site's media proxy.
+ *
+ * Use this for metadata/structured-data image URLs that search engines fetch
+ * without a page Referer. Visible page imagery should keep using `mediaUrl()`
+ * so browser delivery continues to go directly through OSS/CDN.
+ */
+export function mediaMetadataUrl(path: string, opts: ProcessOptions = {}): string {
+  if (!path || path.startsWith("data:")) {
+    return path;
+  }
+
+  if (path.startsWith("/api/media?")) {
+    return path;
+  }
+
+  if (/^https?:\/\//i.test(path)) {
+    return proxiedOssUrl(path) ?? path;
+  }
+
+  return mediaProxyPath(path, buildOssProcess(opts));
+}
+
 /**
  * Build a `srcset` string for a single (path, format, quality)
  * combination across a width ladder.

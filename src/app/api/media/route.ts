@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 
 const MEDIA_BASE = "https://mist-architects-media.oss-cn-shenzhen.aliyuncs.com";
-const DEV_REFERER = "http://127.0.0.1:3000/";
+const OSS_REFERER = "https://mist-arch.com/";
 
 function encodePath(path: string): string {
   return path
@@ -23,10 +23,6 @@ function isSafeMediaPath(path: string): boolean {
 }
 
 export async function GET(request: NextRequest) {
-  if (process.env.NODE_ENV !== "development") {
-    return new Response("Not found", { status: 404 });
-  }
-
   const path = request.nextUrl.searchParams.get("path") || "";
   const ossProcess = request.nextUrl.searchParams.get("process");
 
@@ -41,7 +37,7 @@ export async function GET(request: NextRequest) {
 
   const upstream = await fetch(source, {
     headers: {
-      Referer: DEV_REFERER
+      Referer: OSS_REFERER
     }
   });
 
@@ -60,7 +56,7 @@ export async function GET(request: NextRequest) {
   const contentLength = upstream.headers.get("content-length");
   if (contentType) headers.set("content-type", contentType);
   if (contentLength) headers.set("content-length", contentLength);
-  headers.set("cache-control", "public, max-age=86400");
+  headers.set("cache-control", "public, max-age=604800, stale-while-revalidate=86400");
 
   return new Response(upstream.body, {
     status: upstream.status,

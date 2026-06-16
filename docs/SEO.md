@@ -113,6 +113,7 @@ That helper generates:
 - localized alternates
 - Open Graph metadata
 - Twitter card metadata
+- search-crawler-safe metadata image URLs
 
 Description guidance:
 
@@ -129,6 +130,18 @@ The current global descriptions are in `siteDescription`:
 zh: 岚·建筑设计是由程博、李博创立的建筑事务所，专注建筑、室内、城市更新与公共文化空间。
 en: MIST Architects is a Shenzhen architecture studio working across cultural spaces, interiors, adaptive reuse, and public architecture.
 ```
+
+### Metadata images
+
+Visible page imagery still resolves through `mediaUrl()` and is served directly
+from OSS or the future CDN. Search metadata is different: Open Graph, Twitter,
+and JSON-LD image/logo URLs should use the site-owned `/api/media` proxy via
+`mediaMetadataUrl()` so crawlers that fetch without a page Referer can retrieve
+the assets.
+
+Reason: the OSS bucket has Referer protection enabled. Direct no-Referer GETs
+to OSS return `403`, which can prevent Bing and other search engines from
+fetching the logo or social preview images even when the page HTML is correct.
 
 ## 5. Canonical and hreflang
 
@@ -218,10 +231,14 @@ When adding new images:
 
 ```text
 Allow: /
+Allow: /api/media
 Disallow: /api/
 Sitemap: https://mist-arch.com/sitemap.xml
 Host: https://mist-arch.com
 ```
+
+The `/api/media` allow rule is intentional. Metadata images use this endpoint,
+while the broader `/api/` path remains blocked from indexing.
 
 `src/app/sitemap.ts` generates localized entries for:
 
