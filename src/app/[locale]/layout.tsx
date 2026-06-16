@@ -32,6 +32,10 @@ export const metadata: Metadata = {
   creator: "MIST Architects",
   publisher: "MIST Architects",
   category: "architecture",
+  robots: {
+    index: true,
+    follow: true
+  },
   formatDetection: {
     telephone: false,
     email: false,

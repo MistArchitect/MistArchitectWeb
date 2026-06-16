@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import { about, type Project } from "@/content/site";
 import { defaultLocale, locales, otherLocale, type Locale, withLocale } from "@/lib/i18n";
-import { mediaUrl } from "@/lib/media";
+import { mediaMetadataUrl, mediaUrl } from "@/lib/media";
 
 const DEFAULT_SITE_ORIGIN = "https://mist-arch.com";
 
@@ -118,7 +118,7 @@ export function buildPageMetadata({
 }: PageMetadataInput): Metadata {
   const canonical = localizedSiteUrl(locale, path);
   const fullTitle = formatTitle(title);
-  const imageUrl = absoluteUrl(image);
+  const imageUrl = absoluteUrl(mediaMetadataUrl(image));
   const pageKeywords = Array.from(new Set([...siteKeywords[locale], ...keywords]));
 
   return {
@@ -167,8 +167,8 @@ export function organizationJsonLd(locale: Locale) {
       wechatSeoContact.publicAccount[locale]
     ],
     url: localizedSiteUrl(locale),
-    logo: absoluteUrl(mediaUrl("LOGO/logo.png", { quality: "raw" })),
-    image: absoluteUrl(mediaUrl(about.heroImage, { width: 1920, quality: "std" })),
+    logo: absoluteUrl(mediaMetadataUrl("LOGO/logo.png", { quality: "raw" })),
+    image: absoluteUrl(mediaMetadataUrl(about.heroImage, { width: 1920, quality: "std" })),
     description: siteDescription[locale],
     email: "info@mist-arch.com",
     telephone: "+86 186 1303 3310",
@@ -323,7 +323,7 @@ export function projectJsonLd(locale: Locale, project: Project) {
     headline: project.title[locale],
     description: project.dek[locale],
     url: localizedSiteUrl(locale, `/projects/${project.slug}`),
-    image: absoluteUrl(project.heroImage),
+    image: absoluteUrl(mediaMetadataUrl(project.heroImage)),
     creator: {
       "@id": `${siteOrigin}/#organization`
     },

@@ -39,6 +39,34 @@ test.describe("localized homepage", () => {
       "alt",
       /MIST Architects project photograph/
     );
+
+    const ogImage = page.locator('meta[property="og:image"]');
+    await expect(ogImage).toHaveAttribute("content", /^https:\/\/mist-arch\.com\/api\/media\?/);
+
+    const ogImageUrl = new URL((await ogImage.getAttribute("content")) ?? "");
+    expect(ogImageUrl.searchParams.get("path")).toContain("home/horizontal/");
+    expect(ogImageUrl.searchParams.get("process")).toContain("image/resize");
+
+    const twitterImage = page.locator('meta[name="twitter:image"]');
+    await expect(twitterImage).toHaveAttribute("content", ogImageUrl.toString());
+
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", "index, follow");
+
+    const localImageResponse = await page.request.get(`${ogImageUrl.pathname}${ogImageUrl.search}`);
+    expect(localImageResponse.ok()).toBe(true);
+    expect(localImageResponse.headers()["content-type"]).toContain("image/");
+  });
+});
+
+test.describe("search crawler access", () => {
+  test("robots allows metadata media while keeping the API blocked", async ({ page }) => {
+    const response = await page.request.get("/robots.txt");
+    expect(response.ok()).toBe(true);
+
+    const robots = await response.text();
+    expect(robots).toContain("Allow: /api/media");
+    expect(robots).toContain("Disallow: /api/");
+    expect(robots).toContain("Sitemap: https://mist-arch.com/sitemap.xml");
   });
 });
 
@@ -65,6 +93,7 @@ test.describe("about contact interactions", () => {
     expect(structuredData).toContain("ContactPage");
     expect(structuredData).toContain("MIST Architects WeChat public account MIST-ARCH QR code");
     expect(structuredData).toContain("/20260531-191007.jpeg");
+    expect(structuredData).toContain("https://mist-arch.com/api/media?path=LOGO%2Flogo.png");
 
     await page.getByRole("button", { name: "MIST-ARCH (岚建筑设计)" }).click();
 
