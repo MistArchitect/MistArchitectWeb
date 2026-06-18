@@ -4,6 +4,37 @@ This log is written for both human developers and future coding agents. Keep ent
 short, dated, and implementation-oriented so the next contributor can understand what
 changed, why it changed, how it was checked, and what remains open.
 
+## 2026-06-19 / GitHub About and README Readability
+
+### Goals
+
+- Make the public GitHub repository easier for first-time developers to scan.
+- Keep the work documentation-only and separate from the open SEO PR.
+
+### Changes
+
+- Created GitHub issue #4 to track the README/About metadata refresh.
+- Updated GitHub About metadata:
+  - description: `Developer repository for the MIST Architects bilingual portfolio website.`
+  - homepage: `https://mist-arch.com`
+  - topics: `nextjs`, `react`, `typescript`, `architecture-portfolio`,
+    `bilingual-site`, `playwright`, `github-actions`, `alibaba-cloud`
+- Reworked `README.md` with clearer positioning, Jump To links, project
+  purpose, tech stack, local setup, common commands, repository structure,
+  SEO/metadata maintenance notes, deployment boundary, contribution workflow,
+  documentation index, and environment notes.
+
+### Verification
+
+- `git diff --check`: passed.
+- GitHub Actions CI is expected to run on the README PR.
+
+### Deployment
+
+- No website runtime UI change, SEO metadata change, visual direction change,
+  preview deploy, production deploy, Bing/Webmaster action, or production
+  credential/account operation was performed.
+
 ## 2026-06-06 / Bing URL Inspection Follow-up
 
 ### Goals

@@ -1,25 +1,32 @@
 # Mist Architect
 
-Mist Architect is the bilingual portfolio website for 岚·建筑设计 / MIST
-Architects. The current build is intentionally lean: content is managed in code,
-imagery is served from Alibaba Cloud OSS, and releases run on Alibaba Cloud ECS
-as a Next.js standalone server.
+Mist Architect is the developer repository for the bilingual portfolio website
+of 岚·建筑设计 / MIST Architects.
 
-## Stack
+The site is a lean, code-managed Next.js application. Content lives in the
+repository, images are served from Alibaba Cloud OSS, preview runs behind Basic
+Auth, and production is manually promoted only after owner/client approval.
 
-- Next.js App Router, React, and TypeScript
-- Hand-authored global CSS with CSS variables
-- `motion/react` for splash, menu, hero, and reveal motion
-- GSAP ScrollTrigger plus Lenis for desktop scroll polish
-- Alibaba Cloud OSS responsive image delivery with AVIF/WebP/JPG `<picture>`
-  output
-- Playwright Chromium smoke tests
-- GitHub Actions CI and protected preview deployment
+## Jump To
 
-The active build does not include a CMS, Sanity Studio, Tailwind, shadcn, or
-React Bits runtime layer.
+- [Project Purpose](#project-purpose)
+- [Tech Stack](#tech-stack)
+- [Getting Started](#getting-started)
+- [Common Commands](#common-commands)
+- [Repository Structure](#repository-structure)
+- [SEO and Metadata](#seo-and-metadata)
+- [Deployment Boundary](#deployment-boundary)
+- [Contribution Workflow](#contribution-workflow)
+- [Documentation Index](#documentation-index)
 
-## Routes
+## Project Purpose
+
+This repository contains the public website source for MIST Architects, including
+localized routes, code-managed portfolio content, responsive OSS media helpers,
+technical SEO files, GitHub Actions CI, and the protected preview deployment
+workflow.
+
+Current public surfaces:
 
 ```text
 /zh
@@ -35,15 +42,26 @@ React Bits runtime layer.
 ```
 
 `field-academy` / WILD WORKSHOP is the only project with complete detail
-material today. Other project detail pages intentionally show the project
-cover image or carousel, a short in-development line, and a return link to the
+material today. Other project detail pages intentionally show the project cover
+image or carousel, a concise in-development state, and a return link to the
 project index.
 
-The About contact section includes email, phone, office address, WeChat public
-account, and WeChat Channels. Clicking the WeChat public account opens the QR
-code stored at `public/20260531-191007.jpeg`.
+The active build does not include a CMS/admin surface. Do not invent project
+content, publication data, ICP filing numbers, or client-visible copy.
 
-## Local Development
+## Tech Stack
+
+- Next.js App Router, React, and TypeScript
+- Hand-authored global CSS with CSS variables
+- `motion/react` for splash, menu, hero, and reveal motion
+- GSAP ScrollTrigger plus Lenis for desktop scroll polish
+- Alibaba Cloud OSS responsive image delivery with AVIF/WebP/JPG `<picture>`
+  output
+- Playwright Chromium smoke tests
+- GitHub Actions CI and protected preview deployment
+- Alibaba Cloud ECS, Nginx, and PM2 for preview/production runtime
+
+## Getting Started
 
 Use the project Node version through nvm:
 
@@ -61,9 +79,24 @@ http://localhost:3000/zh
 http://localhost:3000/en
 ```
 
-## Verification
+The first local Playwright run may need:
 
-Before committing code changes:
+```bash
+npx playwright install chromium
+```
+
+## Common Commands
+
+```bash
+npm run dev
+npm run typecheck
+npm run lint
+npm run build
+npm run test:e2e
+git diff --check
+```
+
+Before committing code changes, run:
 
 ```bash
 npm run typecheck
@@ -73,43 +106,131 @@ git diff --check
 ```
 
 Run `npm run build` when changes touch routing, Next.js config, media handling,
-environment variables, or deployment behavior.
+environment variables, or deployment behavior. Local Playwright runs against the
+Next.js dev server; CI runs the same smoke tests against the standalone
+production server after `npm run build`.
 
-The first local Playwright run may need:
-
-```bash
-npx playwright install chromium
-```
-
-Local Playwright runs against the Next.js dev server. CI runs the same tests
-against the standalone production server after `npm run build`.
-
-## Content and Media
-
-Site content is managed in:
+## Repository Structure
 
 ```text
-src/content/site.ts
+AGENTS.md                         Agent rules and required read order
+README.md                         First-stop developer overview
+DESIGN.md                         Visual and interaction direction
+docs/                             Operations, SEO, deployment, and handoff docs
+.github/workflows/ci.yml          Pull request and main-branch verification
+.github/workflows/deploy-preview.yml
+                                  Protected preview deployment workflow
+src/app/                          App Router routes, metadata, robots, sitemap
+src/components/                   Site UI components
+src/content/site.ts               Code-managed bilingual site content
+src/lib/content.ts                Content access adapter
+src/lib/media.ts                  OSS/media URL and metadata image helpers
+src/lib/seo.ts                    Canonical URLs, metadata, and JSON-LD helpers
+tests/e2e/home.spec.ts            Playwright smoke coverage
+public/                           Verification files, QR image, local font assets
 ```
 
-The content adapter is:
+## SEO and Metadata
+
+Technical SEO is code-owned in this repository, but search-engine indexing and
+snippet refresh timing are outside direct code control.
+
+Maintain SEO in these files:
 
 ```text
-src/lib/content.ts
+src/lib/seo.ts
+src/app/[locale]/layout.tsx
+src/app/[locale]/page.tsx
+src/app/[locale]/about/page.tsx
+src/app/[locale]/projects/page.tsx
+src/app/[locale]/projects/[slug]/page.tsx
+src/app/[locale]/journal/page.tsx
+src/app/robots.ts
+src/app/sitemap.ts
+public/BingSiteAuth.xml
+public/baidu_verify_codeva-rzwTLycS3q.html
+public/f5775da6489b4079bb75b30bdd8fdbf9.txt
 ```
 
-Images referenced from code should use bucket-relative OSS paths and flow
-through `src/lib/media.ts` / `src/components/oss-picture.tsx` where possible.
-The active media origin is:
+Current SEO principles:
+
+- canonical production host is `https://mist-arch.com`
+- `/` permanently redirects to `/zh`
+- localized routes expose canonical and `hreflang` alternates
+- sitemap and robots are generated by Next.js route files
+- Organization, WebSite, AboutPage, ContactPage, project, breadcrumb, and
+  WeChat-related JSON-LD live in `src/lib/seo.ts`
+- search metadata image URLs should stay crawler-fetchable through the
+  site-owned media path described in `docs/SEO.md`
+- preview must remain protected from indexing
+
+See `docs/SEO.md` before changing metadata, verification files, sitemap,
+robots, structured data, or search-engine submission behavior.
+
+## Deployment Boundary
+
+Persistent branches:
 
 ```text
-https://mist-architects-media.oss-cn-shenzhen.aliyuncs.com
+main
+preview/home-featured-projects
 ```
 
-`NEXT_PUBLIC_MEDIA_BASE` is supported as a future CDN/custom-origin override.
-Leave it unset while the raw OSS origin is active. Do not switch to
-`https://media.mist-arch.com` until Alibaba Cloud CDN, HTTPS, DNS, and the
-Next image allow-list are changed together.
+Public hosts:
+
+```text
+https://mist-arch.com
+https://preview.mist-arch.com
+```
+
+Release flow:
+
+1. Develop and verify locally.
+2. Open a topic-branch pull request against `main`.
+3. Let GitHub Actions CI pass.
+4. After owner review, merge approved source to `main`.
+5. Update `preview/home-featured-projects` to the exact reviewed commit.
+6. Let GitHub Actions deploy the protected preview.
+7. Promote the exact approved preview release to production only after approval.
+
+Do not deploy an uncommitted local worktree, bypass preview approval, expose
+secrets, change production, operate webmaster accounts, or use sensitive
+credentials without explicit owner authorization.
+
+## Contribution Workflow
+
+Use a GitHub-native flow for non-trivial work:
+
+```text
+GitHub Issue -> codex/* topic branch -> Pull Request -> GitHub Actions -> review/merge decision
+```
+
+Issue descriptions should state the problem, scope, acceptance criteria, docs,
+and tests. PR descriptions should link the issue and include scope,
+verification, docs impact, risk/rollback, and owner decision needs.
+
+This is a formal client project. Keep changes scoped, preserve existing visual
+and content direction, and prepare an approval brief before broad product,
+visual, brand, copy, SEO-positioning, deployment, or customer-visible behavior
+changes.
+
+## Documentation Index
+
+- `AGENTS.md` - entry rules, branch policy, and local verification.
+- `docs/RELEASE_WORKFLOW.md` - Local -> Preview -> Production workflow.
+- `docs/AGENT_HANDOFF.md` - current project, ECS, domain, OSS, and runtime
+  state.
+- `DESIGN.md` - visual and interaction direction.
+- `docs/CICD.md` - GitHub Actions, preview deploys, and production promotion.
+- `docs/SEO.md` - metadata, sitemap, robots, structured data, verification
+  files, and search-engine submissions.
+- `docs/IMAGE_PIPELINE.md` - OSS image processing, responsive images, CDN guard
+  rails, and metadata image behavior.
+- `docs/DEPLOYMENT_PLAN.md` - Alibaba Cloud architecture decisions.
+- `docs/DEVELOPMENT_LOG.md` - chronological implementation and deployment
+  history.
+- `docs/GSAP_ANIMATIONS.md` - animation implementation notes.
+- `docs/About.md` - supplemental project notes.
 
 ## Environment
 
@@ -128,38 +249,5 @@ NEXT_PUBLIC_DISABLE_MEDIA_PROXY
 ```
 
 Only set `NEXT_PUBLIC_ICP_LICENSE` after the real ICP filing value is provided.
-
-## Release Workflow
-
-Persistent branches:
-
-```text
-main
-preview/home-featured-projects
-```
-
-Release flow:
-
-1. Develop and verify locally.
-2. Commit the reviewed source on `main`.
-3. Update `preview/home-featured-projects` to the exact reviewed commit and
-   push it.
-4. Let GitHub Actions deploy the protected preview.
-5. Promote the exact deployed preview release to production after approval.
-
-Preview and production:
-
-```text
-https://preview.mist-arch.com
-https://mist-arch.com
-```
-
-See `docs/RELEASE_WORKFLOW.md`, `docs/CICD.md`, and
-`docs/AGENT_HANDOFF.md` before changing deployment behavior.
-
-## Project Notes
-
-- `AGENTS.md` is the entry file for coding agents.
-- `DESIGN.md` defines the current visual and interaction direction.
-- `docs/IMAGE_PIPELINE.md` documents OSS image processing and CDN guard rails.
-- `docs/DEVELOPMENT_LOG.md` records implementation and deployment history.
+Do not commit private webmaster tokens, Basic Auth credentials, SSH keys, or
+production secrets.
