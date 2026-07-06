@@ -4,6 +4,45 @@ This log is written for both human developers and future coding agents. Keep ent
 short, dated, and implementation-oriented so the next contributor can understand what
 changed, why it changed, how it was checked, and what remains open.
 
+## 2026-07-07 / About Search Result Snippet Wording
+
+### Goals
+
+- Improve the likely Bing search result snippet for `/zh/about` after Bing
+  showed a snippet assembled from About navigation and visible intro text.
+- Keep the change conservative, owner-approved, and aligned across Chinese and
+  English About pages.
+
+### Changes
+
+- Added `CONTEXT.md` terms for Search Result Snippet, Meta Description, and
+  Visible Intro Copy so future SEO work does not treat Bing snippets as a
+  guaranteed metadata field.
+- Updated `/zh/about` metadata and visible intro copy with a business-clear
+  studio summary covering Shenzhen context, design scope, founders, project
+  archive, contact availability, and WeChat MIST-ARCH.
+- Updated `/en/about` metadata and visible intro copy with semantically aligned
+  English wording while keeping the metadata description within a Bing-friendly
+  length.
+- Preserved the boundary that direct phone numbers, email addresses, and street
+  addresses should not be targeted for search snippet display.
+- Added Playwright coverage for the About metadata and visible intro wording.
+- Updated `docs/SEO.md` with search result snippet guidance and expected About
+  description lengths.
+
+### Verification
+
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `npm run build`: passed.
+- `npm run test:e2e`: passed, 9 Chromium tests.
+- `git diff --check`: passed.
+
+### Deployment
+
+- No preview deploy, production deploy, Bing/Webmaster action, or production
+  credential/account operation was performed.
+
 ## 2026-06-06 / Bing URL Inspection Follow-up
 
 ### Goals

@@ -43,16 +43,34 @@ test.describe("localized homepage", () => {
 });
 
 test.describe("about contact interactions", () => {
+  test("Chinese about page exposes the approved search summary wording", async ({ page }) => {
+    await page.goto("/zh/about#intro");
+
+    const description =
+      "岚·建筑设计是一家立足深圳的建筑事务所，关注建筑、室内、城市更新、公共文化与商业空间设计，由程博、李博共同创立。官网收录项目作品、团队介绍、媒体经历、联系方式与微信公众号 MIST-ARCH。";
+
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+      "content",
+      description
+    );
+    await expect(page.locator("#intro")).toContainText(description);
+  });
+
   test("WeChat public account opens the QR code dialog", async ({ page }) => {
     await page.goto("/en/about#contact");
 
     const metaDescription = page.locator('meta[name="description"]');
+    const descriptionText =
+      "MIST Architects is a Shenzhen studio for architecture, interiors, adaptive reuse, public cultural and commercial spaces, founded by Cheng Bo and Li Bo.";
+
     await expect(metaDescription).toHaveAttribute(
       "content",
-      "Learn about MIST Architects' studio, founders, services, awards, WeChat public account MIST-ARCH, QR code, and contact details."
+      descriptionText
     );
     const description = await metaDescription.getAttribute("content");
     expect(description?.length ?? 0).toBeLessThanOrEqual(155);
+    await expect(page.locator("#intro")).toContainText(descriptionText);
+    await expect(page.locator("#intro")).toContainText("WeChat MIST-ARCH");
 
     const structuredData = await page
       .locator('script[type="application/ld+json"]')

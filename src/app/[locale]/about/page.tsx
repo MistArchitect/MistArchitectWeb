@@ -32,8 +32,8 @@ export async function generateMetadata({ params }: AboutPageProps): Promise<Meta
     title: locale === "zh" ? "关于岚·建筑设计" : "About",
     description:
       locale === "zh"
-        ? "了解岚·建筑设计的事务所背景、创始人、获奖出版经历、业务方向、微信公众号 MIST-ARCH、二维码与联系方式。"
-        : "Learn about MIST Architects' studio, founders, services, awards, WeChat public account MIST-ARCH, QR code, and contact details.",
+        ? "岚·建筑设计是一家立足深圳的建筑事务所，关注建筑、室内、城市更新、公共文化与商业空间设计，由程博、李博共同创立。官网收录项目作品、团队介绍、媒体经历、联系方式与微信公众号 MIST-ARCH。"
+        : "MIST Architects is a Shenzhen studio for architecture, interiors, adaptive reuse, public cultural and commercial spaces, founded by Cheng Bo and Li Bo.",
     locale,
     path: "/about",
     image: mediaUrl(about.heroImage, { width: 1920, quality: "std" }),

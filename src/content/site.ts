@@ -490,13 +490,16 @@ export const about = {
       en: "MIST Architects"
     },
     title: {
-      zh: "程博和李博自瑞士归国后创立「岚」并专注于创造富有情感的壮阔体验、有力场的广义建筑。我们的工作重视建筑的品质、令人沉浸的空间氛围，以及与良好生活的连接。",
-      en: "Cheng Bo and Li Bo founded MIST Architects after returning from Switzerland."
+      zh: "岚·建筑设计是一家立足深圳的建筑事务所，关注建筑、室内、城市更新、公共文化与商业空间设计，由程博、李博共同创立。官网收录项目作品、团队介绍、媒体经历、联系方式与微信公众号 MIST-ARCH。",
+      en: "MIST Architects is a Shenzhen studio for architecture, interiors, adaptive reuse, public cultural and commercial spaces, founded by Cheng Bo and Li Bo."
     },
     body: {
-      zh: [],
+      zh: [
+        "我们的工作重视建筑的品质、令人沉浸的空间氛围，以及与良好生活的连接。"
+      ],
       en: [
-        "The studio focuses on broadly defined architecture with emotional, expansive experiences and a strong field of presence. Its work values architectural quality, immersive spatial atmosphere, and a close connection to good living."
+        "The site includes projects, studio profile, media notes, contact details, and WeChat MIST-ARCH.",
+        "The studio values architectural quality, immersive spatial atmosphere, and a close connection to good living."
       ]
     }
   },

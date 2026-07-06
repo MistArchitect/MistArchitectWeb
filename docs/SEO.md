@@ -1,6 +1,6 @@
 # SEO Implementation
 
-Last updated: 2026-06-06, Asia/Shanghai.
+Last updated: 2026-07-07, Asia/Shanghai.
 
 This document records how technical SEO is implemented for
 `https://mist-arch.com`, where to maintain it, and how to verify search-engine
@@ -129,6 +129,32 @@ The current global descriptions are in `siteDescription`:
 zh: 岚·建筑设计是由程博、李博创立的建筑事务所，专注建筑、室内、城市更新与公共文化空间。
 en: MIST Architects is a Shenzhen architecture studio working across cultural spaces, interiors, adaptive reuse, and public architecture.
 ```
+
+### Search result snippets
+
+The text shown below a Bing result title is a search result snippet. The site
+can influence it through `meta description`, visible page copy, headings, and
+structured data, but Bing may rewrite the snippet from the rendered page when
+it considers visible text more relevant to the query.
+
+For `/zh/about` and `/en/about`, the About metadata and first visible intro
+copy should stay semantically aligned. The approved direction is
+business-clear first: identify the studio, Shenzhen context, design scope, and
+founders before more atmospheric brand language.
+
+Current About snippet targets:
+
+```text
+zh/about:
+岚·建筑设计是一家立足深圳的建筑事务所，关注建筑、室内、城市更新、公共文化与商业空间设计，由程博、李博共同创立。官网收录项目作品、团队介绍、媒体经历、联系方式与微信公众号 MIST-ARCH。
+
+en/about:
+MIST Architects is a Shenzhen studio for architecture, interiors, adaptive reuse, public cultural and commercial spaces, founded by Cheng Bo and Li Bo.
+```
+
+Do not target direct phone numbers, email addresses, or street addresses for
+snippet display. It is acceptable to mention that contact details and WeChat
+are available on the site.
 
 ## 5. Canonical and hreflang
 
@@ -371,7 +397,7 @@ for (const url of urls) {
 NODE
 ```
 
-Expected current production values:
+Expected deployed values for the current source:
 
 ```text
 / -> /zh returns 308
@@ -380,15 +406,21 @@ Expected current production values:
 /sitemap.xml returns 200
 /robots.txt returns 200
 /en description length is 133
-/en/about description length is 127
+/zh/about description length is 96 after this About snippet update is deployed
+/en/about description length is 151 after this About snippet update is deployed
 public pages should normally have empty alt count 0
 ```
 
 ## 12. Current Search State Notes
 
-As of 2026-06-06:
+As of 2026-07-07:
 
 - Bing has indexed `https://mist-arch.com/zh`.
+- An owner-provided Bing screenshot for the `岚建筑` query showed
+  `https://mist-arch.com/zh/about` with a snippet partly assembled from About
+  page navigation and visible intro copy. The About page now uses
+  business-clear metadata plus visible intro wording to influence future Bing
+  snippets after crawl refresh.
 - `https://mist-arch.com/en/about` was known to Bing as
   `Discovered but not crawled` in URL Inspection.
 - `/en` SEO/GEO warnings for meta description length and one missing image alt
