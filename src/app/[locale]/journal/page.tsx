@@ -5,7 +5,7 @@ import { JournalList } from "@/components/journal-list";
 import { SectionRibbon } from "@/components/section-ribbon";
 import { getJournalEntries } from "@/lib/content";
 import { isLocale, type Locale } from "@/lib/i18n";
-import { buildPageMetadata } from "@/lib/seo";
+import { buildPageMetadata, journalIndexJsonLd, jsonLd } from "@/lib/seo";
 
 export const revalidate = 60;
 
@@ -51,6 +51,10 @@ export default async function JournalPage({ params }: JournalPageProps) {
 
   return (
     <main className="page-shell">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLd(journalIndexJsonLd(locale, journalEntries)) }}
+      />
       <SectionRibbon>{locale === "zh" ? "日志" : "Journal"}</SectionRibbon>
       <header className="archive-heading">
         <p className="kicker">NEWS / PROCESS / RESEARCH</p>

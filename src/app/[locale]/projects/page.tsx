@@ -5,7 +5,7 @@ import { ProjectFilter } from "@/components/project-filter";
 import { SectionRibbon } from "@/components/section-ribbon";
 import { getProjects } from "@/lib/content";
 import { isLocale, type Locale } from "@/lib/i18n";
-import { buildPageMetadata } from "@/lib/seo";
+import { buildPageMetadata, jsonLd, projectIndexJsonLd } from "@/lib/seo";
 
 export const revalidate = 60;
 
@@ -51,6 +51,10 @@ export default async function ProjectsPage({ params }: ProjectsPageProps) {
 
   return (
     <main className="page-shell">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLd(projectIndexJsonLd(locale, projects)) }}
+      />
       <SectionRibbon>{locale === "zh" ? "项目索引" : "Project Index"}</SectionRibbon>
       <header className="archive-heading">
         <p className="kicker">MIST ARCHIVE / 2024-2026</p>

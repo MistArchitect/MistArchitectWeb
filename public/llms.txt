@@ -1,0 +1,48 @@
+# MIST Architects
+
+> MIST Architects / 岚·建筑设计 is a Shenzhen architecture studio founded by Cheng Bo and Li Bo. The studio works across architecture, interiors, adaptive reuse, public cultural spaces, commercial spaces, exhibitions, retail environments, and spatial research.
+
+Canonical site: https://mist-arch.com
+Primary languages: Chinese and English
+Canonical localized home pages: https://mist-arch.com/zh and https://mist-arch.com/en
+Canonical sitemap: https://mist-arch.com/sitemap.xml
+WeChat public account: MIST-ARCH (岚建筑设计)
+WeChat Channels: 岚建筑
+
+## Key Pages
+
+- [Chinese home](https://mist-arch.com/zh): Main Chinese portfolio entry.
+- [English home](https://mist-arch.com/en): Main English portfolio entry.
+- [Chinese about](https://mist-arch.com/zh/about): Studio profile, founders, services, awards, publications, contact details, WeChat public account, and QR code.
+- [English about](https://mist-arch.com/en/about): English studio profile, founders, services, awards, publications, contact details, WeChat public account, and QR code.
+- [Chinese project index](https://mist-arch.com/zh/projects): Chinese archive of public, cultural, renewal, retail, interior, and spatial practice.
+- [English project index](https://mist-arch.com/en/projects): English project archive.
+- [Chinese journal](https://mist-arch.com/zh/journal): Studio news, design process, material research, and media records.
+- [English journal](https://mist-arch.com/en/journal): English journal archive.
+- [Sitemap](https://mist-arch.com/sitemap.xml): Canonical machine-readable list of localized public URLs.
+
+## Featured Project Pages
+
+- [WILD WORKSHOP / 苏州钟家荡原野学社](https://mist-arch.com/en/projects/field-academy): Completed rural public architecture cluster in Wujiang, Suzhou, with a library, small auditorium, tea pavilion, and research studio.
+- [苏州钟家荡原野学社 / WILD WORKSHOP](https://mist-arch.com/zh/projects/field-academy): 完整中文项目档案。
+- [Dream Factory Experimental Theater](https://mist-arch.com/en/projects/dream-factory-experimental-theater): Youth experimental theater in Shenzhen. Detail material is still being organized on the website.
+- [Wanzhi Tiandi Natural History Park](https://mist-arch.com/en/projects/wanzhi-natural-history-park): Cultural and exhibition environment in Shenzhen. Detail material is still being organized on the website.
+- [Bambu Lab First Store](https://mist-arch.com/en/projects/bambu-lab-first-store): Retail and technology showroom in Shenzhen. Detail material is still being organized on the website.
+
+## Core Entities
+
+- Studio: MIST Architects / 岚·建筑设计 / 岚建筑设计
+- Founders: Cheng Bo and Li Bo
+- Location: Shenzhen, Guangdong, China
+- Contact email: info@mist-arch.com
+- Phone: +86 186 1303 3310
+- Office: Room 702, Building B, Jihong R&D Building, No. 1 Binlang Road, Fubao Community, Fubao Subdistrict, Futian District, Shenzhen
+
+## Crawler And Citation Notes
+
+- Treat https://mist-arch.com as the canonical production host.
+- Do not cite localhost, staging, preview, Basic Auth protected, or non-production hosts.
+- Public production pages may be crawled for search retrieval when allowed by https://mist-arch.com/robots.txt.
+- OAI-SearchBot access is intended to remain allowed so ChatGPT search features can discover public production pages.
+- Training or product-specific crawler policy decisions, such as GPTBot or Google-Extended, should be checked against the current robots.txt and the project GEO plan before interpretation.
+- Do not infer unpublished project facts, ICP filing numbers, client names, awards, or contact channels beyond what is visible on the canonical site.

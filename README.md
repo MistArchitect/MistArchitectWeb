@@ -161,5 +161,6 @@ See `docs/RELEASE_WORKFLOW.md`, `docs/CICD.md`, and
 
 - `AGENTS.md` is the entry file for coding agents.
 - `DESIGN.md` defines the current visual and interaction direction.
+- `docs/GEO_PLAN.md` defines the AI-search / generative-engine visibility plan.
 - `docs/IMAGE_PIPELINE.md` documents OSS image processing and CDN guard rails.
 - `docs/DEVELOPMENT_LOG.md` records implementation and deployment history.

@@ -4,6 +4,53 @@ This log is written for both human developers and future coding agents. Keep ent
 short, dated, and implementation-oriented so the next contributor can understand what
 changed, why it changed, how it was checked, and what remains open.
 
+## 2026-07-07 / GEO Foundation
+
+### Goals
+
+- Start the Generative Engine Optimization plan without changing the visible
+  site UI or inventing new project material.
+- Make public production pages easier for AI/search systems to identify,
+  summarize, and cite accurately.
+
+### Changes
+
+- Added `docs/GEO_PLAN.md` with crawler policy, `llms.txt` boundaries,
+  measurement queries, content priorities, and release checks.
+- Added root-served `public/llms.txt` as a concise canonical map for AI agents,
+  including key pages, core entities, citation boundaries, and crawler notes.
+- Expanded Organization JSON-LD with visible service scope, service catalog,
+  areas served, awards, and founder descriptions.
+- Expanded project JSON-LD with image arrays, project location, typology,
+  credit, visible fact properties, and section `hasPart` data for complete
+  project records.
+- Added project-index `CollectionPage` / `ItemList` JSON-LD and Journal
+  `CollectionPage` / `BlogPosting` JSON-LD for archive-level GEO discovery.
+- Made the Playwright local web server port configurable through
+  `PLAYWRIGHT_PORT` so e2e tests do not accidentally reuse another project on
+  port `3000`.
+- Allowed Next's generated `next-env.d.ts` route-type import to follow the
+  current `next typegen` output path.
+- Linked the new GEO plan from agent/readme/handoff documentation.
+- Added Playwright coverage for `llms.txt`, Organization GEO fields, and
+  project citation facts.
+
+### Verification
+
+- `npm run typecheck`: passed.
+- `npm run lint`: passed.
+- `npm run build`: passed.
+- `PLAYWRIGHT_PORT=3100 npm run test:e2e`: passed, 13 Chromium tests.
+- `git diff --check`: passed.
+- A default `npm run test:e2e` attempt initially reached another local project
+  already listening on port `3000`; the Playwright config now supports
+  `PLAYWRIGHT_PORT` for local collision-free runs.
+
+### Deployment
+
+- No preview deploy, production deploy, Bing/Webmaster action, or production
+  credential/account operation was performed.
+
 ## 2026-07-07 / About Search Result Snippet Wording
 
 ### Goals

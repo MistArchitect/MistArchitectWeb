@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { about, type Project } from "@/content/site";
+import { about, type JournalEntry, type Project } from "@/content/site";
 import { defaultLocale, locales, otherLocale, type Locale, withLocale } from "@/lib/i18n";
 import { mediaUrl } from "@/lib/media";
 
@@ -153,6 +153,40 @@ export function buildPageMetadata({
   };
 }
 
+function organizationAreaServed(locale: Locale) {
+  const places = {
+    zh: ["深圳", "苏州", "惠州", "杭州", "北京", "上海", "龙游"],
+    en: ["Shenzhen", "Suzhou", "Huizhou", "Hangzhou", "Beijing", "Shanghai", "Longyou"]
+  } satisfies Record<Locale, string[]>;
+
+  return places[locale].map((name) => ({
+    "@type": "Place",
+    name,
+    address: {
+      "@type": "PostalAddress",
+      addressCountry: "CN"
+    }
+  }));
+}
+
+function serviceCatalogJsonLd(locale: Locale) {
+  return {
+    "@type": "OfferCatalog",
+    name: about.services.label[locale],
+    itemListElement: about.services.body[locale].map((service, index) => ({
+      "@type": "Offer",
+      position: index + 1,
+      itemOffered: {
+        "@type": "Service",
+        name: service,
+        provider: {
+          "@id": `${siteOrigin}/#organization`
+        }
+      }
+    }))
+  };
+}
+
 export function organizationJsonLd(locale: Locale) {
   return {
     "@context": "https://schema.org",
@@ -172,6 +206,11 @@ export function organizationJsonLd(locale: Locale) {
     description: siteDescription[locale],
     email: "info@mist-arch.com",
     telephone: "+86 186 1303 3310",
+    serviceType: about.services.body[locale],
+    areaServed: organizationAreaServed(locale),
+    knowsAbout: about.services.body[locale],
+    award: about.media.body[locale],
+    hasOfferCatalog: serviceCatalogJsonLd(locale),
     contactPoint: [
       {
         "@type": "ContactPoint",
@@ -205,7 +244,12 @@ export function organizationJsonLd(locale: Locale) {
     },
     founder: about.founders.map((founder) => ({
       "@type": "Person",
-      name: founder.name[locale]
+      name: founder.name[locale],
+      jobTitle: locale === "zh" ? "创始人" : "Founder",
+      description: founder.credentials[locale].join("; "),
+      affiliation: {
+        "@id": `${siteOrigin}/#organization`
+      }
     })),
     identifier: [
       {
@@ -273,6 +317,112 @@ export function aboutPageJsonLd(locale: Locale) {
   };
 }
 
+export function projectIndexJsonLd(locale: Locale, projects: Project[]) {
+  const url = localizedSiteUrl(locale, "/projects");
+
+  return {
+    "@context": "https://schema.org",
+    "@id": `${url}#project-index`,
+    "@type": "CollectionPage",
+    name: locale === "zh" ? "岚·建筑设计项目索引" : "MIST Architects Project Index",
+    description:
+      locale === "zh"
+        ? "岚·建筑设计的建筑、室内、文化公共空间、商业零售与城市更新项目档案。"
+        : "MIST Architects archive of architecture, interiors, cultural public spaces, retail environments, and adaptive reuse projects.",
+    url,
+    inLanguage: locale === "zh" ? "zh-CN" : "en",
+    isPartOf: {
+      "@id": `${siteOrigin}/#website`
+    },
+    publisher: {
+      "@id": `${siteOrigin}/#organization`
+    },
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: projects.map((project, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        url: localizedSiteUrl(locale, `/projects/${project.slug}`),
+        item: projectListItemJsonLd(locale, project)
+      }))
+    }
+  };
+}
+
+function projectListItemJsonLd(locale: Locale, project: Project) {
+  return {
+    "@type": "CreativeWork",
+    "@id": `${localizedSiteUrl(locale, `/projects/${project.slug}`)}#project`,
+    name: project.title[locale],
+    description: project.dek[locale],
+    url: localizedSiteUrl(locale, `/projects/${project.slug}`),
+    image: absoluteUrl(project.image),
+    dateCreated: project.year || undefined,
+    locationCreated: project.location[locale],
+    genre: project.typology[locale],
+    about: [project.typology[locale], project.status[locale]].filter(Boolean),
+    creator: {
+      "@id": `${siteOrigin}/#organization`
+    }
+  };
+}
+
+export function journalIndexJsonLd(locale: Locale, entries: JournalEntry[]) {
+  const url = localizedSiteUrl(locale, "/journal");
+
+  return {
+    "@context": "https://schema.org",
+    "@id": `${url}#journal-index`,
+    "@type": ["CollectionPage", "Blog"],
+    name: locale === "zh" ? "岚·建筑设计日志" : "MIST Architects Journal",
+    description:
+      locale === "zh"
+        ? "岚·建筑设计关于事务所新闻、设计过程、材料研究和媒体记录的长期更新。"
+        : "MIST Architects ongoing notes on studio news, design process, material research, and media records.",
+    url,
+    inLanguage: locale === "zh" ? "zh-CN" : "en",
+    isPartOf: {
+      "@id": `${siteOrigin}/#website`
+    },
+    publisher: {
+      "@id": `${siteOrigin}/#organization`
+    },
+    blogPost: entries.map((entry) => journalEntryJsonLd(locale, entry)),
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: entries.map((entry, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        url: localizedSiteUrl(locale, `/journal#${entry.slug}`),
+        item: journalEntryJsonLd(locale, entry)
+      }))
+    }
+  };
+}
+
+function journalEntryJsonLd(locale: Locale, entry: JournalEntry) {
+  const url = localizedSiteUrl(locale, `/journal#${entry.slug}`);
+
+  return {
+    "@type": "BlogPosting",
+    "@id": `${url}#entry`,
+    headline: entry.title[locale],
+    description: entry.dek[locale],
+    url,
+    datePublished: entry.date,
+    dateModified: entry.date,
+    image: absoluteUrl(entry.image),
+    articleSection: entry.category[locale],
+    inLanguage: locale === "zh" ? "zh-CN" : "en",
+    author: {
+      "@id": `${siteOrigin}/#organization`
+    },
+    publisher: {
+      "@id": `${siteOrigin}/#organization`
+    }
+  };
+}
+
 export function wechatQrImageJsonLd(locale: Locale) {
   return {
     "@type": "ImageObject",
@@ -315,6 +465,8 @@ export function websiteJsonLd(locale: Locale) {
 }
 
 export function projectJsonLd(locale: Locale, project: Project) {
+  const imageUrls = projectImageUrls(project);
+
   return {
     "@context": "https://schema.org",
     "@type": "CreativeWork",
@@ -323,7 +475,8 @@ export function projectJsonLd(locale: Locale, project: Project) {
     headline: project.title[locale],
     description: project.dek[locale],
     url: localizedSiteUrl(locale, `/projects/${project.slug}`),
-    image: absoluteUrl(project.heroImage),
+    image: imageUrls,
+    thumbnailUrl: imageUrls[0],
     creator: {
       "@id": `${siteOrigin}/#organization`
     },
@@ -332,9 +485,87 @@ export function projectJsonLd(locale: Locale, project: Project) {
     },
     dateCreated: project.year || undefined,
     locationCreated: project.location[locale],
+    contentLocation: {
+      "@type": "Place",
+      name: project.location[locale]
+    },
     inLanguage: locale === "zh" ? "zh-CN" : "en",
-    about: [project.typology[locale], project.status[locale]].filter(Boolean)
+    genre: project.typology[locale],
+    keywords: [project.title[locale], project.location[locale], project.typology[locale]].filter(
+      Boolean
+    ),
+    creditText: project.credit,
+    about: [project.typology[locale], project.status[locale]].filter(Boolean),
+    hasPart: projectSectionJsonLd(locale, project),
+    additionalProperty: projectAdditionalProperties(locale, project)
   };
+}
+
+function projectImageUrls(project: Project) {
+  return Array.from(
+    new Set([
+      project.heroImage,
+      project.image,
+      ...project.gallery.map((media) => media.src),
+      ...(project.sections ?? []).flatMap((section) => section.media.map((media) => media.src))
+    ])
+  ).map((url) => absoluteUrl(url));
+}
+
+function projectAdditionalProperties(locale: Locale, project: Project) {
+  const baseProperties = [
+    {
+      label: {
+        zh: "地点",
+        en: "Location"
+      },
+      value: project.location
+    },
+    ...(project.year
+      ? [
+          {
+            label: {
+              zh: "年份",
+              en: "Year"
+            },
+            value: {
+              zh: project.year,
+              en: project.year
+            }
+          }
+        ]
+      : []),
+    {
+      label: {
+        zh: "类型",
+        en: "Typology"
+      },
+      value: project.typology
+    },
+    {
+      label: {
+        zh: "状态",
+        en: "Status"
+      },
+      value: project.status
+    }
+  ];
+
+  return [...baseProperties, ...(project.facts ?? [])].map((fact) => ({
+    "@type": "PropertyValue",
+    name: fact.label[locale],
+    value: fact.value[locale]
+  }));
+}
+
+function projectSectionJsonLd(locale: Locale, project: Project) {
+  return (project.sections ?? []).map((section) => ({
+    "@type": "CreativeWork",
+    name: section.heading[locale],
+    about: section.navLabel[locale],
+    text: section.body[locale].join("\n"),
+    image: section.media.map((media) => absoluteUrl(media.src))
+  }));
 }
 
 export function breadcrumbJsonLd(

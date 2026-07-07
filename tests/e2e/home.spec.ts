@@ -83,6 +83,10 @@ test.describe("about contact interactions", () => {
     expect(structuredData).toContain("ContactPage");
     expect(structuredData).toContain("MIST Architects WeChat public account MIST-ARCH QR code");
     expect(structuredData).toContain("/20260531-191007.jpeg");
+    expect(structuredData).toContain("hasOfferCatalog");
+    expect(structuredData).toContain("Public and cultural architecture");
+    expect(structuredData).toContain("areaServed");
+    expect(structuredData).toContain("Founder");
 
     await page.getByRole("button", { name: "MIST-ARCH (岚建筑设计)" }).click();
 
@@ -94,6 +98,64 @@ test.describe("about contact interactions", () => {
 
     await dialog.getByRole("button", { exact: true, name: "Close" }).click();
     await expect(dialog).toHaveCount(0);
+  });
+});
+
+test.describe("GEO machine-readable surfaces", () => {
+  test("root llms.txt exposes canonical AI context", async ({ request }) => {
+    const response = await request.get("/llms.txt");
+
+    expect(response.ok()).toBeTruthy();
+    expect(response.headers()["content-type"]).toContain("text/plain");
+
+    const body = await response.text();
+    expect(body).toContain("# MIST Architects");
+    expect(body).toContain("https://mist-arch.com/zh");
+    expect(body).toContain("https://mist-arch.com/en/projects/field-academy");
+    expect(body).toContain("OAI-SearchBot");
+    expect(body).toContain("Do not infer unpublished project facts");
+  });
+
+  test("project JSON-LD exposes GEO citation facts", async ({ page }) => {
+    await page.goto("/en/projects/field-academy#project-white-detail");
+
+    const structuredData = await page
+      .locator('script[type="application/ld+json"]')
+      .evaluateAll((nodes) => nodes.map((node) => node.textContent ?? "").join("\n"));
+
+    expect(structuredData).toContain("contentLocation");
+    expect(structuredData).toContain("creditText");
+    expect(structuredData).toContain("2,000 sqm");
+    expect(structuredData).toContain("Xingye Cultural Tourism");
+    expect(structuredData).toContain("Plan relationships");
+    expect(structuredData).toContain("01-overview-panorama.jpg");
+  });
+
+  test("project index JSON-LD exposes the archive as an item list", async ({ page }) => {
+    await page.goto("/en/projects");
+
+    const structuredData = await page
+      .locator('script[type="application/ld+json"]')
+      .evaluateAll((nodes) => nodes.map((node) => node.textContent ?? "").join("\n"));
+
+    expect(structuredData).toContain("project-index");
+    expect(structuredData).toContain("ItemList");
+    expect(structuredData).toContain("WILD WORKSHOP");
+    expect(structuredData).toContain("Bambu Lab First Store");
+    expect(structuredData).toContain("/en/projects/field-academy");
+  });
+
+  test("journal JSON-LD exposes entries as blog posts", async ({ page }) => {
+    await page.goto("/en/journal#bilingual-architecture-records");
+
+    const structuredData = await page
+      .locator('script[type="application/ld+json"]')
+      .evaluateAll((nodes) => nodes.map((node) => node.textContent ?? "").join("\n"));
+
+    expect(structuredData).toContain("journal-index");
+    expect(structuredData).toContain("BlogPosting");
+    expect(structuredData).toContain("Architectural Records across Chinese and English");
+    expect(structuredData).toContain("/en/journal#bilingual-architecture-records");
   });
 });
 

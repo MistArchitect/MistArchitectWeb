@@ -90,9 +90,10 @@ src/app/robots.ts
 src/app/sitemap.ts
 ```
 
-Root-served verification and API files:
+Root-served verification, GEO, and API files:
 
 ```text
+public/llms.txt
 public/BingSiteAuth.xml
 public/baidu_verify_codeva-rzwTLycS3q.html
 public/f5775da6489b4079bb75b30bdd8fdbf9.txt
@@ -188,11 +189,17 @@ The site emits JSON-LD through `src/lib/seo.ts`.
 
 Current structured data:
 
-- `Organization` and `ArchitecturalService` on every localized layout
+- `Organization` and `ArchitecturalService` on every localized layout,
+  including visible service scope, awards, areas served, and a service catalog
 - `WebSite` on every localized layout
 - `AboutPage` and `ContactPage` on `/zh/about` and `/en/about`
 - WeChat QR code `ImageObject`
-- project `CreativeWork` on project detail pages
+- project `CreativeWork` on project detail pages, including project image
+  arrays, location, typology, credit, and visible fact properties
+- project index `CollectionPage` with an `ItemList` of project `CreativeWork`
+  entries on `/zh/projects` and `/en/projects`
+- journal `CollectionPage` / `Blog` with `BlogPosting` entries on
+  `/zh/journal` and `/en/journal`
 - `BreadcrumbList` on project detail pages
 
 WeChat fields currently exposed in Organization JSON-LD:
@@ -259,7 +266,40 @@ Host: https://mist-arch.com
 
 The sitemap includes localized alternate links and is revalidated every hour.
 
-## 9. Verification Files
+## 9. GEO and AI Search Controls
+
+GEO work is tracked in:
+
+```text
+docs/GEO_PLAN.md
+```
+
+The root `llms.txt` file is served from:
+
+```text
+https://mist-arch.com/llms.txt
+```
+
+`llms.txt` is a concise, public, machine-readable site map for AI agents. It
+summarizes canonical URLs, key entities, high-value project pages, and citation
+boundaries. It is not an access-control mechanism and does not guarantee
+AI-search inclusion.
+
+Current crawler intent:
+
+- Keep normal public search crawling allowed through `User-agent: *`.
+- Keep `OAI-SearchBot` allowed by default so ChatGPT search features can
+  discover public production pages.
+- Do not add explicit `GPTBot` or `Google-Extended` rules until the project
+  owner decides whether public production content should be available for
+  model-training or product-specific grounding uses.
+- Keep preview blocked from search through Basic Auth and infrastructure-level
+  `X-Robots-Tag: noindex`.
+
+When changing crawler policy, check current official docs before editing
+`robots.txt`; crawler semantics are product-specific and can change.
+
+## 10. Verification Files
 
 Bing Webmaster Tools:
 
@@ -285,7 +325,7 @@ public by design for IndexNow verification.
 Do not commit private API tokens, Baidu push tokens, webmaster account
 credentials, Basic Auth passwords, or SSH keys.
 
-## 10. Search Engine Submission
+## 11. Search Engine Submission
 
 ### Bing / IndexNow
 
@@ -353,7 +393,7 @@ https://mist-arch.com/zh/about
 https://mist-arch.com/en/about
 ```
 
-## 11. Release Verification
+## 12. Release Verification
 
 Run local checks before committing SEO code changes:
 
@@ -375,6 +415,7 @@ curl -fsS -o /dev/null -w '%{http_code}\n' https://mist-arch.com/zh
 curl -fsS -o /dev/null -w '%{http_code}\n' https://mist-arch.com/en
 curl -fsS -o /dev/null -w '%{http_code}\n' https://mist-arch.com/sitemap.xml
 curl -fsS -o /dev/null -w '%{http_code}\n' https://mist-arch.com/robots.txt
+curl -fsS -o /dev/null -w '%{http_code}\n' https://mist-arch.com/llms.txt
 ```
 
 Check descriptions and empty alt attributes:
@@ -405,13 +446,14 @@ Expected deployed values for the current source:
 /en returns 200
 /sitemap.xml returns 200
 /robots.txt returns 200
+/llms.txt returns 200 after this GEO foundation update is deployed
 /en description length is 133
 /zh/about description length is 96 after this About snippet update is deployed
 /en/about description length is 151 after this About snippet update is deployed
 public pages should normally have empty alt count 0
 ```
 
-## 12. Current Search State Notes
+## 13. Current Search State Notes
 
 As of 2026-07-07:
 
@@ -431,16 +473,21 @@ As of 2026-07-07:
   `/sitemap.xml` after production release `20260605194748-da9960e`.
 - IndexNow also accepted `/en/projects/field-academy` during the previous
   SEO cleanup release.
+- A first GEO foundation update now adds `public/llms.txt`,
+  `docs/GEO_PLAN.md`, and richer Organization/project structured data using
+  existing visible site facts.
 
 Search visibility can lag after a successful technical fix. Bing, Baidu, and
 WeChat search may take days or longer to refresh snippets, indexing state, and
 ranking.
 
-## 13. Maintenance Rules
+## 14. Maintenance Rules
 
 - Keep SEO copy natural and brand-specific.
 - Keep canonical URLs on `https://mist-arch.com`.
 - Keep preview blocked from indexing.
+- Keep `public/llms.txt` concise, public, and canonical-only; do not include
+  secrets, preview URLs, local paths, or unpublished project claims.
 - Add new public routes to `src/app/sitemap.ts` when they should be indexed.
 - Add route-specific metadata for new high-value pages.
 - Update JSON-LD when official contact, address, founder, WeChat, or QR code

@@ -16,6 +16,8 @@ Read these files in order before making changes:
    - `docs/IMAGE_PIPELINE.md` for OSS, responsive images, CDN, and image processing.
    - `docs/SEO.md` for search metadata, sitemap, robots, structured data,
      verification files, and search-engine submissions.
+   - `docs/GEO_PLAN.md` for AI-search visibility, crawler policy, `llms.txt`,
+     and citation monitoring.
    - `docs/DEPLOYMENT_PLAN.md` for Alibaba Cloud architecture decisions.
    - `docs/DEVELOPMENT_LOG.md` for chronological implementation history.
 

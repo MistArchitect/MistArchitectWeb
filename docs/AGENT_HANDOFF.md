@@ -98,6 +98,7 @@ DESIGN.md                              Visual and interaction direction
 docs/RELEASE_WORKFLOW.md              Local -> Preview -> Production flow
 docs/CICD.md                           GitHub Actions and deployment notes
 docs/SEO.md                            Technical SEO implementation and search submission notes
+docs/GEO_PLAN.md                       AI-search visibility, crawler policy, and citation monitoring
 docs/IMAGE_PIPELINE.md                 OSS image pipeline and CDN guard rails
 docs/DEPLOYMENT_PLAN.md                Alibaba Cloud architecture plan
 docs/DEVELOPMENT_LOG.md                Chronological implementation log
