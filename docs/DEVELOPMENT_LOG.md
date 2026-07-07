@@ -4,6 +4,49 @@ This log is written for both human developers and future coding agents. Keep ent
 short, dated, and implementation-oriented so the next contributor can understand what
 changed, why it changed, how it was checked, and what remains open.
 
+## 2026-07-08 / SEO and GEO Production Release
+
+### Goals
+
+- Deploy the approved About search snippet wording and GEO foundation changes
+  through the normal main -> preview -> production flow.
+- Confirm that the earlier SEO snippet commit and the GEO foundation commit
+  were both included in the deployed source.
+
+### Changes
+
+- Fast-forwarded `main` from `94bbd28` to `02b2c99`, including:
+  - `a191e19` / About search snippet wording.
+  - `02b2c99` / GEO foundation.
+- Fast-forwarded `preview/home-featured-projects` from `da9960e` to
+  `02b2c99`.
+- Promoted preview release `20260707173800-02b2c99` to production.
+
+### Verification
+
+- GitHub Actions CI run `28886270705` passed on `main`.
+- GitHub Actions `Deploy Preview` run `28886277463` passed on
+  `preview/home-featured-projects`.
+- ECS-local preview smoke returned `200` for `/zh`, `/en`, and `/llms.txt`.
+- ECS-local production smoke returned `200` for `/zh`, `/en`, and
+  `/llms.txt`.
+- Public production smoke returned:
+  - `/` -> `308` to `https://mist-arch.com/zh`
+  - `/zh` -> `200`
+  - `/en` -> `200`
+  - `/sitemap.xml` -> `200`
+  - `/robots.txt` -> `200`
+  - `/llms.txt` -> `200`
+- IndexNow accepted 12 changed URLs with `200 OK`, including `/zh`, `/en`,
+  About, Projects, Journal, WILD WORKSHOP detail pages, `/llms.txt`, and
+  `/sitemap.xml`.
+
+### Deployment
+
+- Preview release: `20260707173800-02b2c99`.
+- Production release: `20260707173800-02b2c99`.
+- No secrets, Basic Auth credentials, or private webmaster tokens were exposed.
+
 ## 2026-07-07 / GEO Foundation
 
 ### Goals

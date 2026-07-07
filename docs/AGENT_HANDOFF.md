@@ -1,6 +1,6 @@
 # Mist Architect Agent Handoff
 
-Last updated: 2026-06-06, Asia/Shanghai.
+Last updated: 2026-07-08, Asia/Shanghai.
 
 This handoff is the source-of-truth briefing for developers and coding agents
 taking over the Mist Architect / 岚·建筑设计 website. It summarizes the current
@@ -265,8 +265,8 @@ https://preview.mist-arch.com  (Basic Auth protected)
 Current release pointers as of this handoff:
 
 ```text
-Preview release:    20260605194748-da9960e
-Production release: 20260605194748-da9960e
+Preview release:    20260707173800-02b2c99
+Production release: 20260707173800-02b2c99
 ```
 
 ECS directory layout:

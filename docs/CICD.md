@@ -1,6 +1,6 @@
 # Mist Architect CI/CD Notes
 
-Last updated: 2026-06-06, Asia/Shanghai.
+Last updated: 2026-07-08, Asia/Shanghai.
 
 This document explains the current GitHub Actions CI/CD setup for the Mist
 Architect website. It is intended for the project owner and future coding
@@ -231,38 +231,25 @@ not use `Re-run all jobs` on an old run.
 
 ## 6. Current Verified State
 
-Latest successful `Deploy Preview` run checked during setup:
+Latest successful `Deploy Preview` run checked during SEO/GEO release:
 
 ```text
-Run id: 24684681445
+Run id: 28886277463
 Branch: preview/home-featured-projects
-Head SHA: f176d9da4360e60d31ff480cca7d9a2293339e0b
-Short SHA: f176d9d
+Head SHA: 02b2c99f6a6f43c5c9375e35de4e942e78fbd901
+Short SHA: 02b2c99
+Preview release: 20260707173800-02b2c99
 Conclusion: success
 ```
 
-The user later clicked `Re-run all jobs` on that run, which correctly kept the
-same head SHA and redeployed another release from `f176d9d`.
-
-ECS preview after that re-run:
+ECS preview after that run:
 
 ```text
 PM2 process: mist-preview
-Release: 20260420194149-f176d9d
-Server path: /srv/mist-architect/releases/20260420194149-f176d9d/server.js
+Release: 20260707173800-02b2c99
+Server path: /srv/mist-architect/releases/20260707173800-02b2c99/server.js
 Preview URL: https://preview.mist-arch.com/zh
 ```
-
-Latest preview branch HEAD at the time the re-run behavior was observed,
-before this documentation update:
-
-```text
-preview/home-featured-projects
-HEAD: f8eea51 Document preview deploy verification
-```
-
-Because `f8eea51` was newer than the original run, deploying it requires a new
-`Run workflow` action, not a re-run of run `24684681445`.
 
 ## 7. Production Status
 
@@ -340,17 +327,17 @@ mist-preview    -> 127.0.0.1:3001 -> /srv/mist-architect/current-preview
 Current production release:
 
 ```text
-20260605194748-da9960e
+20260707173800-02b2c99
 ```
 
 Latest verified preview workflow after production launch:
 
 ```text
-Run id: 27036505244
+Run id: 28886277463
 Branch: preview/home-featured-projects
-Head SHA: da9960e9caa616cfa48fade38b466911ab411218
-Short SHA: da9960e
-Preview release: 20260605194748-da9960e
+Head SHA: 02b2c99f6a6f43c5c9375e35de4e942e78fbd901
+Short SHA: 02b2c99
+Preview release: 20260707173800-02b2c99
 Conclusion: success
 ```
 
